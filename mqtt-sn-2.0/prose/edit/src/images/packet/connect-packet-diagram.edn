@@ -35,7 +35,7 @@
 (draw-box "Reserved" [:bg-lightgray {:span 1}])
 (draw-box "Srv Sugg" [:bg-lightgray {:span 1}])
 (draw-box "Net Addr" [:bg-lightgray {:span 1}])
-(draw-box "DAM" [:bg-lightgray {:span 1}])
+(draw-box "MAM" [:bg-lightgray {:span 1}])
 (draw-box "Sess Exp" [:bg-lightgray {:span 1}])
 (draw-box "Auth" [:bg-lightgray {:span 1}])
 (draw-box "Will" [:bg-lightgray {:span 1}])
@@ -88,7 +88,7 @@
 (draw-box "Maximum Packet Size LSB" :byte-left)
 
 (draw-box (text "11+F"))
-(draw-box (text "Default Awake Messages" :plain [:cursive " (AM=F+1 or F) - only present when DAM flag is set"]) :optional-byte-left)
+(draw-box (text "Maximum Number of Awake Messages" :plain [:cursive " (AM=F+1 or F) - only present when MAM flag is set"]) :optional-byte-left)
 
 (draw-box (text "Session Expiry Interval" :plain [:cursive " (S=AM+4 or AM) - only present when Sess Exp flag is set"]) [:bg-mediumgray :field-name])
 (draw-box "11+AM" :bg-lightgray)
