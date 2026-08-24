@@ -5,6 +5,58 @@
 \scale=0.9
 ![CONNECT Packet](images/connect-packet-diagram.png "CONNECT Packet")<!-- .width="5.2in", .height="8.075757874015748in" -->
 
+
+### CONNECT Layout{#connect-layout}
+<!-- Markdown rendering of connect-packet-diagram.edn (CONNECT packet, MQTT-SN v2.0, section 3.1.4) -->
+
+| Byte      | Field                                                                                    |
+|-----------|:------------------------------------------------------------------------------------------|
+| 1         | Length                                                                                     |
+| 2         | Packet Type                                                                                |
+| 3         | Connect Flags (see [Connect Flags](#connect-flags-byte-3) below)                          |
+| 4         | *Will Flags (F=1 or 0) — only present when Will flag is set (see [Will Flags](#will-flags-byte-4) below)* |
+| 4+F       | Packet Identifier MSB                                                                      |
+| 5+F       | Packet Identifier LSB                                                                      |
+| 6+F       | Protocol Version                                                                           |
+| 7+F       | Keep Alive MSB                                                                             |
+| 8+F       | Keep Alive LSB                                                                             |
+| 9+F       | Maximum Packet Size MSB                                                                    |
+| 10+F      | Maximum Packet Size LSB                                                                    |
+| 11+F      | *Maximum Number of Awake Messages (AM=F+1 or F) — only present when MAM flag is set*       |
+|           | **Session Expiry Interval (S=AM+4 or AM) only present when Sess Exp flag is set**.         |
+| 11+AM     | *Session Expiry Interval MSB*                                                              |
+| 12+AM     | *Session Expiry Interval*                                                                  |
+| 13+AM     | *Session Expiry Interval*                                                                  |
+| 14+AM     | *Session Expiry Interval LSB*                                                              |
+|           | **Will Fields (W=4+N+P+S or S) only present when Will flag is set**                        |
+| 11+S      | *Will Topic Alias or Will Topic Name Length MSB*                                           |
+| 12+S      | *Will Topic Alias or Will Topic Name Length LSB*                                           |
+| 13+S …    | *Will Topic Name (N) — only present when Will Topic Type is Topic Name*                    |
+| 13+S+N    | *Will Payload Length MSB*                                                                  |
+| 14+S+N    | *Will Payload Length LSB*                                                                  |
+| 15+S+N …  | *Will Payload (P)*                                                                         |
+|           | **Authentication Fields (A=3+M+D+W or W) only present when Auth flag is set**              |
+| 11+W      | *Authentication Method Length*                                                             |
+| 12+W …    | *Authentication Method (M)*                                                                |
+| 12+W+M    | *Authentication Data Length MSB*                                                           |
+| 13+W+M    | *Authentication Data Length LSB*                                                           |
+| 14+W+M …  | *Authentication Data (D)*                                                                  |
+| 11+A …    | Client Identifier (I)                                                                      |
+
+#### Connect Flags (byte 3){#connect-flags-byte-3} 
+
+| Bit   | 7        | 6        | 5        | 4   | 3        | 2    | 1    | 0           |
+|-------|----------|----------|----------|-----|----------|------|------|-------------|
+| Field | Reserved | Srv Sugg | Net Addr | MAM | Sess Exp | Auth | Will | Clean Start |
+| Value | 0        | X        | X        | X   | X        | X    | X    | X           |
+
+#### Will Flags (byte 4, only present when Will flag is set){#will-flags-byte-4}
+
+| Bit   | 7-5      | 4          | 3-2      | 1-0             |
+|-------|----------|------------|----------|-----------------|
+| Field | Reserved | Wil Retain | Will QoS | Will Topic Type |
+| Value | 000      | X          | XX       | XX              |
+
 The CONNECT packet is sent from the Client to the Server to request the creation of or continuation of a Session.
 
 ### CONNECT Header{#connect-header}
