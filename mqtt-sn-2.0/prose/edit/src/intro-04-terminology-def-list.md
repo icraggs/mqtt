@@ -52,7 +52,7 @@ MQTT-SN Server
 - accepts Application Messages from MQTT-SN Clients and forwards some or all to the MQTT Server.
 
 Gateway
-:    An MQTT-SN Server that uses one or more TCP connections to communicate with an MQTT Server.
+:    An MQTT-SN Server that also uses the MQTT protocol to communicate with an MQTT Server.
 
 Forwarder
 :    A program or device that is an intermediary between MQTT-SN Clients and Servers which reside on different Underlying Networks that cannot communicate directly with each other.
