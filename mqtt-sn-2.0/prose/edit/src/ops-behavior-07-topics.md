@@ -126,13 +126,15 @@ An Application Message is sent to each Client Subscription whose Topic Filter ma
 
 A Topic Alias is a 2 byte integer value that is used to identify the Topic instead of using the Topic Name. Topic Aliases can reduce the bandwidth needed when Topic Names are long and the same Topic Names are used repetitively.
 
-There are two types of Topic Alias: Predefined and Session. Predefined and Session Topic Aliases MUST occupy separate value spaces. That is, a Session Topic Alias MUST be able to have the same numerical value as a Predefined Topic Alias.
+There are two types of Topic Alias: Predefined and Session. Predefined and Session Topic Aliases occupy separate value spaces. That is, a Session Topic Alias MUST be able to have the same numerical value as a Predefined Topic Alias.
 
 The only reason for the existence of Topic Aliases is to reduce packet size. Therefore, a Topic Alias is transformed to its mapped Topic Name when received by a Client or Server before any further processing.
 
 A Subscription contains a Topic Filter, which is a Topic Name that is allowed to include wildcards - it does not contain any Topic Aliases.
 
 «<mark title="Requirement MQTT-SN-4.7.2-1"><a name="MQTT-SN-4.7.2-1"></a>If a Topic Alias exists for a Topic Name, a Sender (Client or Server) MUST use that Topic Alias and not the Topic Name in any PUBLISH packet</mark>»[MQTT‑SN‑4.7.2‑1](#tab-MQTT-SN-4.7.2-1).
+
+A Predefined or Session Topic Alias of 0 is not permitted. «<mark title="Requirement MQTT-SN-4.7.2-2"><a name="MQTT-SN-4.7.2-2"></a>A sender MUST NOT send any Control Packet containing a Predefined or Session Topic Alias which has the value 0</mark>»[MQTT‑SN‑4.7.2‑2](#tab-MQTT-SN-4.7.2-2).
 
 #### Predefined Topic Aliases{#predefined-topic-aliases}
 
