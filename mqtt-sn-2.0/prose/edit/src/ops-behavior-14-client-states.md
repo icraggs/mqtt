@@ -71,7 +71,7 @@ To go to sleep, a Client sends a SLEEPREQ packet containing a Sleep Duration in 
 >
 > The Server may *choose* to buffer messages of QoS 0 while the Client is in the Asleep state.
 
-The Client wakes by sending a PINGREQ. If the Server has buffered packets for the Client, it will send them to the Client, acknowledging the Maximum Number of Awake Messages sent in the CONNECT packet. «<mark title="Requirement MQTT-SN-4.14.2-3"><a name="MQTT-SN-4.14.2-3"></a>If the Maximum Number of Awake Messages set by the Client is greater than 0, the Server MUST send a maximum of Maximum Number of Awake Messages Application Messages in any one Awake period for that Client.</mark>»[MQTT‑SN‑4.14.2‑3](#tab-MQTT-SN-4.14.2-3).
+The Client wakes by sending a PINGREQ. If the Server has buffered packets for the Client, it will send them to the Client, acknowledging the Maximum Number of Awake Messages sent in the CONNECT packet. «<mark title="Requirement MQTT-SN-4.14.2-3"><a name="MQTT-SN-4.14.2-3"></a>If the Maximum Number of Awake Messages (N) set by the client is greater than 0, the server MUST NOT send more than N application messages in any one awake period for that client.</mark>»[MQTT‑SN‑4.14.2‑3](#tab-MQTT-SN-4.14.2-3).
 
 «<mark title="Requirement MQTT-SN-4.14.2-4"><a name="MQTT-SN-4.14.2-4"></a>After sending the Maximum Number of Awake Messages Application Messages, the Server cuts short the AWAKE cycle, and MUST respond with a PINGRESP with a messages-left value of either the number of Application Messages remaining in the Server buffer or 0xFF (meaning undetermined number of Application Messages greater than 0 remaining)</mark>»[MQTT‑SN‑4.14.2‑4](#tab-MQTT-SN-4.14.2-4).
 
