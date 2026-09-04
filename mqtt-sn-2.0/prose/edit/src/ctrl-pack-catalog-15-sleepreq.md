@@ -30,17 +30,13 @@ Used to identify the corresponding SLEEPRESP packet. It should ideally be set to
 
 ### Sleep Duration{#sleep-duration}
 
-The Sleep Duration is a four-byte integer time interval measured in seconds. It is the maximum amount of time that a client may stay asleep without being disconnected by the Server. For more information on sleeping clients, and the purpose of Sleep Duration, see [sec](#sleeping-clients).
+The Sleep Duration is a four-byte integer time interval measured in seconds. It is the maximum amount of time that a Client may stay asleep without being disconnected by the Server. For more information on sleeping Clients, and the purpose of Sleep Duration, see [sec](#sleeping-clients).
 
 «<mark title="Requirement MQTT-SN-3.15.4-1"><a name="MQTT-SN-3.15.4-1"></a>The Sleep Duration MUST be greater than 0</mark>»[MQTT‑SN‑3.15.4‑1](#tab-MQTT-SN-3.15.4-1).
 
 > **Informative Comment**
 >
 > The Sleep Duration should likely be substantially less than the Session Expiry for the session. If anything goes wrong in the Asleep to Awake transition, the Virtual Connection might be deleted by the Server, and the Session data might also be deleted if the Session Expiry interval passes before the Client reconnects.
->
-> **Informative Comment**
->
-> The Server can decide when to disconnect a sleeping Client it has not heard from. If packet loss is minimal, allowing 1.5 times the Sleep Duration before disconnecting the Client, similar to the Keep Alive processing, in many cases might be too short. Waiting 2.5 times the Sleep Duration before disconnecting the Client will allow one missed waking period.
 
 ### SLEEPREQ Actions{#sleepreq-actions}
 

@@ -69,13 +69,13 @@ The Server SHOULD publish Will Messages promptly after the Virtual Connection is
 
 «<mark title="Requirement MQTT-SN-3.1.2.4-2"><a name="MQTT-SN-3.1.2.4-2"></a>If the Session Expiry Flag is set to 0, the Session Expiry Interval field MUST NOT be present in the Packet</mark>»[MQTT‑SN‑3.1.2.4‑2](#tab-MQTT-SN-3.1.2.4-2).
 
-#### Default Number of Awake Messages Flag{#default-number-of-awake-messages-flag}
+#### Maximum Number of Awake Messages Flag{#max-awake-messages-flag}
 
-**Position:** bit 4 of the Connect Flags byte. Labelled *DAM* in Figure 3-1.
+**Position:** bit 4 of the Connect Flags byte. Labelled *MAM* in Figure 3-1.
 
-«<mark title="Requirement MQTT-SN-3.1.2.5-1"><a name="MQTT-SN-3.1.2.5-1"></a>If the Default Number of Awake Messages Flag is set to 1, the Default Awake Messages field MUST be present in the Packet</mark>»[MQTT‑SN‑3.1.2.5‑1](#tab-MQTT-SN-3.1.2.5-1).
+«<mark title="Requirement MQTT-SN-3.1.2.5-1"><a name="MQTT-SN-3.1.2.5-1"></a>If the Maximum Number of Awake Messages Flag is set to 1, the Maximum Number of Awake Messages field MUST be present in the Packet</mark>»[MQTT‑SN‑3.1.2.5‑1](#tab-MQTT-SN-3.1.2.5-1).
 
-«<mark title="Requirement MQTT-SN-3.1.2.5-2"><a name="MQTT-SN-3.1.2.5-2"></a>If the Default Number of Awake Messages Flag is set to 0, the Default Awake Messages field MUST NOT be present in the Packet</mark>»[MQTT‑SN‑3.1.2.5‑2](#tab-MQTT-SN-3.1.2.5-2).
+«<mark title="Requirement MQTT-SN-3.1.2.5-2"><a name="MQTT-SN-3.1.2.5-2"></a>If the Maximum Number of Awake Messages Flag is set to 0, the Maximum Number of Awake Messages field MUST NOT be present in the Packet</mark>»[MQTT‑SN‑3.1.2.5‑2](#tab-MQTT-SN-3.1.2.5-2).
 
 #### Allow Network Address Changes Flag{#allow-network-address-changes-flag}
 
@@ -210,7 +210,7 @@ The packet size is the total number of bytes in an MQTT-SN Control Packet, as de
 >
 > Where a packet is discarded without being sent, the Server could take some diagnostic action including alerting the Server administrator. Such actions are outside the scope of this specification.
 
-### Default Awake Messages{#default-awake-messages}
+### Maximum Number of Awake Messages{#max-awake-messages}
 
 An optional single byte value to indicate the maximum number of messages a Client shall receive during an AWAKE session. If this field is 0, or is absent, it is up to the Server to determine how many messages it will send, which may be unbounded.
 

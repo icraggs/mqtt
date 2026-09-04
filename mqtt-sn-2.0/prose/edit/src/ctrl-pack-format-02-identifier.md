@@ -1,51 +1,44 @@
 ## Packet Identifier{#packet-identifier}
 
-The Variable Header component of many of the MQTT-SN Control Packet types includes a Two Byte Integer Packet Identifier field. MQTT-SN Control Packets that require a Packet Identifier are shown in Figure 2-5.
+The Variable Header component of many of the MQTT-SN Control Packet types includes a Two Byte Integer Packet Identifier field. MQTT-SN Control Packets that require a Packet Identifier, along with the corresponding response Packet which all also require a Packet Identifier, are shown in Figure 2-5.
 
 *Figure 2-5 -- Packets with Packet Identifier*
 
-| MQTT-SN Control Packet   | Packet Identifier field |
-|:-------------------------|:------------------------|
-| ADVERTISE                | NO                      |
-| AUTH                     | YES                     |
-| CONNACK                  | YES                     |
-| CONNECT                  | YES                     |
-| DISCONNECT               | OPTIONAL                |
-| FORWARDER ENCAPSULATION  | NO                      |
-| GWINFO                   | NO                      |
-| PINGREQ                  | YES                     |
-| PINGRESP                 | YES                     |
-| PROTECTION ENCAPSULATION | NO                      |
-| PUBACK                   | YES                     |
-| PUBCOMP                  | YES                     |
-| PUBLISH                  | YES (If QoS \> 0\)      |
-| PUBREC                   | YES                     |
-| PUBREL                   | YES                     |
-| PUBWOS                   | NO                      |
-| REGACK                   | YES                     |
-| REGISTER                 | YES                     |
-| SEARCHGW                 | NO                      |
-| SLEEPREQ                 | YES                     |
-| SLEEPRESP                | YES                     |
-| SUBACK                   | YES                     |
-| SUBSCRIBE                | YES                     |
-| UNSUBACK                 | YES                     |
-| UNSUBSCRIBE              | YES                     |
-| WAKEUP                   | NO                      |
+| MQTT-SN Control Packet   | Packet Identifier?      | Response Packet |
+|:-------------------------|:------------------------|:----------------|
+| ADVERTISE                | NO                      |                 |
+| AUTH                     | YES                     | AUTH, CONNACK   |
+| CONNECT                  | YES                     | AUTH, CONNACK   |
+| DISCONNECT               | OPTIONAL                |                 |
+| FORWARDER ENCAPSULATION  | NO                      |                 |
+| GWINFO                   | NO                      |                 |
+| PINGREQ                  | YES                     | PINGRESP        |
+| PROTECTION ENCAPSULATION | NO                      |                 |
+| PUBLISH - QoS 0          | NO                      |                 |
+| PUBLISH - QoS 1          | YES                     | PUBACK          |
+| PUBLISH - QoS 2          | YES                     | PUBREC          |
+| PUBREL                   | YES                     | PUBCOMP         |
+| PUBWOS                   | NO                      |                 |
+| REGISTER                 | YES                     | REGACK          |
+| SEARCHGW                 | NO                      |                 |
+| SLEEPREQ                 | YES                     | SLEEPRESP       |
+| SUBSCRIBE                | YES                     | SUBACK          |
+| UNSUBSCRIBE              | YES                     | UNSUBACK        |
+| WAKEUP                   | NO                      |                 |
 
 Table: Packets with Packet Identifier
 
 «<mark title="Requirement MQTT-SN-2.2-1"><a name="MQTT-SN-2.2-1"></a>Each time a Client sends a new MQTT-SN Control Packet which is identified in Figure 2-5 as requiring a Packet Identifier, it MUST assign it a non-zero Packet Identifier that is currently unused</mark>»[MQTT‑SN‑2.2‑1](#tab-MQTT-SN-2.2-1).
 
-«<mark title="Requirement MQTT-SN-2.2-2"><a name="MQTT-SN-2.2-2"></a>A PUBLISH packet MUST NOT contain a Packet Identifier if its QoS value is set to 0</mark>»[MQTT‑SN‑2.2‑2](#tab-MQTT-SN-2.2-2),
+«<mark title="Requirement MQTT-SN-2.2-2"><a name="MQTT-SN-2.2-2"></a>A PUBLISH packet MUST NOT contain a Packet Identifier if its QoS value is set to 0</mark>»[MQTT‑SN‑2.2‑2](#tab-MQTT-SN-2.2-2).
 
 «<mark title="Requirement MQTT-SN-2.2-3"><a name="MQTT-SN-2.2-3"></a>Each time a Server sends a new PUBLISH (with QoS greater than 0) MQTT-SN Control Packet it MUST assign it a non zero Packet Identifier that is currently unused</mark>»[MQTT‑SN‑2.2‑3](#tab-MQTT-SN-2.2-3).
 
-Packet Identifiers used with PUBLISH, SUBSCRIBE and UNSUBSCRIBE packets form a single, unified set of identifiers separately for the Client and the Server in a Session. A Packet Identifier cannot be used by more than one Packet at any time.
+Packet Identifiers in all packets which require one (as shown in Figure 2-5), including response packets, form a single, unified set of identifiers separately for the Client and the Server in a Session. 
 
-The Packet Identifier becomes available for reuse after the sender has processed the corresponding acknowledgement packet, defined as follows. In the case of a QoS 1 PUBLISH, this is the corresponding PUBACK; in the case of QoS 2 PUBLISH it is PUBCOMP or a PUBREC with a Reason Code of 0x80 or greater. For SUBSCRIBE or UNSUBSCRIBE it is the corresponding SUBACK or UNSUBACK.
+The Packet Identifier becomes available for reuse after the sender has processed the corresponding response packet, as shown in Figure 2-5, except for the case of PUBLISH QoS 2, where it is either a PUBCOMP or a PUBREC with a Reason Code of 0x80 or greater.
 
-«<mark title="Requirement MQTT-SN-2.2-4"><a name="MQTT-SN-2.2-4"></a>A PUBACK, PUBREC , PUBREL, or PUBCOMP packet MUST contain the same Packet Identifier as the PUBLISH packet that was originally sent. A SUBACK and UNSUBACK MUST contain the Packet Identifier that was used in the corresponding SUBSCRIBE and UNSUBSCRIBE packet respectively</mark>»[MQTT‑SN‑2.2‑4](#tab-MQTT-SN-2.2-4).
+«<mark title="Requirement MQTT-SN-2.2-4"><a name="MQTT-SN-2.2-4"></a>A response packet MUST contain the same Packet Identifier as the Packet that it is responding to</mark>»[MQTT‑SN‑2.2‑4](#tab-MQTT-SN-2.2-4).
 
 The Client and Server assign Packet Identifiers independently of each other. As a result, Client-Server pairs can participate in concurrent Packet exchanges using the same Packet Identifiers.
 

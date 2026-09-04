@@ -57,17 +57,23 @@ The Asleep state is intended to allow Clients, which may be running on battery p
 
 To go to sleep, a Client sends a SLEEPREQ packet containing a Sleep Duration in seconds. The Server acknowledges that packet with a SLEEPRESP Packet including a successful Reason Code, and considers the Client to be Asleep.
 
-«<mark title="Requirement MQTT-SN-4.14.2-1"><a name="MQTT-SN-4.14.2-1"></a>If the Server does not receive an MQTT-SN Control Packet from an Asleep Client within one and a half times the Sleep Duration, it MUST delete the Virtual Connection to the Client</mark>»[MQTT‑SN‑4.14.2‑1](#tab-MQTT-SN-4.14.2-1). The Client will then be considered to be Disconnected.
+«<mark title="Requirement MQTT-SN-4.14.2-1"><a name="MQTT-SN-4.14.2-1"></a>If the Server does not receive an MQTT-SN Control Packet from an Asleep Client within the Sleep Duration plus a suitable grace period, it MUST delete the Virtual Connection to the Client</mark>»[MQTT‑SN‑4.14.2‑1](#tab-MQTT-SN-4.14.2-1). The Client will then be considered to be Disconnected.
+
+> **Informative Comment**
+>
+> The Server can decide when to disconnect a sleeping Client it has not heard from. If packet loss can occur, allowing 1.5 times the Sleep Duration before disconnecting the Client, similar to the Keep Alive processing, in many cases might be too short. Waiting 2.5 times the Sleep Duration before disconnecting the Client will allow one missed waking period, for example.
+>
+> To balance reaction speed with reliability, the tolerance of the sleep timer at the Server could depend on length of the Sleep Duration indicated by the Client. For example, the grace period could be 1.5 times the Sleep Duration for periods greater than 1 minute, and 2.5 times if the Sleep Duration is less than a minute.
 
 «<mark title="Requirement MQTT-SN-4.14.2-2"><a name="MQTT-SN-4.14.2-2"></a>During the Asleep state, packets that need to be sent to the client are buffered at the Server. The Server MUST buffer Application Messages of QoS 1 and 2</mark>»[MQTT‑SN‑4.14.2‑2](#tab-MQTT-SN-4.14.2-2).
 
-> **Informative comment**
+> **Informative Comment**
 >
 > The Server may *choose* to buffer messages of QoS 0 while the Client is in the Asleep state.
 
-The Client wakes by sending a PINGREQ. If the Server has buffered packets for the Client, it will send them to the Client, acknowledging the Default Awake Messages value sent in the CONNECT packet. «<mark title="Requirement MQTT-SN-4.14.2-3"><a name="MQTT-SN-4.14.2-3"></a>If the number of messages buffered on the Server waiting to be sent exceeds the value specified by the client in the Default Awake Messages field, the Server MUST send only the Default Awake Messages value number of messages</mark>»[MQTT‑SN‑4.14.2‑3](#tab-MQTT-SN-4.14.2-3).
+The Client wakes by sending a PINGREQ. If the Server has buffered packets for the Client, it will send them to the Client, acknowledging the Maximum Number of Awake Messages sent in the CONNECT packet. «<mark title="Requirement MQTT-SN-4.14.2-3"><a name="MQTT-SN-4.14.2-3"></a>If the Maximum Number of Awake Messages (N) set by the client is greater than 0, the server MUST NOT send more than N application messages in any one awake period for that client.</mark>»[MQTT‑SN‑4.14.2‑3](#tab-MQTT-SN-4.14.2-3).
 
-«<mark title="Requirement MQTT-SN-4.14.2-4"><a name="MQTT-SN-4.14.2-4"></a>After sending the Default Awake Messages value number of messages, the Server cuts short the AWAKE cycle, and MUST respond with a PINGRESP with a messages-left value of either the number of messages remaining in the Server buffer or 0xFF (meaning undetermined number of messages greater than 0 remaining)</mark>»[MQTT‑SN‑4.14.2‑4](#tab-MQTT-SN-4.14.2-4).
+«<mark title="Requirement MQTT-SN-4.14.2-4"><a name="MQTT-SN-4.14.2-4"></a>After sending the Maximum Number of Awake Messages Application Messages, the Server cuts short the AWAKE cycle, and MUST respond with a PINGRESP with a messages-left value of either the number of Application Messages remaining in the Server buffer or 0xFF (meaning undetermined number of Application Messages greater than 0 remaining)</mark>»[MQTT‑SN‑4.14.2‑4](#tab-MQTT-SN-4.14.2-4).
 
 «<mark title="Requirement MQTT-SN-4.14.2-5"><a name="MQTT-SN-4.14.2-5"></a>During the Awake state, for each Application Message the Server sends to the Client, the application messages' quality of service MUST be honored - a full packet interaction MUST take place including all normative phases of acknowledgement, including any associated retransmission logic</mark>»[MQTT‑SN‑4.14.2‑5](#tab-MQTT-SN-4.14.2-5).
 
