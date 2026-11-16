@@ -80,14 +80,20 @@ This field is optional - its existence or absence is inferred from the Packet le
 
 - «<mark title="Requirement MQTT-SN-3.13.7-3"><a name="MQTT-SN-3.13.7-3"></a>MUST discard any Will Message associated with the current Connection without publishing it</mark>»[MQTT‑SN‑3.13.7‑3](#tab-MQTT-SN-3.13.7-3), as described in [sec](#will-flags).
 
+> **Informative comment**
+>
+> A Transparent Virtual Connection has no Will Message associated with it in the Server, because the Will Message is held by the MQTT Server ([sec](#will-flag-transparent)). The MQTT Server discards it when it receives the MQTT DISCONNECT that the Server sends on the corresponding MQTT connection ([sec](#transparent-virtual-connections)).
+
 <mark title="Ephemeral region marking">On receipt of DISCONNECT, the receiver:</mark>
 
 - «<mark title="Requirement MQTT-SN-3.13.7-4"><a name="MQTT-SN-3.13.7-4"></a>MUST NOT send any more MQTT-SN Control Packets on the Virtual Connection, if one exists</mark>»[MQTT‑SN‑3.13.7‑4](#tab-MQTT-SN-3.13.7-4).
 
 - SHOULD delete any existing Virtual Connection.
 
-«<mark title="Requirement MQTT-SN-3.13.7-5"><a name="MQTT-SN-3.13.7-5"></a>If the Virtual Connection is Transparent and the corresponding MQTT connection uses MQTT 5.0, a DISCONNECT received from the Client MUST be followed by an MQTT DISCONNECT with the same Reason Code and Session Expiry Interval on the corresponding MQTT connection</mark>»[MQTT‑SN‑3.13.7‑5](#tab-MQTT-SN-3.13.7-5).
+«<mark title="Requirement MQTT-SN-3.13.7-5"><a name="MQTT-SN-3.13.7-5"></a>If the Virtual Connection is Transparent, a DISCONNECT received from the Client MUST be followed by an MQTT DISCONNECT on the corresponding MQTT connection, unless the corresponding MQTT connection uses MQTT 3.1.1 and the Reason Code is not 0x00, in which case the Server MUST close the corresponding MQTT connection without sending an MQTT DISCONNECT</mark>»[MQTT‑SN‑3.13.7‑5](#tab-MQTT-SN-3.13.7-5).
 
-«<mark title="Requirement MQTT-SN-3.13.7-6"><a name="MQTT-SN-3.13.7-6"></a>If the Virtual Connection is Transparent and the corresponding MQTT connection is closed, the Server MUST send a DISCONNECT to the Client and delete the Virtual Connection</mark>»[MQTT‑SN‑3.13.7‑6](#tab-MQTT-SN-3.13.7-6).
+«<mark title="Requirement MQTT-SN-3.13.7-6"><a name="MQTT-SN-3.13.7-6"></a>If the Virtual Connection is Transparent and the corresponding MQTT connection uses MQTT 5.0, the MQTT DISCONNECT MUST have the same Session Expiry Interval and the same Reason Code as the DISCONNECT received from the Client, or Reason Code 0x80 (Unspecified error) if that Reason Code is specific to MQTT-SN</mark>»[MQTT‑SN‑3.13.7‑6](#tab-MQTT-SN-3.13.7-6).
+
+«<mark title="Requirement MQTT-SN-3.13.7-7"><a name="MQTT-SN-3.13.7-7"></a>If the Virtual Connection is Transparent and the corresponding MQTT connection is closed, the Server MUST send a DISCONNECT to the Client and delete the Virtual Connection</mark>»[MQTT‑SN‑3.13.7‑7](#tab-MQTT-SN-3.13.7-7).
 
 After receiving a DISCONNECT, a Client can make a new Virtual Connection by sending a CONNECT Packet to the Server.

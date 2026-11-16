@@ -96,7 +96,22 @@ statements:
   - server
   binds-by: subject
 - id: MQTT-SN-3.6.2.7-4
+  text: If the Virtual Connection is Transparent and a PUBLISH received from the Client has a QoS greater than the Maximum QoS, or has RETAIN set to 1 when Retain Available is 0, in the MQTT CONNACK received on the corresponding MQTT connection, the Server MUST NOT forward it, and MUST send a DISCONNECT to the Client with Reason Code 0x9B (QoS not supported) or 0x9A (Retain not supported) respectively
+  binds:
+  - server
+  binds-by: subject
+- id: MQTT-SN-3.6.2.7-5
   text: If the Virtual Connection is Transparent, the Server MUST NOT send a PUBACK, PUBREC or PUBCOMP to the Client until it has received the corresponding MQTT PUBACK, PUBREC or PUBCOMP from the MQTT Server
+  binds:
+  - server
+  binds-by: subject
+- id: MQTT-SN-3.6.2.7-6
+  text: If the Virtual Connection is Transparent and the Client is not Asleep, the Server MUST NOT send an MQTT PUBACK, PUBREC or PUBCOMP to the MQTT Server until it has received the corresponding PUBACK, PUBREC or PUBCOMP from the Client
+  binds:
+  - server
+  binds-by: subject
+- id: MQTT-SN-3.6.2.7-7
+  text: If the Virtual Connection is Transparent and the corresponding MQTT connection uses MQTT 5.0, the Server SHOULD set Receive Maximum to 1 in the corresponding MQTT CONNECT packet
   binds:
   - server
   binds-by: subject

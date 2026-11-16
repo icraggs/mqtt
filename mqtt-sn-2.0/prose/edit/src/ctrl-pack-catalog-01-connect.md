@@ -27,7 +27,7 @@ This flag specifies whether the Virtual Connection starts a new Session or is a 
 
 «<mark title="Requirement MQTT-SN-3.1.2.1-3"><a name="MQTT-SN-3.1.2.1-3"></a>If a CONNECT packet is received with Clean Start set to 0 and there is no Session associated with the Client Identifier, the Server MUST create a new Session</mark>»[MQTT‑SN‑3.1.2.1‑3](#tab-MQTT-SN-3.1.2.1-3).
 
-«<mark title="Requirement MQTT-SN-3.1.2.1-4"><a name="MQTT-SN-3.1.2.1-4"></a>If the Virtual Connection is Transparent, the value of the Clean Start Flag MUST be used to set the Clean Start or Clean Session field of the corresponding MQTT CONNECT packet sent to the MQTT Server for this Client</mark>»[MQTT‑SN‑3.1.2.1‑4](#tab-MQTT-SN-3.1.2.1-4).
+«<mark title="Requirement MQTT-SN-3.1.2.1-4"><a name="MQTT-SN-3.1.2.1-4"></a>If the Virtual Connection is Transparent, the value of the Clean Start Flag MUST be used to set the Clean Start field of the corresponding MQTT CONNECT packet if it uses MQTT 5.0, or its Clean Session field if it uses MQTT 3.1.1</mark>»[MQTT‑SN‑3.1.2.1‑4](#tab-MQTT-SN-3.1.2.1-4).
 
 #### Will Flag{#will-flag}
 
@@ -36,6 +36,8 @@ This flag specifies whether the Virtual Connection starts a new Session or is a 
 «<mark title="Requirement MQTT-SN-3.1.2.2-1"><a name="MQTT-SN-3.1.2.2-1"></a>If the Will Flag is set to 1, the Will Flags, Will Topic, and Will Payload fields MUST be present in the Packet</mark>»[MQTT‑SN‑3.1.2.2‑1](#tab-MQTT-SN-3.1.2.2-1).
 
 ##### Will Flag - Virtual Connection{#will-flag-virtual}
+
+This section applies to Virtual Connections which are not Transparent.
 
 «<mark title="Requirement MQTT-SN-3.1.2.2.1-1"><a name="MQTT-SN-3.1.2.2.1-1"></a>If the Will Flag is set to 1 this indicates that a Will Message MUST be stored on the Server and associated with the Session</mark>»[MQTT‑SN‑3.1.2.2.1‑1](#tab-MQTT-SN-3.1.2.2.1-1). The Will Message consists of the Will Topic, and Will Payload fields in the CONNECT Packet.
 
@@ -59,7 +61,7 @@ The Server SHOULD publish Will Messages promptly after the Virtual Connection is
 
 «<mark title="Requirement MQTT-SN-3.1.2.2.2-1"><a name="MQTT-SN-3.1.2.2.2-1"></a>If the Will Flag is set to 1 the Will Flag in the corresponding MQTT CONNECT Packet MUST also be set to 1</mark>»[MQTT‑SN‑3.1.2.2.2‑1](#tab-MQTT-SN-3.1.2.2.2-1). 
 
-«<mark title="Requirement MQTT-SN-3.1.2.2.2-2"><a name="MQTT-SN-3.1.2.2.2-2"></a>If the Virtual Connection is Transparent, the Will QoS, Will Retain, Will Topic and Will Payload MUST be used to set the corresponding Will fields of the MQTT CONNECT packet, with any Will Topic Alias replaced by its Topic Name</mark>»[MQTT‑SN‑3.1.2.2.2‑2](#tab-MQTT-SN-3.1.2.2.2-2).
+«<mark title="Requirement MQTT-SN-3.1.2.2.2-2"><a name="MQTT-SN-3.1.2.2.2-2"></a>The Will QoS, Will Retain, Will Topic and Will Payload MUST be used to set the corresponding Will fields of the MQTT CONNECT packet, with any Will Topic Alias replaced by its Topic Name</mark>»[MQTT‑SN‑3.1.2.2.2‑2](#tab-MQTT-SN-3.1.2.2.2-2).
 
 #### Authentication Flag{#authentication-flag}
 
@@ -187,7 +189,7 @@ The Keep Alive is a Two Byte Integer greater than 0 (1 - 65,535), which is a tim
 
 «<mark title="Requirement MQTT-SN-3.1.6-5"><a name="MQTT-SN-3.1.6-5"></a>If the Virtual Connection is Transparent, the Server MUST keep the corresponding MQTT connection open for as long as the Virtual Connection exists, including while the Client is Asleep</mark>»[MQTT‑SN‑3.1.6‑5](#tab-MQTT-SN-3.1.6-5).
 
-«<mark title="Requirement MQTT-SN-3.1.6-6"><a name="MQTT-SN-3.1.6-6"></a>If the Virtual Connection is Transparent and the Server deletes it because of a Keep Alive timeout, the Server MUST close the corresponding MQTT connection without sending an MQTT DISCONNECT with Reason Code 0x00</mark>»[MQTT‑SN‑3.1.6‑6](#tab-MQTT-SN-3.1.6-6).
+«<mark title="Requirement MQTT-SN-3.1.6-6"><a name="MQTT-SN-3.1.6-6"></a>If the Virtual Connection is Transparent and the Server deletes it because of a Keep Alive timeout, the Server MUST close the corresponding MQTT connection without sending an MQTT 3.1.1 DISCONNECT or an MQTT 5.0 DISCONNECT with Reason Code 0x00</mark>»[MQTT‑SN‑3.1.6‑6](#tab-MQTT-SN-3.1.6-6).
 
 > **Informative comment**\
 > The Server may have other reasons to disconnect the Client, for instance because it is shutting down. Setting Keep Alive does not guarantee that the Client will remain connected.
@@ -233,6 +235,10 @@ If the Session Expiry Interval is 0xFFFFFFFF (UINT_MAX), the Session does not ex
 «<mark title="Requirement MQTT-SN-3.1.9-1"><a name="MQTT-SN-3.1.9-1"></a>The Client and Server MUST store the Session State after the Virtual Connection is deleted if the Session Expiry Interval is greater than 0</mark>»[MQTT‑SN‑3.1.9‑1](#tab-MQTT-SN-3.1.9-1).
 
 «<mark title="Requirement MQTT-SN-3.1.9-2"><a name="MQTT-SN-3.1.9-2"></a>If the Virtual Connection is Transparent and the corresponding MQTT connection uses MQTT 5.0, the Session Expiry Interval MUST be used to set the Session Expiry Interval of the corresponding MQTT CONNECT packet</mark>»[MQTT‑SN‑3.1.9‑2](#tab-MQTT-SN-3.1.9-2).
+
+«<mark title="Requirement MQTT-SN-3.1.9-3"><a name="MQTT-SN-3.1.9-3"></a>If the Virtual Connection is Transparent and the corresponding MQTT connection uses MQTT 3.1.1, the Session Expiry Interval MUST be 0xFFFFFFFF if Clean Start is 0, and MUST be 0 if Clean Start is 1</mark>»[MQTT‑SN‑3.1.9‑3](#tab-MQTT-SN-3.1.9-3).
+
+MQTT 3.1.1 has no Session Expiry Interval. Its Clean Session field both starts a new Session and ends the Session when the network connection closes, so Clean Session 1 is equivalent to Clean Start 1 with a Session Expiry Interval of 0, and Clean Session 0 to Clean Start 0 with a Session Expiry Interval that does not expire. A CONNECT with any other combination requests a function that MQTT 3.1.1 cannot provide, so the Server responds with Reason Code 0xF5 (Function not available) ([sec](#cca---reason-code)).
 
 > **Informative comment**
 >

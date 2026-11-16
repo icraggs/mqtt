@@ -51,6 +51,10 @@ If a connection attempt fails, the Client may send a new CONNECT packet to try a
 «<mark title="Requirement MQTT-SN-4.4.2-3"><a name="MQTT-SN-4.4.2-3"></a>A Server MUST respond promptly to a valid
 request Packet</mark>»[MQTT‑SN‑4.4.2‑3](#tab-MQTT-SN-4.4.2-3).
 
+> **Informative comment**
+>
+> For a Transparent Virtual Connection, the Server waits for the MQTT Server to respond before it responds to some request Packets, such as CONNECT, PUBLISH and SUBSCRIBE ([sec](#transparent-virtual-connections)). Responding promptly allows for this wait. The Client's Retry Interval needs to be long enough to cover the round trip to the MQTT Server, so that the Client does not retransmit or delete the Virtual Connection while the Server is waiting.
+
 «<mark title="Requirement MQTT-SN-4.4.2-4"><a name="MQTT-SN-4.4.2-4"></a>A Client in the Awake and Active states MUST respond promptly to a valid request Packet</mark>»[MQTT‑SN‑4.4.2‑4](#tab-MQTT-SN-4.4.2-4).
 
 An MQTT-SN Sender may be configured with two parameters to govern its resending of unacknowledged packets:

@@ -97,7 +97,7 @@ The MQTT Server provides these services for a Transparent Virtual Connection:
 
 - Will Messages. The Will fields of the CONNECT packet are copied to the MQTT CONNECT packet, and the MQTT Server stores and publishes the Will Message ([sec](#will-flag-transparent)).
 
-- The Session State listed in [sec](#session-state) for Virtual Connections which are not Transparent: the subscriptions, and the PUBLISH packets in flight or pending transmission. The Session Present flag in the CONNACK is taken from the MQTT CONNACK ([sec](#session-present)).
+- The Session State listed in [sec](#session-state) for Virtual Connections which are not Transparent: the subscriptions, and the PUBLISH packets in flight or pending transmission. The Session Present flag in the CONNACK is 1 only if it is 1 in the MQTT CONNACK and the Gateway also has its part of the Session State ([sec](#session-present)).
 
 The Gateway provides these services itself:
 
@@ -111,12 +111,14 @@ The Gateway provides these services itself:
 
 The lifecycle of a Transparent Virtual Connection follows that of its MQTT connection:
 
-1.  On receipt of a CONNECT packet, the Gateway sends an MQTT CONNECT packet to the MQTT Server. Clean Start and the Session Expiry Interval are copied to it ([sec](#clean-start-flag), [sec](#session-expiry-interval)). The Client Identifier is copied, or mapped to a longer one where the device can only use a short identifier. Over MQTT 3.1.1, where the Client sends a zero-length Client Identifier, the Gateway generates one and returns it as the Assigned Client Identifier ([sec](#assigned-client-identifier)).
+1.  On receipt of a CONNECT packet, the Gateway sends an MQTT CONNECT packet to the MQTT Server. Over MQTT 5.0, Clean Start and the Session Expiry Interval are copied to it. Over MQTT 3.1.1, Clean Start sets Clean Session, and the Session Expiry Interval must be 0xFFFFFFFF if Clean Start is 0, or 0 if Clean Start is 1 ([sec](#clean-start-flag), [sec](#session-expiry-interval)). The Client Identifier is copied, or mapped to a longer one where the device can only use a short identifier. Where the Client sends a zero-length Client Identifier, the Gateway generates one, or over MQTT 5.0 can let the MQTT Server assign one, and returns it as the Assigned Client Identifier ([sec](#assigned-client-identifier)).
 
 2.  The Gateway sends a successful CONNACK to the Client only after it has received a successful MQTT CONNACK ([sec](#connect-actions)). Its Reason Code is 0x1B if the corresponding MQTT connection uses MQTT 5.0, or 0x1C if it uses MQTT 3.1.1, so the Client can tell that its Virtual Connection is Transparent ([sec](#reason-code)). Over MQTT 3.1.1, where a CONNECT or SUBSCRIBE packet requests a function that MQTT 3.1.1 cannot provide, the Gateway responds with Reason Code 0xF5 (Function not available).
 
-3.  PUBLISH packets are forwarded at the same QoS. The Gateway acknowledges a PUBLISH from the Client only after the MQTT Server has acknowledged it, so that the Gateway holds as little state as possible ([sec](#publish-actions)).
+3.  PUBLISH packets are forwarded at the same QoS. The Gateway acknowledges a PUBLISH from the Client only after the MQTT Server has acknowledged it, and, unless the Client is Asleep, acknowledges a PUBLISH from the MQTT Server only after the Client has acknowledged it, so that the Gateway holds as little state as possible ([sec](#publish-actions)). Over MQTT 5.0, the Gateway should set Receive Maximum to 1 so that the MQTT Server sends one QoS 1 or QoS 2 Application Message at a time; over MQTT 3.1.1 it queues them.
 
-4.  A DISCONNECT from the Client is forwarded to the MQTT Server with the same Reason Code and Session Expiry Interval. If the Gateway deletes the Virtual Connection for any other reason, such as a Keep Alive timeout, it closes the MQTT connection in a way that causes the MQTT Server to publish the Will Message. If the MQTT connection is closed, the Gateway sends a DISCONNECT to the Client and deletes the Virtual Connection ([sec](#disconnect-actions)).
+4.  Over MQTT 5.0, a DISCONNECT from the Client is forwarded to the MQTT Server with the same Session Expiry Interval and the same Reason Code, or 0x80 (Unspecified error) for a Reason Code specific to MQTT-SN. Over MQTT 3.1.1, a DISCONNECT with Reason Code 0x00 is forwarded, and any other Reason Code closes the MQTT connection without one ([sec](#c.2.2-mqtt-3.1.1)). If the Gateway deletes the Virtual Connection for any other reason, such as a Keep Alive timeout, it closes the MQTT connection in a way that causes the MQTT Server to publish the Will Message. If the MQTT connection is closed, the Gateway sends a DISCONNECT to the Client and deletes the Virtual Connection ([sec](#disconnect-actions)).
+
+«<mark title="Requirement MQTT-SN-4.2.2-1"><a name="MQTT-SN-4.2.2-1"></a>When a Transparent Virtual Connection is deleted, the Server MUST close the corresponding MQTT connection. The Server MAY send an MQTT DISCONNECT packet before closing the corresponding MQTT connection</mark>»[MQTT‑SN‑4.2.2‑1](#tab-MQTT-SN-4.2.2-1).
 
 Reason Codes are passed between the Client and the MQTT Server as described in [sec](#c.2-reason-code-mapping). PUBWOS packets have no Virtual Connection, so a Transparent Gateway needs a separate MQTT connection to forward them ([sec](#c.1.1-transparent-gateway)).

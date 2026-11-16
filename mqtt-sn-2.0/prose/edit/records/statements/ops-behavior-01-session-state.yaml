@@ -24,4 +24,4 @@ statements:
   - server
   binds-by: subject
 - id: MQTT-SN-4.1.2-2
-  text: If the Virtual Connection is not Transparent, an Assigned Client Identifier MUST be a new Client Identifier not used by any other Session currently in the Server
+  text: An Assigned Client Identifier MUST be a new Client Identifier not used by any other Session currently in the Server

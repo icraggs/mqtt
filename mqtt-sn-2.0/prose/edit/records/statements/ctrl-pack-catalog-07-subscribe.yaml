@@ -35,20 +35,25 @@ statements:
 - id: MQTT-SN-3.7.6-2
   text: The SUBACK packet MUST have the same Packet Identifier as the SUBSCRIBE packet that it is acknowledging
 - id: MQTT-SN-3.7.6-3
-  text: If the Virtual Connection is not Transparent, if a Server receives a SUBSCRIBE packet containing a Topic Filter that is identical to a Subscription's Topic Filter for the current Session, then it MUST replace that existing Subscription with a new Subscription
-- id: MQTT-SN-3.7.6-4
-  text: If the Virtual Connection is not Transparent, if the Retain Handling option is 0, any existing retained messages matching the Topic Filter MUST be re-sent, but Application Messages MUST NOT be lost due to replacing the Subscription
-- id: MQTT-SN-3.7.6-5
   text: The SUBACK packet sent by the Server to the Client MUST contain a Reason Code
   binds:
   - client
   binds-by: subject
-- id: MQTT-SN-3.7.6-6
+- id: MQTT-SN-3.7.6-4
   text: This Reason Code MUST either show the maximum QoS that was granted for that Subscription or indicate that the subscription failed
-- id: MQTT-SN-3.7.6-7
-  text: If the Virtual Connection is not Transparent, the QoS of Application Messages sent in response to a Subscription MUST be the minimum of the QoS of the originally published Application message and the Maximum QoS granted by the Server
-- id: MQTT-SN-3.7.6-8
-  text: If the Virtual Connection is Transparent, the Reason Code in the SUBACK MUST be derived from the Reason Code in the corresponding MQTT SUBACK
+- id: MQTT-SN-3.7.6.1-1
+  text: If a Server receives a SUBSCRIBE packet containing a Topic Filter that is identical to a Subscription's Topic Filter for the current Session, then it MUST replace that existing Subscription with a new Subscription
+- id: MQTT-SN-3.7.6.1-2
+  text: If the Retain Handling option is 0, any existing retained messages matching the Topic Filter MUST be re-sent, but Application Messages MUST NOT be lost due to replacing the Subscription
+- id: MQTT-SN-3.7.6.1-3
+  text: The QoS of Application Messages sent in response to a Subscription MUST be the minimum of the QoS of the originally published Application message and the Maximum QoS granted by the Server
+- id: MQTT-SN-3.7.6.2-1
+  text: The Reason Code in the SUBACK MUST be derived from the Reason Code in the corresponding MQTT SUBACK
+  binds:
+  - server
+  binds-by: subject
+- id: MQTT-SN-3.7.6.2-2
+  text: If the corresponding MQTT connection uses MQTT 3.1.1 and any of the SUBSCRIBE Flags in the SUBSCRIBE packet has a value that MQTT 3.1.1 does not support, the Server MUST send a SUBACK with Reason Code 0xF5 (Function not available)
   binds:
   - server
   binds-by: subject

@@ -4,7 +4,7 @@
 
 statements:
 - id: MQTT-SN-4.5-1
-  text: When a Server takes ownership of an incoming Application Message it MUST add it to the Session State for those Clients that have matching Subscriptions
+  text: When a Server takes ownership of an incoming Application Message on a non-Transparent Connection it MUST add it to the Session State for those Clients that have matching Subscriptions
 - id: MQTT-SN-4.5-2
   text: The Client MUST acknowledge any PUBLISH packet it receives according to the applicable QoS rules regardless of whether it elects to process the Application Message that it contains
   binds:

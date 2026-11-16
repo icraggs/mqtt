@@ -88,19 +88,21 @@ This existence or absence of this field is inferred from the Packet length.
 
 «<mark title="Requirement MQTT-SN-3.7.6-2"><a name="MQTT-SN-3.7.6-2"></a>The SUBACK packet MUST have the same Packet Identifier as the SUBSCRIBE packet that it is acknowledging</mark>»[MQTT‑SN‑3.7.6‑2](#tab-MQTT-SN-3.7.6-2).
 
-«<mark title="Requirement MQTT-SN-3.7.6-3"><a name="MQTT-SN-3.7.6-3"></a>If the Virtual Connection is not Transparent, if a Server receives a SUBSCRIBE packet containing a Topic Filter that is identical to a Subscription's Topic Filter for the current Session, then it MUST replace that existing Subscription with a new Subscription</mark>»[MQTT‑SN‑3.7.6‑3](#tab-MQTT-SN-3.7.6-3). The Topic Filter in the new Subscription will be identical to that in the previous Subscription, although its Subscription Options could be different.
+«<mark title="Requirement MQTT-SN-3.7.6-3"><a name="MQTT-SN-3.7.6-3"></a>The SUBACK packet sent by the Server to the Client MUST contain a Reason Code</mark>»[MQTT‑SN‑3.7.6‑3](#tab-MQTT-SN-3.7.6-3).
 
-«<mark title="Requirement MQTT-SN-3.7.6-4"><a name="MQTT-SN-3.7.6-4"></a>If the Virtual Connection is not Transparent, if the Retain Handling option is 0, any existing retained messages matching the Topic Filter MUST be re-sent, but Application Messages MUST NOT be lost due to replacing the Subscription</mark>»[MQTT‑SN‑3.7.6‑4](#tab-MQTT-SN-3.7.6-4).
+«<mark title="Requirement MQTT-SN-3.7.6-4"><a name="MQTT-SN-3.7.6-4"></a>This Reason Code MUST either show the maximum QoS that was granted for that Subscription or indicate that the subscription failed</mark>»[MQTT‑SN‑3.7.6‑4](#tab-MQTT-SN-3.7.6-4). The Server might grant a lower Maximum QoS than the subscriber requested.
+
+#### SUBSCRIBE Actions - Virtual Connection{#subscribe-actions-virtual}
+
+This section applies to Virtual Connections which are not Transparent. The Server creates and replaces the Subscriptions itself.
+
+«<mark title="Requirement MQTT-SN-3.7.6.1-1"><a name="MQTT-SN-3.7.6.1-1"></a>If a Server receives a SUBSCRIBE packet containing a Topic Filter that is identical to a Subscription's Topic Filter for the current Session, then it MUST replace that existing Subscription with a new Subscription</mark>»[MQTT‑SN‑3.7.6.1‑1](#tab-MQTT-SN-3.7.6.1-1). The Topic Filter in the new Subscription will be identical to that in the previous Subscription, although its Subscription Options could be different.
+
+«<mark title="Requirement MQTT-SN-3.7.6.1-2"><a name="MQTT-SN-3.7.6.1-2"></a>If the Retain Handling option is 0, any existing retained messages matching the Topic Filter MUST be re-sent, but Application Messages MUST NOT be lost due to replacing the Subscription</mark>»[MQTT‑SN‑3.7.6.1‑2](#tab-MQTT-SN-3.7.6.1-2).
 
 If a Server receives a Topic Filter that is not identical to any Topic Filter for the current Session, a new Subscription is created. If the Retain Handling option is not 2, all matching retained messages are sent to the Client.
 
-«<mark title="Requirement MQTT-SN-3.7.6-5"><a name="MQTT-SN-3.7.6-5"></a>The SUBACK packet sent by the Server to the Client MUST contain a Reason Code</mark>»[MQTT‑SN‑3.7.6‑5](#tab-MQTT-SN-3.7.6-5).
-
-«<mark title="Requirement MQTT-SN-3.7.6-6"><a name="MQTT-SN-3.7.6-6"></a>This Reason Code MUST either show the maximum QoS that was granted for that Subscription or indicate that the subscription failed</mark>»[MQTT‑SN‑3.7.6‑6](#tab-MQTT-SN-3.7.6-6). The Server might grant a lower Maximum QoS than the subscriber requested.
-
-«<mark title="Requirement MQTT-SN-3.7.6-7"><a name="MQTT-SN-3.7.6-7"></a>If the Virtual Connection is not Transparent, the QoS of Application Messages sent in response to a Subscription MUST be the minimum of the QoS of the originally published Application message and the Maximum QoS granted by the Server</mark>»[MQTT‑SN‑3.7.6‑7](#tab-MQTT-SN-3.7.6-7). The server is permitted to send duplicate copies of an Application message to a subscriber in the case where the original Application message was published with QoS 1 and the maximum QoS granted was QoS 0.
-
-«<mark title="Requirement MQTT-SN-3.7.6-8"><a name="MQTT-SN-3.7.6-8"></a>If the Virtual Connection is Transparent, the Reason Code in the SUBACK MUST be derived from the Reason Code in the corresponding MQTT SUBACK</mark>»[MQTT‑SN‑3.7.6‑8](#tab-MQTT-SN-3.7.6-8).
+«<mark title="Requirement MQTT-SN-3.7.6.1-3"><a name="MQTT-SN-3.7.6.1-3"></a>The QoS of Application Messages sent in response to a Subscription MUST be the minimum of the QoS of the originally published Application message and the Maximum QoS granted by the Server</mark>»[MQTT‑SN‑3.7.6.1‑3](#tab-MQTT-SN-3.7.6.1-3). The server is permitted to send duplicate copies of an Application message to a subscriber in the case where the original Application message was published with QoS 1 and the maximum QoS granted was QoS 0.
 
 > **Informative comment**
 >
@@ -113,3 +115,11 @@ If a Server receives a Topic Filter that is not identical to any Topic Filter fo
 > **Informative comment**
 >
 > Subscribing to a Topic Filter at QoS 2 is equivalent to saying \"I would like to receive Application Messages matching this filter at the QoS with which they were published\". This means a publisher is responsible for determining the maximum QoS an Application Message can be delivered at, but a subscriber is able to require that the Server downgrades the QoS to one more suitable for its usage.
+
+#### SUBSCRIBE Actions - Transparent Connection{#subscribe-actions-transparent}
+
+If the Virtual Connection is Transparent, the Server forwards the SUBSCRIBE to the MQTT Server in the corresponding MQTT SUBSCRIBE packet, with any Topic Alias replaced by its Topic Filter. The MQTT Server creates or replaces the Subscription, sends any matching Retained Messages and applies the Maximum QoS it grants ([sec](#transparent-virtual-connections)).
+
+«<mark title="Requirement MQTT-SN-3.7.6.2-1"><a name="MQTT-SN-3.7.6.2-1"></a>The Reason Code in the SUBACK MUST be derived from the Reason Code in the corresponding MQTT SUBACK</mark>»[MQTT‑SN‑3.7.6.2‑1](#tab-MQTT-SN-3.7.6.2-1).
+
+«<mark title="Requirement MQTT-SN-3.7.6.2-2"><a name="MQTT-SN-3.7.6.2-2"></a>If the corresponding MQTT connection uses MQTT 3.1.1 and any of the SUBSCRIBE Flags in the SUBSCRIBE packet has a value that MQTT 3.1.1 does not support, the Server MUST send a SUBACK with Reason Code 0xF5 (Function not available)</mark>»[MQTT‑SN‑3.7.6.2‑2](#tab-MQTT-SN-3.7.6.2-2). MQTT 3.1.1 supports only Retain Handling 0, Retain As Published 0 and No Local 0 ([sec](#subscribe-flags)).

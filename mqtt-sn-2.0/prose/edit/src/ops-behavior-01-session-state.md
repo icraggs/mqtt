@@ -36,6 +36,8 @@ If the Session State is associated with a Transparent Virtual Connection, the Se
 
 - Application Messages received from the MQTT Server and buffered for the Client while it is Asleep.
 
+- Application Messages received from the MQTT Server and pending transmission to the Client.
+
 - QoS 1 and QoS 2 PUBLISH Packets exchanged with the Client which have not been completely acknowledged.
 
 The rest of the Session State of a Transparent Virtual Connection is held by the MQTT Server (see [sec](#transparent-virtual-connections)).
@@ -68,4 +70,4 @@ If the Server can not accept the CONNECT request the Server returns a CONNACK pa
 
 «<mark title="Requirement MQTT-SN-4.1.2-1"><a name="MQTT-SN-4.1.2-1"></a>If the Client provides no client identifier, the Server MUST respond with a CONNACK containing an Assigned Client Identifier</mark>»[MQTT‑SN‑4.1.2‑1](#tab-MQTT-SN-4.1.2-1).
 
-«<mark title="Requirement MQTT-SN-4.1.2-2"><a name="MQTT-SN-4.1.2-2"></a>If the Virtual Connection is not Transparent, an Assigned Client Identifier MUST be a new Client Identifier not used by any other Session currently in the Server</mark>»[MQTT‑SN‑4.1.2‑2](#tab-MQTT-SN-4.1.2-2).
+«<mark title="Requirement MQTT-SN-4.1.2-2"><a name="MQTT-SN-4.1.2-2"></a>An Assigned Client Identifier MUST be a new Client Identifier not used by any other Session currently in the Server</mark>»[MQTT‑SN‑4.1.2‑2](#tab-MQTT-SN-4.1.2-2).

@@ -53,3 +53,8 @@ statements:
   binds:
   - server
   binds-by: subject
+- id: MQTT-SN-3.9.6-7
+  text: If the Virtual Connection is Transparent, the Reason Code in the UNSUBACK MUST be derived from the Reason Code in the corresponding MQTT UNSUBACK
+  binds:
+  - server
+  binds-by: subject

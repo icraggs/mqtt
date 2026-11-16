@@ -68,11 +68,16 @@ statements:
   text: MUST NOT send any more MQTT-SN Control Packets on the Virtual Connection, if one exists
   standalone: On receipt of DISCONNECT, the receiver MUST NOT send any more MQTT-SN Control Packets on the Virtual Connection, if one exists.
 - id: MQTT-SN-3.13.7-5
-  text: If the Virtual Connection is Transparent and the corresponding MQTT connection uses MQTT 5.0, a DISCONNECT received from the Client MUST be followed by an MQTT DISCONNECT with the same Reason Code and Session Expiry Interval on the corresponding MQTT connection
+  text: If the Virtual Connection is Transparent, a DISCONNECT received from the Client MUST be followed by an MQTT DISCONNECT on the corresponding MQTT connection, unless the corresponding MQTT connection uses MQTT 3.1.1 and the Reason Code is not 0x00, in which case the Server MUST close the corresponding MQTT connection without sending an MQTT DISCONNECT
   binds:
   - server
   binds-by: subject
 - id: MQTT-SN-3.13.7-6
+  text: If the Virtual Connection is Transparent and the corresponding MQTT connection uses MQTT 5.0, the MQTT DISCONNECT MUST have the same Session Expiry Interval and the same Reason Code as the DISCONNECT received from the Client, or Reason Code 0x80 (Unspecified error) if that Reason Code is specific to MQTT-SN
+  binds:
+  - server
+  binds-by: subject
+- id: MQTT-SN-3.13.7-7
   text: If the Virtual Connection is Transparent and the corresponding MQTT connection is closed, the Server MUST send a DISCONNECT to the Client and delete the Virtual Connection
   binds:
   - server

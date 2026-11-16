@@ -47,7 +47,7 @@ Receives: ADVERTISE, AUTH, CONNACK, DISCONNECT, FORWARDER ENCAPSULATION, GWINFO,
 - [MQTT-SN-3.7.4-2] If the Topic Type is Topic Filter the Topic Alias field MUST NOT be present in the SUBSCRIBE packet. (sender of SUBSCRIBE (packet format))
 - [MQTT-SN-3.7.5-1] If the Topic Type is Topic Filter the Topic Filter field MUST be present in the SUBSCRIBE packet. (sender of SUBSCRIBE (packet format))
 - [MQTT-SN-3.7.5-2] If the Topic Type is Predefined Topic Alias or Session Topic Alias, then the Topic Filter field MUST NOT be present in the SUBSCRIBE packet. (sender of SUBSCRIBE (packet format))
-- [MQTT-SN-3.7.6-5] The SUBACK packet sent by the Server to the Client MUST contain a Reason Code. (subject)
+- [MQTT-SN-3.7.6-3] The SUBACK packet sent by the Server to the Client MUST contain a Reason Code. (subject)
 - [MQTT-SN-3.8.2-2] The Client MUST validate that the reserved flags in the SUBACK packet are set to 0. If any of the reserved flags is not 0 it is a Malformed Packet. (subject)
 - [MQTT-SN-3.9.2-1] Bits 7-2 of the UNSUBSCRIBE Flags are reserved and MUST be set to 0. (sender of UNSUBSCRIBE (packet format))
 - [MQTT-SN-3.9.4-1] A Topic Alias MUST be present in the UNSUBSCRIBE packet if the Topic Type is Predefined or Session Topic Alias. (sender of UNSUBSCRIBE (packet format))

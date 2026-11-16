@@ -30,7 +30,7 @@ statements:
   - server
   binds-by: subject
 - id: MQTT-SN-3.1.2.1-4
-  text: If the Virtual Connection is Transparent, the value of the Clean Start Flag MUST be used to set the Clean Start or Clean Session field of the corresponding MQTT CONNECT packet sent to the MQTT Server for this Client
+  text: If the Virtual Connection is Transparent, the value of the Clean Start Flag MUST be used to set the Clean Start field of the corresponding MQTT CONNECT packet if it uses MQTT 5.0, or its Clean Session field if it uses MQTT 3.1.1
   binds:
   - server
   binds-by: sender of the corresponding MQTT CONNECT
@@ -48,7 +48,7 @@ statements:
 - id: MQTT-SN-3.1.2.2.2-1
   text: If the Will Flag is set to 1 the Will Flag in the corresponding MQTT CONNECT Packet MUST also be set to 1
 - id: MQTT-SN-3.1.2.2.2-2
-  text: If the Virtual Connection is Transparent, the Will QoS, Will Retain, Will Topic and Will Payload MUST be used to set the corresponding Will fields of the MQTT CONNECT packet, with any Will Topic Alias replaced by its Topic Name
+  text: The Will QoS, Will Retain, Will Topic and Will Payload MUST be used to set the corresponding Will fields of the MQTT CONNECT packet, with any Will Topic Alias replaced by its Topic Name
   binds:
   - server
   binds-by: subject
@@ -148,7 +148,7 @@ statements:
   - server
   binds-by: subject
 - id: MQTT-SN-3.1.6-6
-  text: If the Virtual Connection is Transparent and the Server deletes it because of a Keep Alive timeout, the Server MUST close the corresponding MQTT connection without sending an MQTT DISCONNECT with Reason Code 0x00
+  text: If the Virtual Connection is Transparent and the Server deletes it because of a Keep Alive timeout, the Server MUST close the corresponding MQTT connection without sending an MQTT 3.1.1 DISCONNECT or an MQTT 5.0 DISCONNECT with Reason Code 0x00
   binds:
   - server
   binds-by: subject
@@ -175,6 +175,11 @@ statements:
   binds-by: subject
 - id: MQTT-SN-3.1.9-2
   text: If the Virtual Connection is Transparent and the corresponding MQTT connection uses MQTT 5.0, the Session Expiry Interval MUST be used to set the Session Expiry Interval of the corresponding MQTT CONNECT packet
+  binds:
+  - server
+  binds-by: subject
+- id: MQTT-SN-3.1.9-3
+  text: If the Virtual Connection is Transparent and the corresponding MQTT connection uses MQTT 3.1.1, the Session Expiry Interval MUST be 0xFFFFFFFF if Clean Start is 0, and MUST be 0 if Clean Start is 1
   binds:
   - server
   binds-by: subject

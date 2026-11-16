@@ -179,7 +179,15 @@ The Server uses a PUBLISH packet to send an Application Message to each Client w
 
 «<mark title="Requirement MQTT-SN-3.6.2.7-3"><a name="MQTT-SN-3.6.2.7-3"></a>If the Virtual Connection is Transparent, a PUBLISH received from the Client MUST be forwarded on the corresponding MQTT connection with the same QoS and RETAIN values</mark>»[MQTT‑SN‑3.6.2.7‑3](#tab-MQTT-SN-3.6.2.7-3).
 
-«<mark title="Requirement MQTT-SN-3.6.2.7-4"><a name="MQTT-SN-3.6.2.7-4"></a>If the Virtual Connection is Transparent, the Server MUST NOT send a PUBACK, PUBREC or PUBCOMP to the Client until it has received the corresponding MQTT PUBACK, PUBREC or PUBCOMP from the MQTT Server</mark>»[MQTT‑SN‑3.6.2.7‑4](#tab-MQTT-SN-3.6.2.7-4).
+«<mark title="Requirement MQTT-SN-3.6.2.7-4"><a name="MQTT-SN-3.6.2.7-4"></a>If the Virtual Connection is Transparent and a PUBLISH received from the Client has a QoS greater than the Maximum QoS, or has RETAIN set to 1 when Retain Available is 0, in the MQTT CONNACK received on the corresponding MQTT connection, the Server MUST NOT forward it, and MUST send a DISCONNECT to the Client with Reason Code 0x9B (QoS not supported) or 0x9A (Retain not supported) respectively</mark>»[MQTT‑SN‑3.6.2.7‑4](#tab-MQTT-SN-3.6.2.7-4). Only an MQTT 5.0 Server can limit the QoS or the use of RETAIN in this way. Forwarding the PUBLISH would cause the MQTT Server to close the corresponding MQTT connection, which would end the Virtual Connection in the same way ([sec](#transparent-virtual-connections)).
+
+«<mark title="Requirement MQTT-SN-3.6.2.7-5"><a name="MQTT-SN-3.6.2.7-5"></a>If the Virtual Connection is Transparent, the Server MUST NOT send a PUBACK, PUBREC or PUBCOMP to the Client until it has received the corresponding MQTT PUBACK, PUBREC or PUBCOMP from the MQTT Server</mark>»[MQTT‑SN‑3.6.2.7‑5](#tab-MQTT-SN-3.6.2.7-5).
+
+«<mark title="Requirement MQTT-SN-3.6.2.7-6"><a name="MQTT-SN-3.6.2.7-6"></a>If the Virtual Connection is Transparent and the Client is not Asleep, the Server MUST NOT send an MQTT PUBACK, PUBREC or PUBCOMP to the MQTT Server until it has received the corresponding PUBACK, PUBREC or PUBCOMP from the Client</mark>»[MQTT‑SN‑3.6.2.7‑6](#tab-MQTT-SN-3.6.2.7-6).
+
+While the Client is Asleep, the Server acknowledges Application Messages from the MQTT Server on receipt instead ([sec](#sleeping-clients)). The MQTT Server can send several QoS 1 and QoS 2 Application Messages before any is acknowledged, but the Server can have only one unacknowledged PUBLISH outstanding to the Client ([sec](#flow-control)), so it queues the others. Over MQTT 5.0, setting Receive Maximum to 1 stops the MQTT Server sending more than one at a time. MQTT 3.1.1 has no equivalent, so over MQTT 3.1.1 the Server needs to queue them.
+
+«<mark title="Requirement MQTT-SN-3.6.2.7-7"><a name="MQTT-SN-3.6.2.7-7"></a>If the Virtual Connection is Transparent and the corresponding MQTT connection uses MQTT 5.0, the Server SHOULD set Receive Maximum to 1 in the corresponding MQTT CONNECT packet</mark>»[MQTT‑SN‑3.6.2.7‑7](#tab-MQTT-SN-3.6.2.7-7).
 
 The action of the recipient when it receives a PUBLISH packet depends on the QoS level as described in [sec](#quality-of-service-levels-and-protocol-flows).
 

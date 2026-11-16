@@ -1290,10 +1290,10 @@ Identifier, the Server MUST create a new
 Session»#link(<tab-MQTT-SN-3.1.2.1-3>)[MQTT‑SN‑3.1.2.1‑3].
 
 «#box()<MQTT-SN-3.1.2.1-4>If the Virtual Connection is Transparent, the
-value of the Clean Start Flag MUST be used to set the Clean Start or
-Clean Session field of the corresponding MQTT CONNECT packet sent to the
-MQTT Server for this
-Client»#link(<tab-MQTT-SN-3.1.2.1-4>)[MQTT‑SN‑3.1.2.1‑4].
+value of the Clean Start Flag MUST be used to set the Clean Start field
+of the corresponding MQTT CONNECT packet if it uses MQTT 5.0, or its
+Clean Session field if it uses MQTT
+3.1.1»#link(<tab-MQTT-SN-3.1.2.1-4>)[MQTT‑SN‑3.1.2.1‑4].
 
 ==== Will Flag
 <will-flag>
@@ -1305,6 +1305,8 @@ Packet»#link(<tab-MQTT-SN-3.1.2.2-1>)[MQTT‑SN‑3.1.2.2‑1].
 
 ===== Will Flag - Virtual Connection
 <will-flag-virtual>
+This section applies to Virtual Connections which are not Transparent.
+
 «#box()<MQTT-SN-3.1.2.2.1-1>If the Will Flag is set to 1 this indicates
 that a Will Message MUST be stored on the Server and associated with the
 Session»#link(<tab-MQTT-SN-3.1.2.2.1-1>)[MQTT‑SN‑3.1.2.2.1‑1]. The Will
@@ -1348,16 +1350,15 @@ failure and when the Will Message is published.
 in the corresponding MQTT CONNECT Packet MUST also be set to
 1»#link(<tab-MQTT-SN-3.1.2.2.2-1>)[MQTT‑SN‑3.1.2.2.2‑1].
 
-«#box()<MQTT-SN-3.1.2.2.2-2>If the Virtual Connection is Transparent,
-the Will QoS, Will Retain, Will Topic and Will Payload MUST be used to
-set the corresponding Will fields of the MQTT CONNECT packet, with any
-Will Topic Alias replaced by its Topic
+«#box()<MQTT-SN-3.1.2.2.2-2>The Will QoS, Will Retain, Will Topic and
+Will Payload MUST be used to set the corresponding Will fields of the
+MQTT CONNECT packet, with any Will Topic Alias replaced by its Topic
 Name»#link(<tab-MQTT-SN-3.1.2.2.2-2>)[MQTT‑SN‑3.1.2.2.2‑2].
 
 ==== Authentication Flag
 <authentication-flag>
 #strong[Position:] bit 2 of the Connect Flags byte. Labelled #emph[Auth]
-in #link(<fig-connect-packet>)[Figure 6].
+in #link(<fig-connect-packet>)[Figure 7].
 
 «#box()<MQTT-SN-3.1.2.3-1>If the Authentication Flag is set to 1, the
 Authentication Method and Authentication Data fields MUST be present in
@@ -1370,7 +1371,7 @@ in the Packet»#link(<tab-MQTT-SN-3.1.2.3-2>)[MQTT‑SN‑3.1.2.3‑2].
 ==== Session Expiry Flag
 <session-expiry-flag>
 #strong[Position:] bit 3 of the Connect Flags byte. Labelled #emph[Sess
-Exp] in #link(<fig-connect-packet>)[Figure 6].
+Exp] in #link(<fig-connect-packet>)[Figure 7].
 
 «#box()<MQTT-SN-3.1.2.4-1>If the Session Expiry Flag is set to 1, the
 Session Expiry Interval field MUST be present in the
@@ -1383,7 +1384,7 @@ Packet»#link(<tab-MQTT-SN-3.1.2.4-2>)[MQTT‑SN‑3.1.2.4‑2].
 ==== Maximum Number of Awake Messages Flag
 <max-awake-messages-flag>
 #strong[Position:] bit 4 of the Connect Flags byte. Labelled #emph[MAM]
-in #link(<fig-connect-packet>)[Figure 6].
+in #link(<fig-connect-packet>)[Figure 7].
 
 «#box()<MQTT-SN-3.1.2.5-1>If the Maximum Number of Awake Messages Flag
 is set to 1, the Maximum Number of Awake Messages field MUST be present
@@ -1396,7 +1397,7 @@ present in the Packet»#link(<tab-MQTT-SN-3.1.2.5-2>)[MQTT‑SN‑3.1.2.5‑2].
 ==== Allow Network Address Changes Flag
 <allow-network-address-changes-flag>
 #strong[Position:] bit 5 of the Connect Flags byte. Labelled #emph[Net
-Addr] in #link(<fig-connect-packet>)[Figure 6].
+Addr] in #link(<fig-connect-packet>)[Figure 7].
 
 This flag only has an effect In implementations which use a Network
 Address to associate incoming packets with a Virtual Connection,
@@ -1420,7 +1421,7 @@ Protection Encapsulation.
 ==== Allow Server Suggested Values Flag
 <allow-server-suggested-values-flag>
 #strong[Position:] bit 6 of the Connect Flags byte. Labelled #emph[Srv
-Sugg] in #link(<fig-connect-packet>)[Figure 6].
+Sugg] in #link(<fig-connect-packet>)[Figure 7].
 
 If this flag is set to 1, the Client allows the Server to return
 modified values for all of:
@@ -1585,8 +1586,9 @@ Asleep»#link(<tab-MQTT-SN-3.1.6-5>)[MQTT‑SN‑3.1.6‑5].
 
 «#box()<MQTT-SN-3.1.6-6>If the Virtual Connection is Transparent and the
 Server deletes it because of a Keep Alive timeout, the Server MUST close
-the corresponding MQTT connection without sending an MQTT DISCONNECT
-with Reason Code 0x00»#link(<tab-MQTT-SN-3.1.6-6>)[MQTT‑SN‑3.1.6‑6].
+the corresponding MQTT connection without sending an MQTT 3.1.1
+DISCONNECT or an MQTT 5.0 DISCONNECT with Reason Code
+0x00»#link(<tab-MQTT-SN-3.1.6-6>)[MQTT‑SN‑3.1.6‑6].
 
 #quote(block: true)[
 #strong[Informative comment] \ The Server may have other reasons to
@@ -1680,6 +1682,20 @@ Interval is greater than
 corresponding MQTT connection uses MQTT 5.0, the Session Expiry Interval
 MUST be used to set the Session Expiry Interval of the corresponding
 MQTT CONNECT packet»#link(<tab-MQTT-SN-3.1.9-2>)[MQTT‑SN‑3.1.9‑2].
+
+«#box()<MQTT-SN-3.1.9-3>If the Virtual Connection is Transparent and the
+corresponding MQTT connection uses MQTT 3.1.1, the Session Expiry
+Interval MUST be 0xFFFFFFFF if Clean Start is 0, and MUST be 0 if Clean
+Start is 1»#link(<tab-MQTT-SN-3.1.9-3>)[MQTT‑SN‑3.1.9‑3].
+
+MQTT 3.1.1 has no Session Expiry Interval. Its Clean Session field both
+starts a new Session and ends the Session when the network connection
+closes, so Clean Session 1 is equivalent to Clean Start 1 with a Session
+Expiry Interval of 0, and Clean Session 0 to Clean Start 0 with a
+Session Expiry Interval that does not expire. A CONNECT with any other
+combination requests a function that MQTT 3.1.1 cannot provide, so the
+Server responds with Reason Code 0xF5 (Function not available)
+(#link(<cca---reason-code>)[3.2.4 "Reason Code"]).
 
 #quote(block: true)[
 #strong[Informative comment]
@@ -1941,7 +1957,7 @@ Packet»#link(<tab-MQTT-SN-3.2.2-2>)[MQTT‑SN‑3.2.2‑2].
 ==== Session Present
 <session-present>
 #strong[Position]: bit 0 of the CONNACK Flags. Labelled #emph[Sess Pres]
-in #link(<fig-connack-packet>)[Figure 7].
+in #link(<fig-connack-packet>)[Figure 8].
 
 Specifies whether an existing session was present on the Server for the
 given client identifier. A value of 1 indicates a session was present, a
@@ -1950,20 +1966,34 @@ value 0 indicates no session was present.
 «#box()<MQTT-SN-3.2.2.1-1>If the Virtual Connection is not Transparent,
 if the Server accepts a CONNECT with Clean Start set to 1, the Server
 MUST set Session Present to 0 in the CONNACK Packet in addition to
-setting a success Reason Code (0x00, 0x1B or 0x1C) in the CONNACK
+setting a 0x00 (Success) Reason Code in the CONNACK
 packet»#link(<tab-MQTT-SN-3.2.2.1-1>)[MQTT‑SN‑3.2.2.1‑1].
 
 «#box()<MQTT-SN-3.2.2.1-2>If the Virtual Connection is not Transparent,
 if the Server accepts a CONNECT with Clean Start set to 0 and the Server
 has Session State for the client identifier it MUST set Session Present
 to 1 in the CONNACK packet, otherwise it MUST set Session Present to 0
-in the CONNACK packet. In both cases it MUST set a success Reason Code
-(0x00, 0x1B or 0x1C) in the CONNACK
+in the CONNACK packet. In both cases it MUST set a 0x00 (Success) Reason
+Code in the CONNACK
 packet»#link(<tab-MQTT-SN-3.2.2.1-2>)[MQTT‑SN‑3.2.2.1‑2].
 
 «#box()<MQTT-SN-3.2.2.1-3>If the Virtual Connection is Transparent,
-Session Present MUST be set to the value of Session Present in the MQTT
-CONNACK»#link(<tab-MQTT-SN-3.2.2.1-3>)[MQTT‑SN‑3.2.2.1‑3].
+Session Present MUST be set to 1 if Session Present in the MQTT CONNACK
+is 1 and the Server has Session State for the Client, and MUST otherwise
+be set to 0»#link(<tab-MQTT-SN-3.2.2.1-3>)[MQTT‑SN‑3.2.2.1‑3].
+
+#quote(block: true)[
+#strong[Informative comment]
+
+For a Transparent Virtual Connection, the Session State is split between
+the Server, which holds the Session Topic Aliases, and the MQTT Server,
+which holds the subscriptions. If the Server has lost its part, for
+example because it restarted or the Client reconnected through a
+different Gateway, the Client receives Session Present 0 even though the
+MQTT Server has kept its part. The Client then discards its Session
+State, and can reconnect with Clean Start set to 1 to discard the MQTT
+Server's part too.
+]
 
 If the value of Session Present received by the Client from the Server
 is not as expected, the Client proceeds as follows:
@@ -1980,13 +2010,13 @@ it continues with the Virtual
 Connection»#link(<tab-MQTT-SN-3.2.2.1-5>)[MQTT‑SN‑3.2.2.1‑5].
 
 «#box()<MQTT-SN-3.2.2.1-6>If a Server sends a CONNACK packet containing
-a non-zero Reason Code it MUST set Session Present to
+a Reason Code of 0x80 or greater it MUST set Session Present to
 0»#link(<tab-MQTT-SN-3.2.2.1-6>)[MQTT‑SN‑3.2.2.1‑6].
 
 ==== Session Expiry Interval Flag
 <session-expiry-interval-flag>
 #strong[Position]: bit 1 of the CONNACK Flags. Labelled #emph[Sess Exp]
-in #link(<fig-connack-packet>)[Figure 7].
+in #link(<fig-connack-packet>)[Figure 8].
 
 ​​«#box()<MQTT-SN-3.2.2.2-1>If the Session Expiry Interval Flag is set to
 0, a Session Expiry Interval MUST NOT be present in the
@@ -1999,7 +2029,7 @@ Packet»#link(<tab-MQTT-SN-3.2.2.2-2>)[MQTT‑SN‑3.2.2.2‑2].
 ==== Server Keep Alive Flag
 <server-keep-alive-flag>
 #strong[Position]: bit 2 of the CONNACK Flags. Labelled #emph[Server KA]
-in #link(<fig-connack-packet>)[Figure 7].
+in #link(<fig-connack-packet>)[Figure 8].
 
 Indicates whether the packet includes a Server Keep Alive or not.
 
@@ -2014,7 +2044,7 @@ Packet»#link(<tab-MQTT-SN-3.2.2.3-2>)[MQTT‑SN‑3.2.2.3‑2].
 ==== Authentication Flag
 <cca---authentication-flag>
 #strong[Position]: bit 3 of the CONNACK Flags. Labelled #emph[Auth] in
-#link(<fig-connack-packet>)[Figure 7].
+#link(<fig-connack-packet>)[Figure 8].
 
 Specifies whether the packet contains authentication material to be
 considered.
@@ -2052,8 +2082,8 @@ connection uses MQTT 5.0, or 0x1C if it uses MQTT
 successful CONNACK MUST have Reason Code
 0x00»#link(<tab-MQTT-SN-3.2.4-4>)[MQTT‑SN‑3.2.4‑4].
 
-«#box()<MQTT-SN-3.2.4-5>Where the corresponding MQTT connection uses
-MQTT 3.1.1 and the CONNECT requests a function that MQTT 3.1.1 cannot
+«#box()<MQTT-SN-3.2.4-5>If the corresponding MQTT connection uses MQTT
+3.1.1 and the CONNECT requests a function that MQTT 3.1.1 cannot
 provide, the Server MUST send a CONNACK with Reason Code 0xF5 (Function
 not available)»#link(<tab-MQTT-SN-3.2.4-5>)[MQTT‑SN‑3.2.4‑5].
 
@@ -2143,17 +2173,27 @@ length Client Identifier, the Server MUST respond with a CONNACK
 containing an Assigned Client
 Identifier»#link(<tab-MQTT-SN-3.2.11-2>)[MQTT‑SN‑3.2.11‑2].
 
-«#box()<MQTT-SN-3.2.11-3>If the Virtual Connection is not Transparent,
-the Assigned Client Identifier MUST be a new Client Identifier not used
-by any other Session currently in the
+«#box()<MQTT-SN-3.2.11-3>The Assigned Client Identifier MUST be a new
+Client Identifier not used by any other Session currently in the
 Server»#link(<tab-MQTT-SN-3.2.11-3>)[MQTT‑SN‑3.2.11‑3].
 
-«#box()<MQTT-SN-3.2.11-4>Where the corresponding MQTT connection uses
-MQTT 3.1.1 and the Client connects with a zero-length Client Identifier,
-the Server MUST generate a unique Client Identifier, use it in the
-corresponding MQTT CONNECT packet, and return it in the CONNACK as the
-Assigned Client
-Identifier»#link(<tab-MQTT-SN-3.2.11-4>)[MQTT‑SN‑3.2.11‑4].
+«#box()<MQTT-SN-3.2.11-4>If the Virtual Connection is Transparent, the
+corresponding MQTT connection uses MQTT 5.0 and the Client connects with
+a zero-length Client Identifier, the Server MAY send a zero-length
+Client Identifier in the corresponding MQTT CONNECT packet so that the
+MQTT Server assigns one. If it does, the Server MUST return the Client
+Identifier assigned by the MQTT Server in the CONNACK as the Assigned
+Client Identifier»#link(<tab-MQTT-SN-3.2.11-4>)[MQTT‑SN‑3.2.11‑4].
+
+#quote(block: true)[
+#strong[Informative comment]
+
+A Client Identifier assigned by the MQTT Server is unique among the
+Sessions on that MQTT Server. The Sessions of the Transparent Virtual
+Connections that use it are Sessions on that MQTT Server, so the
+identifier meets the requirement of
+#link(<MQTT-SN-3.2.11-3>)[MQTT-SN-3.2.11-3] for them.
+]
 
 #quote(block: true)[
 #strong[Informative comment]
@@ -2742,10 +2782,44 @@ PUBLISH received from the Client MUST be forwarded on the corresponding
 MQTT connection with the same QoS and RETAIN
 values»#link(<tab-MQTT-SN-3.6.2.7-3>)[MQTT‑SN‑3.6.2.7‑3].
 
-«#box()<MQTT-SN-3.6.2.7-4>If the Virtual Connection is Transparent, the
+«#box()<MQTT-SN-3.6.2.7-4>If the Virtual Connection is Transparent and a
+PUBLISH received from the Client has a QoS greater than the Maximum QoS,
+or has RETAIN set to 1 when Retain Available is 0, in the MQTT CONNACK
+received on the corresponding MQTT connection, the Server MUST NOT
+forward it, and MUST send a DISCONNECT to the Client with Reason Code
+0x9B (QoS not supported) or 0x9A (Retain not supported)
+respectively»#link(<tab-MQTT-SN-3.6.2.7-4>)[MQTT‑SN‑3.6.2.7‑4]. Only an
+MQTT 5.0 Server can limit the QoS or the use of RETAIN in this way.
+Forwarding the PUBLISH would cause the MQTT Server to close the
+corresponding MQTT connection, which would end the Virtual Connection in
+the same way
+(#link(<transparent-virtual-connections>)[4.2.2 "Transparent Virtual Connections"]).
+
+«#box()<MQTT-SN-3.6.2.7-5>If the Virtual Connection is Transparent, the
 Server MUST NOT send a PUBACK, PUBREC or PUBCOMP to the Client until it
 has received the corresponding MQTT PUBACK, PUBREC or PUBCOMP from the
-MQTT Server»#link(<tab-MQTT-SN-3.6.2.7-4>)[MQTT‑SN‑3.6.2.7‑4].
+MQTT Server»#link(<tab-MQTT-SN-3.6.2.7-5>)[MQTT‑SN‑3.6.2.7‑5].
+
+«#box()<MQTT-SN-3.6.2.7-6>If the Virtual Connection is Transparent and
+the Client is not Asleep, the Server MUST NOT send an MQTT PUBACK,
+PUBREC or PUBCOMP to the MQTT Server until it has received the
+corresponding PUBACK, PUBREC or PUBCOMP from the
+Client»#link(<tab-MQTT-SN-3.6.2.7-6>)[MQTT‑SN‑3.6.2.7‑6].
+
+While the Client is Asleep, the Server acknowledges Application Messages
+from the MQTT Server on receipt instead
+(#link(<sleeping-clients>)[4.14.2 "Sleeping Clients"]). The MQTT Server
+can send several QoS 1 and QoS 2 Application Messages before any is
+acknowledged, but the Server can have only one unacknowledged PUBLISH
+outstanding to the Client (#link(<flow-control>)[4.9 "Flow Control"]),
+so it queues the others. Over MQTT 5.0, setting Receive Maximum to 1
+stops the MQTT Server sending more than one at a time. MQTT 3.1.1 has no
+equivalent, so over MQTT 3.1.1 the Server needs to queue them.
+
+«#box()<MQTT-SN-3.6.2.7-7>If the Virtual Connection is Transparent and
+the corresponding MQTT connection uses MQTT 5.0, the Server SHOULD set
+Receive Maximum to 1 in the corresponding MQTT CONNECT
+packet»#link(<tab-MQTT-SN-3.6.2.7-7>)[MQTT‑SN‑3.6.2.7‑7].
 
 The action of the recipient when it receives a PUBLISH packet depends on
 the QoS level as described in
@@ -2999,7 +3073,7 @@ information about the operation of the Retain Handling field.
 ==== Retain as Published
 <retain-as-published>
 #strong[Position]: bit 4 of the SUBSCRIBE Flags. Labelled #emph[RaP] in
-#link(<fig-subscribe-packet>)[Figure 17].
+#link(<fig-subscribe-packet>)[Figure 18].
 
 If 1, Application Messages forwarded using this subscription keep the
 RETAIN flag they were published with.
@@ -3086,46 +3160,46 @@ packet»#link(<tab-MQTT-SN-3.7.6-1>)[MQTT‑SN‑3.7.6‑1].
 Identifier as the SUBSCRIBE packet that it is
 acknowledging»#link(<tab-MQTT-SN-3.7.6-2>)[MQTT‑SN‑3.7.6‑2].
 
-«#box()<MQTT-SN-3.7.6-3>If the Virtual Connection is not Transparent, if
-a Server receives a SUBSCRIBE packet containing a Topic Filter that is
-identical to a Subscription's Topic Filter for the current Session, then
-it MUST replace that existing Subscription with a new
-Subscription»#link(<tab-MQTT-SN-3.7.6-3>)[MQTT‑SN‑3.7.6‑3]. The Topic
-Filter in the new Subscription will be identical to that in the previous
-Subscription, although its Subscription Options could be different.
+«#box()<MQTT-SN-3.7.6-3>The SUBACK packet sent by the Server to the
+Client MUST contain a Reason
+Code»#link(<tab-MQTT-SN-3.7.6-3>)[MQTT‑SN‑3.7.6‑3].
 
-«#box()<MQTT-SN-3.7.6-4>If the Virtual Connection is not Transparent, if
-the Retain Handling option is 0, any existing retained messages matching
-the Topic Filter MUST be re-sent, but Application Messages MUST NOT be
-lost due to replacing the
-Subscription»#link(<tab-MQTT-SN-3.7.6-4>)[MQTT‑SN‑3.7.6‑4].
+«#box()<MQTT-SN-3.7.6-4>This Reason Code MUST either show the maximum
+QoS that was granted for that Subscription or indicate that the
+subscription failed»#link(<tab-MQTT-SN-3.7.6-4>)[MQTT‑SN‑3.7.6‑4]. The
+Server might grant a lower Maximum QoS than the subscriber requested.
+
+==== SUBSCRIBE Actions - Virtual Connection
+<subscribe-actions-virtual>
+This section applies to Virtual Connections which are not Transparent.
+The Server creates and replaces the Subscriptions itself.
+
+«#box()<MQTT-SN-3.7.6.1-1>If a Server receives a SUBSCRIBE packet
+containing a Topic Filter that is identical to a Subscription's Topic
+Filter for the current Session, then it MUST replace that existing
+Subscription with a new
+Subscription»#link(<tab-MQTT-SN-3.7.6.1-1>)[MQTT‑SN‑3.7.6.1‑1]. The
+Topic Filter in the new Subscription will be identical to that in the
+previous Subscription, although its Subscription Options could be
+different.
+
+«#box()<MQTT-SN-3.7.6.1-2>If the Retain Handling option is 0, any
+existing retained messages matching the Topic Filter MUST be re-sent,
+but Application Messages MUST NOT be lost due to replacing the
+Subscription»#link(<tab-MQTT-SN-3.7.6.1-2>)[MQTT‑SN‑3.7.6.1‑2].
 
 If a Server receives a Topic Filter that is not identical to any Topic
 Filter for the current Session, a new Subscription is created. If the
 Retain Handling option is not 2, all matching retained messages are sent
 to the Client.
 
-«#box()<MQTT-SN-3.7.6-5>The SUBACK packet sent by the Server to the
-Client MUST contain a Reason
-Code»#link(<tab-MQTT-SN-3.7.6-5>)[MQTT‑SN‑3.7.6‑5].
-
-«#box()<MQTT-SN-3.7.6-6>This Reason Code MUST either show the maximum
-QoS that was granted for that Subscription or indicate that the
-subscription failed»#link(<tab-MQTT-SN-3.7.6-6>)[MQTT‑SN‑3.7.6‑6]. The
-Server might grant a lower Maximum QoS than the subscriber requested.
-
-«#box()<MQTT-SN-3.7.6-7>If the Virtual Connection is not Transparent,
-the QoS of Application Messages sent in response to a Subscription MUST
-be the minimum of the QoS of the originally published Application
-message and the Maximum QoS granted by the
-Server»#link(<tab-MQTT-SN-3.7.6-7>)[MQTT‑SN‑3.7.6‑7]. The server is
-permitted to send duplicate copies of an Application message to a
+«#box()<MQTT-SN-3.7.6.1-3>The QoS of Application Messages sent in
+response to a Subscription MUST be the minimum of the QoS of the
+originally published Application message and the Maximum QoS granted by
+the Server»#link(<tab-MQTT-SN-3.7.6.1-3>)[MQTT‑SN‑3.7.6.1‑3]. The server
+is permitted to send duplicate copies of an Application message to a
 subscriber in the case where the original Application message was
 published with QoS 1 and the maximum QoS granted was QoS 0.
-
-«#box()<MQTT-SN-3.7.6-8>If the Virtual Connection is Transparent, the
-Reason Code in the SUBACK MUST be derived from the Reason Code in the
-corresponding MQTT SUBACK»#link(<tab-MQTT-SN-3.7.6-8>)[MQTT‑SN‑3.7.6‑8].
 
 #quote(block: true)[
 #strong[Informative comment]
@@ -3156,6 +3230,27 @@ for determining the maximum QoS an Application Message can be delivered
 at, but a subscriber is able to require that the Server downgrades the
 QoS to one more suitable for its usage.
 ]
+
+==== SUBSCRIBE Actions - Transparent Connection
+<subscribe-actions-transparent>
+If the Virtual Connection is Transparent, the Server forwards the
+SUBSCRIBE to the MQTT Server in the corresponding MQTT SUBSCRIBE packet,
+with any Topic Alias replaced by its Topic Filter. The MQTT Server
+creates or replaces the Subscription, sends any matching Retained
+Messages and applies the Maximum QoS it grants
+(#link(<transparent-virtual-connections>)[4.2.2 "Transparent Virtual Connections"]).
+
+«#box()<MQTT-SN-3.7.6.2-1>The Reason Code in the SUBACK MUST be derived
+from the Reason Code in the corresponding MQTT
+SUBACK»#link(<tab-MQTT-SN-3.7.6.2-1>)[MQTT‑SN‑3.7.6.2‑1].
+
+«#box()<MQTT-SN-3.7.6.2-2>If the corresponding MQTT connection uses MQTT
+3.1.1 and any of the SUBSCRIBE Flags in the SUBSCRIBE packet has a value
+that MQTT 3.1.1 does not support, the Server MUST send a SUBACK with
+Reason Code 0xF5 (Function not
+available)»#link(<tab-MQTT-SN-3.7.6.2-2>)[MQTT‑SN‑3.7.6.2‑2]. MQTT 3.1.1
+supports only Retain Handling 0, Retain As Published 0 and No Local 0
+(#link(<subscribe-flags>)[3.7.2 "SUBSCRIBE Flags"]).
 
 == SUBACK - Subscribe Acknowledgement
 <suback---subscribe-acknowledgement>
@@ -3245,12 +3340,6 @@ The values of Reason Codes are shown in
 #link(<reason-code>)[2.3 "Reason Code"]. «#box()<MQTT-SN-3.8.5-1>The
 sender of the SUBACK Packet MUST use one of the Reason Codes applicable
 to SUBACK»#link(<tab-MQTT-SN-3.8.5-1>)[MQTT‑SN‑3.8.5‑1].
-
-«#box()<MQTT-SN-3.8.5-2>Where the corresponding MQTT connection uses
-MQTT 3.1.1 and the SUBSCRIBE requests a subscription option that MQTT
-3.1.1 cannot provide, the Server MUST send a SUBACK with Reason Code
-0xF5 (Function not
-available)»#link(<tab-MQTT-SN-3.8.5-2>)[MQTT‑SN‑3.8.5‑2].
 
 == UNSUBSCRIBE - Unsubscribe Request
 <unsubscribe---unsubscribe-request>
@@ -3359,6 +3448,13 @@ packet»#link(<tab-MQTT-SN-3.9.6-5>)[MQTT‑SN‑3.9.6‑5].
 Identifier as the UNSUBSCRIBE packet. Even where no Topic Subscriptions
 are deleted, the Server MUST respond with an
 UNSUBACK»#link(<tab-MQTT-SN-3.9.6-6>)[MQTT‑SN‑3.9.6‑6].
+
+«#box()<MQTT-SN-3.9.6-7>If the Virtual Connection is Transparent, the
+Reason Code in the UNSUBACK MUST be derived from the Reason Code in the
+corresponding MQTT
+UNSUBACK»#link(<tab-MQTT-SN-3.9.6-7>)[MQTT‑SN‑3.9.6‑7]. An MQTT 3.1.1
+UNSUBACK has no Reason Code, so over MQTT 3.1.1 the Reason Code is 0x00
+(Success) (#link(<c.2.2-mqtt-3.1.1>)[C.2.2 "MQTT 3.1.1"]).
 
 == UNSUBACK - Unsubscribe Acknowledgement
 <unsuback---unsubscribe-acknowledgement>
@@ -3567,7 +3663,7 @@ Packet»#link(<tab-MQTT-SN-3.13.2-2>)[MQTT‑SN‑3.13.2‑2].
 ==== Packet Identifier Flag
 <packet-identifier-flag>
 #strong[Position:] bit 0 of the DISCONNECT Flags. Labelled
-#emph[PacketId] in #link(<fig-disconnect-packet>)[Figure 23].
+#emph[PacketId] in #link(<fig-disconnect-packet>)[Figure 24].
 
 ​​«#box()<MQTT-SN-3.13.2.1-1>If the Packet Identifier Flag is set to 0, a
 Packet Identifier MUST NOT be present in the
@@ -3580,7 +3676,7 @@ Packet»#link(<tab-MQTT-SN-3.13.2.1-2>)[MQTT‑SN‑3.13.2.1‑2].
 ==== Session Expiry Interval Flag
 <ddn---session-expiry-interval-flag>
 #strong[Position:] bit 1 of the DISCONNECT Flags. Labelled #emph[Sess
-Exp] in #link(<fig-disconnect-packet>)[Figure 23].
+Exp] in #link(<fig-disconnect-packet>)[Figure 24].
 
 ​​«#box()<MQTT-SN-3.13.2.2-1>If the Session Expiry Interval Flag is set to
 0, a Session Expiry Interval MUST NOT be present in the
@@ -3593,7 +3689,7 @@ Packet»#link(<tab-MQTT-SN-3.13.2.2-2>)[MQTT‑SN‑3.13.2.2‑2].
 ==== Reason Code Flag
 <reason-code-flag>
 #strong[Position:] bit 2 of the DISCONNECT Flags. Labelled #emph[Reason
-C] in #link(<fig-disconnect-packet>)[Figure 23].
+C] in #link(<fig-disconnect-packet>)[Figure 24].
 
 ​​«#box()<MQTT-SN-3.13.2.3-1>If the Reason Code Flag is set to 0, a Reason
 Code MUST NOT be present in the
@@ -3668,6 +3764,17 @@ Server:
   it»#link(<tab-MQTT-SN-3.13.7-3>)[MQTT‑SN‑3.13.7‑3], as described in
   #link(<will-flags>)[3.1.3 "Will Flags"].
 
+#quote(block: true)[
+#strong[Informative comment]
+
+A Transparent Virtual Connection has no Will Message associated with it
+in the Server, because the Will Message is held by the MQTT Server
+(#link(<will-flag-transparent>)[3.1.2.2.2 "Will Flag - Transparent Connection"]).
+The MQTT Server discards it when it receives the MQTT DISCONNECT that
+the Server sends on the corresponding MQTT connection
+(#link(<transparent-virtual-connections>)[4.2.2 "Transparent Virtual Connections"]).
+]
+
 On receipt of DISCONNECT, the receiver:
 
 - «#box()<MQTT-SN-3.13.7-4>MUST NOT send any more MQTT-SN Control
@@ -3676,16 +3783,25 @@ On receipt of DISCONNECT, the receiver:
 
 - SHOULD delete any existing Virtual Connection.
 
-«#box()<MQTT-SN-3.13.7-5>If the Virtual Connection is Transparent and
-the corresponding MQTT connection uses MQTT 5.0, a DISCONNECT received
-from the Client MUST be followed by an MQTT DISCONNECT with the same
-Reason Code and Session Expiry Interval on the corresponding MQTT
-connection»#link(<tab-MQTT-SN-3.13.7-5>)[MQTT‑SN‑3.13.7‑5].
+«#box()<MQTT-SN-3.13.7-5>If the Virtual Connection is Transparent, a
+DISCONNECT received from the Client MUST be followed by an MQTT
+DISCONNECT on the corresponding MQTT connection, unless the
+corresponding MQTT connection uses MQTT 3.1.1 and the Reason Code is not
+0x00, in which case the Server MUST close the corresponding MQTT
+connection without sending an MQTT
+DISCONNECT»#link(<tab-MQTT-SN-3.13.7-5>)[MQTT‑SN‑3.13.7‑5].
 
 «#box()<MQTT-SN-3.13.7-6>If the Virtual Connection is Transparent and
+the corresponding MQTT connection uses MQTT 5.0, the MQTT DISCONNECT
+MUST have the same Session Expiry Interval and the same Reason Code as
+the DISCONNECT received from the Client, or Reason Code 0x80
+(Unspecified error) if that Reason Code is specific to
+MQTT-SN»#link(<tab-MQTT-SN-3.13.7-6>)[MQTT‑SN‑3.13.7‑6].
+
+«#box()<MQTT-SN-3.13.7-7>If the Virtual Connection is Transparent and
 the corresponding MQTT connection is closed, the Server MUST send a
 DISCONNECT to the Client and delete the Virtual
-Connection»#link(<tab-MQTT-SN-3.13.7-6>)[MQTT‑SN‑3.13.7‑6].
+Connection»#link(<tab-MQTT-SN-3.13.7-7>)[MQTT‑SN‑3.13.7‑7].
 
 After receiving a DISCONNECT, a Client can make a new Virtual Connection
 by sending a CONNECT Packet to the Server.
@@ -3753,7 +3869,7 @@ Packet»#link(<tab-MQTT-SN-3.15.2-2>)[MQTT‑SN‑3.15.2‑2].
 ==== Retain Topic Aliases
 <retain-topic-aliases>
 #strong[Position:] bit 0 of the SLEEPREQ Flags. Labelled #emph[Retain T]
-in #link(<fig-sleepreq-packet>)[Figure 25].
+in #link(<fig-sleepreq-packet>)[Figure 26].
 
 Specifies whether Session Topic Aliases should be retained by the Server
 during the Asleep state. "0" indicates Topic Aliases should be removed
@@ -3874,7 +3990,7 @@ Packet»#link(<tab-MQTT-SN-3.16.2-2>)[MQTT‑SN‑3.16.2‑2].
 ==== Sleep Duration Flag
 <sleep-duration-flag>
 #strong[Position:] bit 0 of the SLEEPRESP Flags. Labelled #emph[Sleep
-Dur] in #link(<fig-sleepresp-packet>)[Figure 26].
+Dur] in #link(<fig-sleepresp-packet>)[Figure 27].
 
 ​​«#box()<MQTT-SN-3.16.2.1-1>If the Sleep Duration Flag is set to 0, Sleep
 Duration MUST NOT be present in the
@@ -4016,7 +4132,7 @@ the Protection Encapsulation.
 <monotonic-counter-length>
 #strong[Position:] bits 0 and 1 of the Protection Flags. Labelled
 #emph[Counter Length] in
-#link(<fig-format-of-an-protection-encapsulated-mqtt-sn-packet>)[Figure 27].
+#link(<fig-format-of-an-protection-encapsulated-mqtt-sn-packet>)[Figure 28].
 
 Specifies the number of bytes forming the monotonic counter in
 big-endian order. Only three of the four possible values are allowed.
@@ -4043,7 +4159,7 @@ big-endian order. Only three of the four possible values are allowed.
 <cryptographic-material-length>
 #strong[Position:] bits 2 and 3 of the Protection Flags. Labelled
 #emph[Crypto Length] in
-#link(<fig-format-of-an-protection-encapsulated-mqtt-sn-packet>)[Figure 27].
+#link(<fig-format-of-an-protection-encapsulated-mqtt-sn-packet>)[Figure 28].
 
 Specifies the number of sixteen bit groups forming the cryptographic
 material in big-endian order. The meaning of each possible value is
@@ -4664,6 +4780,9 @@ Connection, the Session State in the Server also includes:
 - Application Messages received from the MQTT Server and buffered for
   the Client while it is Asleep.
 
+- Application Messages received from the MQTT Server and pending
+  transmission to the Client.
+
 - QoS 1 and QoS 2 PUBLISH Packets exchanged with the Client which have
   not been completely acknowledged.
 
@@ -4736,9 +4855,8 @@ CONNACK packet with the rejection Reason Code.
 Server MUST respond with a CONNACK containing an Assigned Client
 Identifier»#link(<tab-MQTT-SN-4.1.2-1>)[MQTT‑SN‑4.1.2‑1].
 
-«#box()<MQTT-SN-4.1.2-2>If the Virtual Connection is not Transparent, an
-Assigned Client Identifier MUST be a new Client Identifier not used by
-any other Session currently in the
+«#box()<MQTT-SN-4.1.2-2>An Assigned Client Identifier MUST be a new
+Client Identifier not used by any other Session currently in the
 Server»#link(<tab-MQTT-SN-4.1.2-2>)[MQTT‑SN‑4.1.2‑2].
 
 == Networks and Virtual Connections
@@ -4900,7 +5018,8 @@ Connection:
   #link(<session-state>)[4.1 "Session state"] for Virtual Connections
   which are not Transparent: the subscriptions, and the PUBLISH packets
   in flight or pending transmission. The Session Present flag in the
-  CONNACK is taken from the MQTT CONNACK
+  CONNACK is 1 only if it is 1 in the MQTT CONNACK and the Gateway also
+  has its part of the Session State
   (#link(<session-present>)[3.2.2.1 "Session Present"]).
 
 The Gateway provides these services itself:
@@ -4932,14 +5051,17 @@ The lifecycle of a Transparent Virtual Connection follows that of its
 MQTT connection:
 
 + On receipt of a CONNECT packet, the Gateway sends an MQTT CONNECT
-  packet to the MQTT Server. Clean Start and the Session Expiry Interval
-  are copied to it
+  packet to the MQTT Server. Over MQTT 5.0, Clean Start and the Session
+  Expiry Interval are copied to it. Over MQTT 3.1.1, Clean Start sets
+  Clean Session, and the Session Expiry Interval must be 0xFFFFFFFF if
+  Clean Start is 0, or 0 if Clean Start is 1
   (#link(<clean-start-flag>)[3.1.2.1 "Clean Start Flag"],
   #link(<session-expiry-interval>)[3.1.9 "Session Expiry Interval"]).
   The Client Identifier is copied, or mapped to a longer one where the
-  device can only use a short identifier. Over MQTT 3.1.1, where the
-  Client sends a zero-length Client Identifier, the Gateway generates
-  one and returns it as the Assigned Client Identifier
+  device can only use a short identifier. Where the Client sends a
+  zero-length Client Identifier, the Gateway generates one, or over MQTT
+  5.0 can let the MQTT Server assign one, and returns it as the Assigned
+  Client Identifier
   (#link(<assigned-client-identifier>)[3.2.11 "Assigned Client Identifier"]).
 
 + The Gateway sends a successful CONNACK to the Client only after it has
@@ -4954,16 +5076,32 @@ MQTT connection:
 
 + PUBLISH packets are forwarded at the same QoS. The Gateway
   acknowledges a PUBLISH from the Client only after the MQTT Server has
-  acknowledged it, so that the Gateway holds as little state as possible
-  (#link(<publish-actions>)[3.6.2.7 "PUBLISH Actions"]).
+  acknowledged it, and, unless the Client is Asleep, acknowledges a
+  PUBLISH from the MQTT Server only after the Client has acknowledged
+  it, so that the Gateway holds as little state as possible
+  (#link(<publish-actions>)[3.6.2.7 "PUBLISH Actions"]). Over MQTT 5.0,
+  the Gateway should set Receive Maximum to 1 so that the MQTT Server
+  sends one QoS 1 or QoS 2 Application Message at a time; over MQTT
+  3.1.1 it queues them.
 
-+ A DISCONNECT from the Client is forwarded to the MQTT Server with the
-  same Reason Code and Session Expiry Interval. If the Gateway deletes
-  the Virtual Connection for any other reason, such as a Keep Alive
-  timeout, it closes the MQTT connection in a way that causes the MQTT
-  Server to publish the Will Message. If the MQTT connection is closed,
-  the Gateway sends a DISCONNECT to the Client and deletes the Virtual
-  Connection (#link(<disconnect-actions>)[3.13.7 "DISCONNECT Actions"]).
++ Over MQTT 5.0, a DISCONNECT from the Client is forwarded to the MQTT
+  Server with the same Session Expiry Interval and the same Reason Code,
+  or 0x80 (Unspecified error) for a Reason Code specific to MQTT-SN.
+  Over MQTT 3.1.1, a DISCONNECT with Reason Code 0x00 is forwarded, and
+  any other Reason Code closes the MQTT connection without one
+  (#link(<c.2.2-mqtt-3.1.1>)[C.2.2 "MQTT 3.1.1"]). If the Gateway
+  deletes the Virtual Connection for any other reason, such as a Keep
+  Alive timeout, it closes the MQTT connection in a way that causes the
+  MQTT Server to publish the Will Message. If the MQTT connection is
+  closed, the Gateway sends a DISCONNECT to the Client and deletes the
+  Virtual Connection
+  (#link(<disconnect-actions>)[3.13.7 "DISCONNECT Actions"]).
+
+«#box()<MQTT-SN-4.2.2-1>When a Transparent Virtual Connection is
+deleted, the Server MUST close the corresponding MQTT connection. The
+Server MAY send an MQTT DISCONNECT packet before closing the
+corresponding MQTT
+connection»#link(<tab-MQTT-SN-4.2.2-1>)[MQTT‑SN‑4.2.2‑1].
 
 Reason Codes are passed between the Client and the MQTT Server as
 described in
@@ -5295,6 +5433,19 @@ to try again.
 «#box()<MQTT-SN-4.4.2-3>A Server MUST respond promptly to a valid
 request Packet»#link(<tab-MQTT-SN-4.4.2-3>)[MQTT‑SN‑4.4.2‑3].
 
+#quote(block: true)[
+#strong[Informative comment]
+
+For a Transparent Virtual Connection, the Server waits for the MQTT
+Server to respond before it responds to some request Packets, such as
+CONNECT, PUBLISH and SUBSCRIBE
+(#link(<transparent-virtual-connections>)[4.2.2 "Transparent Virtual Connections"]).
+Responding promptly allows for this wait. The Client's Retry Interval
+needs to be long enough to cover the round trip to the MQTT Server, so
+that the Client does not retransmit or delete the Virtual Connection
+while the Server is waiting.
+]
+
 «#box()<MQTT-SN-4.4.2-4>A Client in the Awake and Active states MUST
 respond promptly to a valid request
 Packet»#link(<tab-MQTT-SN-4.4.2-4>)[MQTT‑SN‑4.4.2‑4].
@@ -5360,8 +5511,8 @@ rest of the retry cycle to be ineffective.
 == Application Message receipt
 <application-message-receipt>
 «#box()<MQTT-SN-4.5-1>When a Server takes ownership of an incoming
-Application Message it MUST add it to the Session State for those
-Clients that have matching
+Application Message on a non-Transparent Connection it MUST add it to
+the Session State for those Clients that have matching
 Subscriptions»#link(<tab-MQTT-SN-4.5-1>)[MQTT‑SN‑4.5‑1]. Matching rules
 are defined in
 #link(<topic-names-and-topic-filters>)[4.7.1 "Topic Names and Topic Filters"].
@@ -6158,30 +6309,46 @@ for information about handling Disallowed Unicode code points.
 
 == Retained Messages
 <retained-messages>
-«#box()<MQTT-SN-4.13-1>If the RETAIN flag is set to 1 in a PUBLISH or
-PUBWOS packet received by a Server, and the packet is not forwarded to
-an MQTT Server, the Server MUST replace any existing Retained Message
-for this topic and store the Application
-Message»#link(<tab-MQTT-SN-4.13-1>)[MQTT‑SN‑4.13‑1], so that it can be
-delivered to future subscribers whose subscriptions match its Topic
+A Retained Message is the last Application Message published with the
+RETAIN flag set to 1 on a Topic Name. It is sent to new subscribers to
+that topic. Where Retained Messages are stored, and which rules apply to
+them, depends on whether the Virtual Connection is Transparent.
+
+#quote(block: true)[
+#strong[Informative comment]
+
+Retained messages are useful where publishers send state messages on an
+irregular basis. A new subscriber will receive the most recent state.
+]
+
+=== Retained Messages - Virtual Connection
+<retained-messages-virtual>
+This section applies to Virtual Connections which are not Transparent,
+and to PUBWOS packets received by a Server which is not a Transparent
+Gateway. The Server stores the Retained Messages and applies the Retain
+Handling and Retain As Published subscription options itself.
+
+«#box()<MQTT-SN-4.13.1-1>If the RETAIN flag is set to 1 in a PUBLISH or
+PUBWOS packet received by a Server, the Server MUST replace any existing
+Retained Message for this topic and store the Application
+Message»#link(<tab-MQTT-SN-4.13.1-1>)[MQTT‑SN‑4.13.1‑1], so that it can
+be delivered to future subscribers whose subscriptions match its Topic
 Name.
 
-«#box()<MQTT-SN-4.13-2>If the Virtual Connection is not Transparent, if
-the Publish Data contains zero bytes it is processed normally by the
-Server but any retained message with the same topic name MUST be removed
-and any future subscribers for the topic will not receive a retained
-message»#link(<tab-MQTT-SN-4.13-2>)[MQTT‑SN‑4.13‑2].
+«#box()<MQTT-SN-4.13.1-2>If the Publish Data contains zero bytes it is
+processed normally by the Server but any retained message with the same
+topic name MUST be removed and any future subscribers for the topic will
+not receive a retained
+message»#link(<tab-MQTT-SN-4.13.1-2>)[MQTT‑SN‑4.13.1‑2].
 
-«#box()<MQTT-SN-4.13-3>If the Virtual Connection is not Transparent, a
-Retained Message with a Publish Data containing zero bytes MUST NOT be
-stored as a Retained Message on the
-Server»#link(<tab-MQTT-SN-4.13-3>)[MQTT‑SN‑4.13‑3].
+«#box()<MQTT-SN-4.13.1-3>A Retained Message with a Publish Data
+containing zero bytes MUST NOT be stored as a Retained Message on the
+Server»#link(<tab-MQTT-SN-4.13.1-3>)[MQTT‑SN‑4.13.1‑3].
 
-«#box()<MQTT-SN-4.13-4>If the Virtual Connection is not Transparent, if
-the RETAIN flag is 0 in a PUBLISH packet sent by a Client to a Server,
-the Server MUST NOT store the message as a Retained Message and MUST NOT
-remove or replace any existing Retained
-Message»#link(<tab-MQTT-SN-4.13-4>)[MQTT‑SN‑4.13‑4].
+«#box()<MQTT-SN-4.13.1-4>If the RETAIN flag is 0 in a PUBLISH packet
+sent by a Client to a Server, the Server MUST NOT store the message as a
+Retained Message and MUST NOT remove or replace any existing Retained
+Message»#link(<tab-MQTT-SN-4.13.1-4>)[MQTT‑SN‑4.13.1‑4].
 
 When a new Subscription is made, the last retained message, if any, on
 each matching topic name is sent to the Client as directed by the Retain
@@ -6189,21 +6356,20 @@ Handling Subscribe Flag. These messages are sent with the RETAIN flag
 set to 1. Which retained messages are sent is controlled by the Retain
 Handling Subscribe Flag. At the time of the Subscription:
 
-- «#box()<MQTT-SN-4.13-5>If the Virtual Connection is not Transparent,
-  if Retain Handling is set to 0 the Server MUST send the retained
-  messages matching the Topic Filter of the subscription to the
-  Client»#link(<tab-MQTT-SN-4.13-5>)[MQTT‑SN‑4.13‑5].
+- «#box()<MQTT-SN-4.13.1-5>If Retain Handling is set to 0 the Server
+  MUST send the retained messages matching the Topic Filter of the
+  subscription to the
+  Client»#link(<tab-MQTT-SN-4.13.1-5>)[MQTT‑SN‑4.13.1‑5].
 
-- «#box()<MQTT-SN-4.13-6>If the Virtual Connection is not Transparent,
-  if Retain Handling is set to 1 then if the subscription did not
-  already exist, the Server MUST send all retained messages matching the
-  Topic Filter of the subscription to the Client, and if the
-  subscription did exist the Server MUST NOT send the retained
-  messages.»#link(<tab-MQTT-SN-4.13-6>)[MQTT‑SN‑4.13‑6].
+- «#box()<MQTT-SN-4.13.1-6>If Retain Handling is set to 1 then if the
+  subscription did not already exist, the Server MUST send all retained
+  messages matching the Topic Filter of the subscription to the Client,
+  and if the subscription did exist the Server MUST NOT send the
+  retained messages.»#link(<tab-MQTT-SN-4.13.1-6>)[MQTT‑SN‑4.13.1‑6].
 
-- «#box()<MQTT-SN-4.13-7>If the Virtual Connection is not Transparent,
-  if Retain Handling is set to 2, the Server MUST NOT send the retained
-  messages»#link(<tab-MQTT-SN-4.13-7>)[MQTT‑SN‑4.13‑7].
+- «#box()<MQTT-SN-4.13.1-7>If Retain Handling is set to 2, the Server
+  MUST NOT send the retained
+  messages»#link(<tab-MQTT-SN-4.13.1-7>)[MQTT‑SN‑4.13.1‑7].
 
 Refer to #link(<subscribe-flags>)[3.7.2 "SUBSCRIBE Flags"] for a
 definition of the Subscription Flags.
@@ -6219,23 +6385,18 @@ Retain As Published subscription option. Refer to
 #link(<subscribe-flags>)[3.7.2 "SUBSCRIBE Flags"] for a definition of
 the Subscription Flags.
 
-- «#box()<MQTT-SN-4.13-8>If the Virtual Connection is not Transparent,
-  if the value of Retain As Published subscription option is set to 0,
-  the Server MUST set the RETAIN flag to 0 when forwarding an
-  Application Message regardless of how the RETAIN flag was set in the
-  received PUBLISH packet»#link(<tab-MQTT-SN-4.13-8>)[MQTT‑SN‑4.13‑8].
+- «#box()<MQTT-SN-4.13.1-8>If the value of Retain As Published
+  subscription option is set to 0, the Server MUST set the RETAIN flag
+  to 0 when forwarding an Application Message regardless of how the
+  RETAIN flag was set in the received PUBLISH
+  packet»#link(<tab-MQTT-SN-4.13.1-8>)[MQTT‑SN‑4.13.1‑8].
 
-- «#box()<MQTT-SN-4.13-9>If the Virtual Connection is not Transparent,
-  if the value of Retain As Published subscription option is set to 1,
-  the Server MUST set the RETAIN flag equal to the RETAIN flag in the
-  received PUBLISH packet»#link(<tab-MQTT-SN-4.13-9>)[MQTT‑SN‑4.13‑9].
+- «#box()<MQTT-SN-4.13.1-9>If the value of Retain As Published
+  subscription option is set to 1, the Server MUST set the RETAIN flag
+  equal to the RETAIN flag in the received PUBLISH
+  packet»#link(<tab-MQTT-SN-4.13.1-9>)[MQTT‑SN‑4.13.1‑9].
 
 #quote(block: true)[
-#strong[Informative comment]
-
-Retained messages are useful where publishers send state messages on an
-irregular basis. A new subscriber will receive the most recent state.
-
 #strong[Informative comment]
 
 As in MQTT 3.1.1 there is no notion of message expiry in MQTT-SN,
@@ -6243,6 +6404,31 @@ including expiry of Retained Messages. It is an administrative decision
 under what conditions to remove Retained Messages, if at all. They
 should be kept long enough to support the expectations of the
 applications that will use the Server, at a minimum.
+]
+
+=== Retained Messages - Transparent Connection
+<retained-messages-transparent>
+If the Virtual Connection is Transparent, the MQTT Server stores the
+Retained Messages and applies the Retain Handling and Retain As
+Published subscription options. The Gateway forwards the RETAIN flag of
+a PUBLISH received from the Client to the MQTT Server unchanged
+(#link(<publish-actions>)[3.6.2.7 "PUBLISH Actions"]), and forwards the
+Retain Handling and Retain As Published options of a SUBSCRIBE to the
+MQTT Server in the corresponding MQTT SUBSCRIBE packet.
+
+«#box()<MQTT-SN-4.13.2-1>The Server MUST NOT change the RETAIN flag of
+an Application Message received on the corresponding MQTT connection
+when sending it to the
+Client»#link(<tab-MQTT-SN-4.13.2-1>)[MQTT‑SN‑4.13.2‑1].
+
+#quote(block: true)[
+#strong[Informative comment]
+
+MQTT 3.1.1 has no Retain Handling or Retain As Published options. It
+behaves as if Retain Handling were 0 and Retain As Published were 0.
+Over an MQTT 3.1.1 connection, a SUBSCRIBE requesting other values is
+answered with Reason Code 0xF5 (Function not available)
+(#link(<subscribe-actions-transparent>)[3.7.6.2 "SUBSCRIBE Actions - Transparent Connection"]).
 ]
 
 == Client states
@@ -7203,9 +7389,9 @@ definitive list of conformance requirements.
     create a new Session.],
     [#box()<tab-MQTT-SN-3.1.2.1-4>\[#link(<MQTT-SN-3.1.2.1-4>)[MQTT‑SN‑3.1.2.1‑4]\]], [If
     the Virtual Connection is Transparent, the value of the Clean Start
-    Flag MUST be used to set the Clean Start or Clean Session field of
-    the corresponding MQTT CONNECT packet sent to the MQTT Server for
-    this Client.],
+    Flag MUST be used to set the Clean Start field of the corresponding
+    MQTT CONNECT packet if it uses MQTT 5.0, or its Clean Session field
+    if it uses MQTT 3.1.1.],
     [#box()<tab-MQTT-SN-3.1.2.2-1>\[#link(<MQTT-SN-3.1.2.2-1>)[MQTT‑SN‑3.1.2.2‑1]\]], [If
     the Will Flag is set to 1, the Will Flags, Will Topic, and Will
     Payload fields MUST be present in the Packet.],
@@ -7225,11 +7411,10 @@ definitive list of conformance requirements.
     [#box()<tab-MQTT-SN-3.1.2.2.2-1>\[#link(<MQTT-SN-3.1.2.2.2-1>)[MQTT‑SN‑3.1.2.2.2‑1]\]], [If
     the Will Flag is set to 1 the Will Flag in the corresponding MQTT
     CONNECT Packet MUST also be set to 1.],
-    [#box()<tab-MQTT-SN-3.1.2.2.2-2>\[#link(<MQTT-SN-3.1.2.2.2-2>)[MQTT‑SN‑3.1.2.2.2‑2]\]], [If
-    the Virtual Connection is Transparent, the Will QoS, Will Retain,
-    Will Topic and Will Payload MUST be used to set the corresponding
-    Will fields of the MQTT CONNECT packet, with any Will Topic Alias
-    replaced by its Topic Name.],
+    [#box()<tab-MQTT-SN-3.1.2.2.2-2>\[#link(<MQTT-SN-3.1.2.2.2-2>)[MQTT‑SN‑3.1.2.2.2‑2]\]], [The
+    Will QoS, Will Retain, Will Topic and Will Payload MUST be used to
+    set the corresponding Will fields of the MQTT CONNECT packet, with
+    any Will Topic Alias replaced by its Topic Name.],
     [#box()<tab-MQTT-SN-3.1.2.3-1>\[#link(<MQTT-SN-3.1.2.3-1>)[MQTT‑SN‑3.1.2.3‑1]\]], [If
     the Authentication Flag is set to 1, the Authentication Method and
     Authentication Data fields MUST be present in the Packet.],
@@ -7312,8 +7497,8 @@ definitive list of conformance requirements.
     [#box()<tab-MQTT-SN-3.1.6-6>\[#link(<MQTT-SN-3.1.6-6>)[MQTT‑SN‑3.1.6‑6]\]], [If
     the Virtual Connection is Transparent and the Server deletes it
     because of a Keep Alive timeout, the Server MUST close the
-    corresponding MQTT connection without sending an MQTT DISCONNECT
-    with Reason Code 0x00.],
+    corresponding MQTT connection without sending an MQTT 3.1.1
+    DISCONNECT or an MQTT 5.0 DISCONNECT with Reason Code 0x00.],
     [#box()<tab-MQTT-SN-3.1.7-1>\[#link(<MQTT-SN-3.1.7-1>)[MQTT‑SN‑3.1.7‑1]\]], [The
     Maximum Packet Size value MUST be 0 (unbounded), or 10 or greater.],
     [#box()<tab-MQTT-SN-3.1.7-2>\[#link(<MQTT-SN-3.1.7-2>)[MQTT‑SN‑3.1.7‑2]\]], [The
@@ -7334,6 +7519,10 @@ definitive list of conformance requirements.
     connection uses MQTT 5.0, the Session Expiry Interval MUST be used
     to set the Session Expiry Interval of the corresponding MQTT CONNECT
     packet.],
+    [#box()<tab-MQTT-SN-3.1.9-3>\[#link(<MQTT-SN-3.1.9-3>)[MQTT‑SN‑3.1.9‑3]\]], [If
+    the Virtual Connection is Transparent and the corresponding MQTT
+    connection uses MQTT 3.1.1, the Session Expiry Interval MUST be
+    0xFFFFFFFF if Clean Start is 0, and MUST be 0 if Clean Start is 1.],
     [#box()<tab-MQTT-SN-3.1.11-1>\[#link(<MQTT-SN-3.1.11-1>)[MQTT‑SN‑3.1.11‑1]\]], [The
     Will Topic Name MUST be a UTF-8 Encoded String as defined in
     #link(<utf-8-encoded-string>)[1.8.4 "UTF-8 Encoded String"].],
@@ -7399,18 +7588,19 @@ definitive list of conformance requirements.
     [#box()<tab-MQTT-SN-3.2.2.1-1>\[#link(<MQTT-SN-3.2.2.1-1>)[MQTT‑SN‑3.2.2.1‑1]\]], [If
     the Virtual Connection is not Transparent, if the Server accepts a
     CONNECT with Clean Start set to 1, the Server MUST set Session
-    Present to 0 in the CONNACK Packet in addition to setting a success
-    Reason Code (0x00, 0x1B or 0x1C) in the CONNACK packet.],
+    Present to 0 in the CONNACK Packet in addition to setting a 0x00
+    (Success) Reason Code in the CONNACK packet.],
     [#box()<tab-MQTT-SN-3.2.2.1-2>\[#link(<MQTT-SN-3.2.2.1-2>)[MQTT‑SN‑3.2.2.1‑2]\]], [If
     the Virtual Connection is not Transparent, if the Server accepts a
     CONNECT with Clean Start set to 0 and the Server has Session State
     for the client identifier it MUST set Session Present to 1 in the
     CONNACK packet, otherwise it MUST set Session Present to 0 in the
-    CONNACK packet. In both cases it MUST set a success Reason Code
-    (0x00, 0x1B or 0x1C) in the CONNACK packet.],
+    CONNACK packet. In both cases it MUST set a 0x00 (Success) Reason
+    Code in the CONNACK packet.],
     [#box()<tab-MQTT-SN-3.2.2.1-3>\[#link(<MQTT-SN-3.2.2.1-3>)[MQTT‑SN‑3.2.2.1‑3]\]], [If
     the Virtual Connection is Transparent, Session Present MUST be set
-    to the value of Session Present in the MQTT CONNACK.],
+    to 1 if Session Present in the MQTT CONNACK is 1 and the Server has
+    Session State for the Client, and MUST otherwise be set to 0.],
     [#box()<tab-MQTT-SN-3.2.2.1-4>\[#link(<MQTT-SN-3.2.2.1-4>)[MQTT‑SN‑3.2.2.1‑4]\]], [If
     the Client does not have Session State and receives Session Present
     set to 1 it MUST delete the Virtual Connection. If it wishes to
@@ -7421,8 +7611,8 @@ definitive list of conformance requirements.
     to 0 it MUST discard its Session State if it continues with the
     Virtual Connection.],
     [#box()<tab-MQTT-SN-3.2.2.1-6>\[#link(<MQTT-SN-3.2.2.1-6>)[MQTT‑SN‑3.2.2.1‑6]\]], [If
-    a Server sends a CONNACK packet containing a non-zero Reason Code it
-    MUST set Session Present to 0.],
+    a Server sends a CONNACK packet containing a Reason Code of 0x80 or
+    greater it MUST set Session Present to 0.],
     [#box()<tab-MQTT-SN-3.2.2.2-1>\[#link(<MQTT-SN-3.2.2.2-1>)[MQTT‑SN‑3.2.2.2‑1]\]], [​​If
     the Session Expiry Interval Flag is set to 0, a Session Expiry
     Interval MUST NOT be present in the Packet.],
@@ -7454,7 +7644,7 @@ definitive list of conformance requirements.
     [#box()<tab-MQTT-SN-3.2.4-4>\[#link(<MQTT-SN-3.2.4-4>)[MQTT‑SN‑3.2.4‑4]\]], [If
     the Virtual Connection is not Transparent, a successful CONNACK MUST
     have Reason Code 0x00.],
-    [#box()<tab-MQTT-SN-3.2.4-5>\[#link(<MQTT-SN-3.2.4-5>)[MQTT‑SN‑3.2.4‑5]\]], [Where
+    [#box()<tab-MQTT-SN-3.2.4-5>\[#link(<MQTT-SN-3.2.4-5>)[MQTT‑SN‑3.2.4‑5]\]], [If
     the corresponding MQTT connection uses MQTT 3.1.1 and the CONNECT
     requests a function that MQTT 3.1.1 cannot provide, the Server MUST
     send a CONNACK with Reason Code 0xF5 (Function not available).],
@@ -7471,16 +7661,17 @@ definitive list of conformance requirements.
     the Client connects using a zero length Client Identifier, the
     Server MUST respond with a CONNACK containing an Assigned Client
     Identifier.],
-    [#box()<tab-MQTT-SN-3.2.11-3>\[#link(<MQTT-SN-3.2.11-3>)[MQTT‑SN‑3.2.11‑3]\]], [If
-    the Virtual Connection is not Transparent, the Assigned Client
-    Identifier MUST be a new Client Identifier not used by any other
-    Session currently in the Server.],
-    [#box()<tab-MQTT-SN-3.2.11-4>\[#link(<MQTT-SN-3.2.11-4>)[MQTT‑SN‑3.2.11‑4]\]], [Where
-    the corresponding MQTT connection uses MQTT 3.1.1 and the Client
-    connects with a zero-length Client Identifier, the Server MUST
-    generate a unique Client Identifier, use it in the corresponding
-    MQTT CONNECT packet, and return it in the CONNACK as the Assigned
-    Client Identifier.],
+    [#box()<tab-MQTT-SN-3.2.11-3>\[#link(<MQTT-SN-3.2.11-3>)[MQTT‑SN‑3.2.11‑3]\]], [The
+    Assigned Client Identifier MUST be a new Client Identifier not used
+    by any other Session currently in the Server.],
+    [#box()<tab-MQTT-SN-3.2.11-4>\[#link(<MQTT-SN-3.2.11-4>)[MQTT‑SN‑3.2.11‑4]\]], [If
+    the Virtual Connection is Transparent, the corresponding MQTT
+    connection uses MQTT 5.0 and the Client connects with a zero-length
+    Client Identifier, the Server MAY send a zero-length Client
+    Identifier in the corresponding MQTT CONNECT packet so that the MQTT
+    Server assigns one. If it does, the Server MUST return the Client
+    Identifier assigned by the MQTT Server in the CONNACK as the
+    Assigned Client Identifier.],
     [#box()<tab-MQTT-SN-3.3.2-1>\[#link(<MQTT-SN-3.3.2-1>)[MQTT‑SN‑3.3.2‑1]\]], [When
     sent from Server to Client, it MUST contain the packet identifier of
     the CONNECT or AUTH packet being responded to.],
@@ -7588,9 +7779,25 @@ definitive list of conformance requirements.
     Client MUST be forwarded on the corresponding MQTT connection with
     the same QoS and RETAIN values.],
     [#box()<tab-MQTT-SN-3.6.2.7-4>\[#link(<MQTT-SN-3.6.2.7-4>)[MQTT‑SN‑3.6.2.7‑4]\]], [If
+    the Virtual Connection is Transparent and a PUBLISH received from
+    the Client has a QoS greater than the Maximum QoS, or has RETAIN set
+    to 1 when Retain Available is 0, in the MQTT CONNACK received on the
+    corresponding MQTT connection, the Server MUST NOT forward it, and
+    MUST send a DISCONNECT to the Client with Reason Code 0x9B (QoS not
+    supported) or 0x9A (Retain not supported) respectively.],
+    [#box()<tab-MQTT-SN-3.6.2.7-5>\[#link(<MQTT-SN-3.6.2.7-5>)[MQTT‑SN‑3.6.2.7‑5]\]], [If
     the Virtual Connection is Transparent, the Server MUST NOT send a
     PUBACK, PUBREC or PUBCOMP to the Client until it has received the
     corresponding MQTT PUBACK, PUBREC or PUBCOMP from the MQTT Server.],
+    [#box()<tab-MQTT-SN-3.6.2.7-6>\[#link(<MQTT-SN-3.6.2.7-6>)[MQTT‑SN‑3.6.2.7‑6]\]], [If
+    the Virtual Connection is Transparent and the Client is not Asleep,
+    the Server MUST NOT send an MQTT PUBACK, PUBREC or PUBCOMP to the
+    MQTT Server until it has received the corresponding PUBACK, PUBREC
+    or PUBCOMP from the Client.],
+    [#box()<tab-MQTT-SN-3.6.2.7-7>\[#link(<MQTT-SN-3.6.2.7-7>)[MQTT‑SN‑3.6.2.7‑7]\]], [If
+    the Virtual Connection is Transparent and the corresponding MQTT
+    connection uses MQTT 5.0, the Server SHOULD set Receive Maximum to 1
+    in the corresponding MQTT CONNECT packet.],
     [#box()<tab-MQTT-SN-3.6.3.3-1>\[#link(<MQTT-SN-3.6.3.3-1>)[MQTT‑SN‑3.6.3.3‑1]\]], [The
     sender of the PUBACK Packet MUST use one of the Reason Codes
     applicable to PUBACK.],
@@ -7631,31 +7838,33 @@ definitive list of conformance requirements.
     [#box()<tab-MQTT-SN-3.7.6-2>\[#link(<MQTT-SN-3.7.6-2>)[MQTT‑SN‑3.7.6‑2]\]], [The
     SUBACK packet MUST have the same Packet Identifier as the SUBSCRIBE
     packet that it is acknowledging.],
-    [#box()<tab-MQTT-SN-3.7.6-3>\[#link(<MQTT-SN-3.7.6-3>)[MQTT‑SN‑3.7.6‑3]\]], [If
-    the Virtual Connection is not Transparent, if a Server receives a
-    SUBSCRIBE packet containing a Topic Filter that is identical to a
-    Subscription's Topic Filter for the current Session, then it MUST
-    replace that existing Subscription with a new Subscription.],
-    [#box()<tab-MQTT-SN-3.7.6-4>\[#link(<MQTT-SN-3.7.6-4>)[MQTT‑SN‑3.7.6‑4]\]], [If
-    the Virtual Connection is not Transparent, if the Retain Handling
-    option is 0, any existing retained messages matching the Topic
-    Filter MUST be re-sent, but Application Messages MUST NOT be lost
-    due to replacing the Subscription.],
-    [#box()<tab-MQTT-SN-3.7.6-5>\[#link(<MQTT-SN-3.7.6-5>)[MQTT‑SN‑3.7.6‑5]\]], [The
+    [#box()<tab-MQTT-SN-3.7.6-3>\[#link(<MQTT-SN-3.7.6-3>)[MQTT‑SN‑3.7.6‑3]\]], [The
     SUBACK packet sent by the Server to the Client MUST contain a Reason
     Code.],
-    [#box()<tab-MQTT-SN-3.7.6-6>\[#link(<MQTT-SN-3.7.6-6>)[MQTT‑SN‑3.7.6‑6]\]], [This
+    [#box()<tab-MQTT-SN-3.7.6-4>\[#link(<MQTT-SN-3.7.6-4>)[MQTT‑SN‑3.7.6‑4]\]], [This
     Reason Code MUST either show the maximum QoS that was granted for
     that Subscription or indicate that the subscription failed.],
-    [#box()<tab-MQTT-SN-3.7.6-7>\[#link(<MQTT-SN-3.7.6-7>)[MQTT‑SN‑3.7.6‑7]\]], [If
-    the Virtual Connection is not Transparent, the QoS of Application
-    Messages sent in response to a Subscription MUST be the minimum of
-    the QoS of the originally published Application message and the
-    Maximum QoS granted by the Server.],
-    [#box()<tab-MQTT-SN-3.7.6-8>\[#link(<MQTT-SN-3.7.6-8>)[MQTT‑SN‑3.7.6‑8]\]], [If
-    the Virtual Connection is Transparent, the Reason Code in the SUBACK
-    MUST be derived from the Reason Code in the corresponding MQTT
-    SUBACK.],
+    [#box()<tab-MQTT-SN-3.7.6.1-1>\[#link(<MQTT-SN-3.7.6.1-1>)[MQTT‑SN‑3.7.6.1‑1]\]], [If
+    a Server receives a SUBSCRIBE packet containing a Topic Filter that
+    is identical to a Subscription's Topic Filter for the current
+    Session, then it MUST replace that existing Subscription with a new
+    Subscription.],
+    [#box()<tab-MQTT-SN-3.7.6.1-2>\[#link(<MQTT-SN-3.7.6.1-2>)[MQTT‑SN‑3.7.6.1‑2]\]], [If
+    the Retain Handling option is 0, any existing retained messages
+    matching the Topic Filter MUST be re-sent, but Application Messages
+    MUST NOT be lost due to replacing the Subscription.],
+    [#box()<tab-MQTT-SN-3.7.6.1-3>\[#link(<MQTT-SN-3.7.6.1-3>)[MQTT‑SN‑3.7.6.1‑3]\]], [The
+    QoS of Application Messages sent in response to a Subscription MUST
+    be the minimum of the QoS of the originally published Application
+    message and the Maximum QoS granted by the Server.],
+    [#box()<tab-MQTT-SN-3.7.6.2-1>\[#link(<MQTT-SN-3.7.6.2-1>)[MQTT‑SN‑3.7.6.2‑1]\]], [The
+    Reason Code in the SUBACK MUST be derived from the Reason Code in
+    the corresponding MQTT SUBACK.],
+    [#box()<tab-MQTT-SN-3.7.6.2-2>\[#link(<MQTT-SN-3.7.6.2-2>)[MQTT‑SN‑3.7.6.2‑2]\]], [If
+    the corresponding MQTT connection uses MQTT 3.1.1 and any of the
+    SUBSCRIBE Flags in the SUBSCRIBE packet has a value that MQTT 3.1.1
+    does not support, the Server MUST send a SUBACK with Reason Code
+    0xF5 (Function not available).],
     [#box()<tab-MQTT-SN-3.8.2-1>\[#link(<MQTT-SN-3.8.2-1>)[MQTT‑SN‑3.8.2‑1]\]], [Bits
     7-3 of the SUBACK Flags are reserved and MUST be set to 0.],
     [#box()<tab-MQTT-SN-3.8.2-2>\[#link(<MQTT-SN-3.8.2-2>)[MQTT‑SN‑3.8.2‑2]\]], [The
@@ -7685,11 +7894,6 @@ definitive list of conformance requirements.
     [#box()<tab-MQTT-SN-3.8.5-1>\[#link(<MQTT-SN-3.8.5-1>)[MQTT‑SN‑3.8.5‑1]\]], [The
     sender of the SUBACK Packet MUST use one of the Reason Codes
     applicable to SUBACK.],
-    [#box()<tab-MQTT-SN-3.8.5-2>\[#link(<MQTT-SN-3.8.5-2>)[MQTT‑SN‑3.8.5‑2]\]], [Where
-    the corresponding MQTT connection uses MQTT 3.1.1 and the SUBSCRIBE
-    requests a subscription option that MQTT 3.1.1 cannot provide, the
-    Server MUST send a SUBACK with Reason Code 0xF5 (Function not
-    available).],
     [#box()<tab-MQTT-SN-3.9.2-1>\[#link(<MQTT-SN-3.9.2-1>)[MQTT‑SN‑3.9.2‑1]\]], [Bits
     7-2 of the UNSUBSCRIBE Flags are reserved and MUST be set to 0.],
     [#box()<tab-MQTT-SN-3.9.2-2>\[#link(<MQTT-SN-3.9.2-2>)[MQTT‑SN‑3.9.2‑2]\]], [The
@@ -7734,6 +7938,10 @@ definitive list of conformance requirements.
     UNSUBACK packet MUST have the same Packet Identifier as the
     UNSUBSCRIBE packet. Even where no Topic Subscriptions are deleted,
     the Server MUST respond with an UNSUBACK.],
+    [#box()<tab-MQTT-SN-3.9.6-7>\[#link(<MQTT-SN-3.9.6-7>)[MQTT‑SN‑3.9.6‑7]\]], [If
+    the Virtual Connection is Transparent, the Reason Code in the
+    UNSUBACK MUST be derived from the Reason Code in the corresponding
+    MQTT UNSUBACK.],
     [#box()<tab-MQTT-SN-3.10.3-1>\[#link(<MQTT-SN-3.10.3-1>)[MQTT‑SN‑3.10.3‑1]\]], [The
     Server sending the UNSUBACK Packet MUST use one of the UNSUBACK
     Reason Codes.],
@@ -7798,11 +8006,19 @@ definitive list of conformance requirements.
     receipt of DISCONNECT, the receiver MUST NOT send any more MQTT-SN
     Control Packets on the Virtual Connection, if one exists.],
     [#box()<tab-MQTT-SN-3.13.7-5>\[#link(<MQTT-SN-3.13.7-5>)[MQTT‑SN‑3.13.7‑5]\]], [If
-    the Virtual Connection is Transparent and the corresponding MQTT
-    connection uses MQTT 5.0, a DISCONNECT received from the Client MUST
-    be followed by an MQTT DISCONNECT with the same Reason Code and
-    Session Expiry Interval on the corresponding MQTT connection.],
+    the Virtual Connection is Transparent, a DISCONNECT received from
+    the Client MUST be followed by an MQTT DISCONNECT on the
+    corresponding MQTT connection, unless the corresponding MQTT
+    connection uses MQTT 3.1.1 and the Reason Code is not 0x00, in which
+    case the Server MUST close the corresponding MQTT connection without
+    sending an MQTT DISCONNECT.],
     [#box()<tab-MQTT-SN-3.13.7-6>\[#link(<MQTT-SN-3.13.7-6>)[MQTT‑SN‑3.13.7‑6]\]], [If
+    the Virtual Connection is Transparent and the corresponding MQTT
+    connection uses MQTT 5.0, the MQTT DISCONNECT MUST have the same
+    Session Expiry Interval and the same Reason Code as the DISCONNECT
+    received from the Client, or Reason Code 0x80 (Unspecified error) if
+    that Reason Code is specific to MQTT-SN.],
+    [#box()<tab-MQTT-SN-3.13.7-7>\[#link(<MQTT-SN-3.13.7-7>)[MQTT‑SN‑3.13.7‑7]\]], [If
     the Virtual Connection is Transparent and the corresponding MQTT
     connection is closed, the Server MUST send a DISCONNECT to the
     Client and delete the Virtual Connection.],
@@ -8001,10 +8217,9 @@ definitive list of conformance requirements.
     [#box()<tab-MQTT-SN-4.1.2-1>\[#link(<MQTT-SN-4.1.2-1>)[MQTT‑SN‑4.1.2‑1]\]], [If
     the Client provides no client identifier, the Server MUST respond
     with a CONNACK containing an Assigned Client Identifier.],
-    [#box()<tab-MQTT-SN-4.1.2-2>\[#link(<MQTT-SN-4.1.2-2>)[MQTT‑SN‑4.1.2‑2]\]], [If
-    the Virtual Connection is not Transparent, an Assigned Client
-    Identifier MUST be a new Client Identifier not used by any other
-    Session currently in the Server.],
+    [#box()<tab-MQTT-SN-4.1.2-2>\[#link(<MQTT-SN-4.1.2-2>)[MQTT‑SN‑4.1.2‑2]\]], [An
+    Assigned Client Identifier MUST be a new Client Identifier not used
+    by any other Session currently in the Server.],
     [#box()<tab-MQTT-SN-4.2-1>\[#link(<MQTT-SN-4.2-1>)[MQTT‑SN‑4.2‑1]\]], [If
     the Underlying Network might deliver a Packet more than once, for
     connection-oriented communications (CONNECT, DISCONNECT and other
@@ -8014,6 +8229,11 @@ definitive list of conformance requirements.
     incoming Packets except CONNECT, PUBWOS and Gateway search
     (ADVERTISE, SEARCHGW and GWINFO) MUST be associated with an existing
     Virtual Connection.],
+    [#box()<tab-MQTT-SN-4.2.2-1>\[#link(<MQTT-SN-4.2.2-1>)[MQTT‑SN‑4.2.2‑1]\]], [When
+    a Transparent Virtual Connection is deleted, the Server MUST close
+    the corresponding MQTT connection. The Server MAY send an MQTT
+    DISCONNECT packet before closing the corresponding MQTT
+    connection.],
     [#box()<tab-MQTT-SN-4.3.1-1>\[#link(<MQTT-SN-4.3.1-1>)[MQTT‑SN‑4.3.1‑1]\]], [In
     the PUBWOS delivery protocol the sender MUST send a PUBWOS packet.],
     [#box()<tab-MQTT-SN-4.3.1-2>\[#link(<MQTT-SN-4.3.1-2>)[MQTT‑SN‑4.3.1‑2]\]], [In
@@ -8129,9 +8349,9 @@ definitive list of conformance requirements.
     transmitted Packet, the DUP flag excepted. The Protection
     Encapsulation need not be identical.],
     [#box()<tab-MQTT-SN-4.5-1>\[#link(<MQTT-SN-4.5-1>)[MQTT‑SN‑4.5‑1]\]], [When
-    a Server takes ownership of an incoming Application Message it MUST
-    add it to the Session State for those Clients that have matching
-    Subscriptions.],
+    a Server takes ownership of an incoming Application Message on a
+    non-Transparent Connection it MUST add it to the Session State for
+    those Clients that have matching Subscriptions.],
     [#box()<tab-MQTT-SN-4.5-2>\[#link(<MQTT-SN-4.5-2>)[MQTT‑SN‑4.5‑2]\]], [The
     Client MUST acknowledge any PUBLISH packet it receives according to
     the applicable QoS rules regardless of whether it elects to process
@@ -8292,49 +8512,47 @@ definitive list of conformance requirements.
     a Reason Code of 0x80 or greater is specified, then the Virtual
     Connection MUST be deleted whether or not the CONNACK or DISCONNECT
     is sent.],
-    [#box()<tab-MQTT-SN-4.13-1>\[#link(<MQTT-SN-4.13-1>)[MQTT‑SN‑4.13‑1]\]], [If
+    [#box()<tab-MQTT-SN-4.13.1-1>\[#link(<MQTT-SN-4.13.1-1>)[MQTT‑SN‑4.13.1‑1]\]], [If
     the RETAIN flag is set to 1 in a PUBLISH or PUBWOS packet received
-    by a Server, and the packet is not forwarded to an MQTT Server, the
-    Server MUST replace any existing Retained Message for this topic and
-    store the Application Message.],
-    [#box()<tab-MQTT-SN-4.13-2>\[#link(<MQTT-SN-4.13-2>)[MQTT‑SN‑4.13‑2]\]], [If
-    the Virtual Connection is not Transparent, if the Publish Data
-    contains zero bytes it is processed normally by the Server but any
-    retained message with the same topic name MUST be removed and any
-    future subscribers for the topic will not receive a retained
-    message.],
-    [#box()<tab-MQTT-SN-4.13-3>\[#link(<MQTT-SN-4.13-3>)[MQTT‑SN‑4.13‑3]\]], [If
-    the Virtual Connection is not Transparent, a Retained Message with a
-    Publish Data containing zero bytes MUST NOT be stored as a Retained
-    Message on the Server.],
-    [#box()<tab-MQTT-SN-4.13-4>\[#link(<MQTT-SN-4.13-4>)[MQTT‑SN‑4.13‑4]\]], [If
-    the Virtual Connection is not Transparent, if the RETAIN flag is 0
-    in a PUBLISH packet sent by a Client to a Server, the Server MUST
-    NOT store the message as a Retained Message and MUST NOT remove or
-    replace any existing Retained Message.],
-    [#box()<tab-MQTT-SN-4.13-5>\[#link(<MQTT-SN-4.13-5>)[MQTT‑SN‑4.13‑5]\]], [If
-    the Virtual Connection is not Transparent, if Retain Handling is set
-    to 0 the Server MUST send the retained messages matching the Topic
-    Filter of the subscription to the Client.],
-    [#box()<tab-MQTT-SN-4.13-6>\[#link(<MQTT-SN-4.13-6>)[MQTT‑SN‑4.13‑6]\]], [If
-    the Virtual Connection is not Transparent, if Retain Handling is set
-    to 1 then if the subscription did not already exist, the Server MUST
-    send all retained messages matching the Topic Filter of the
-    subscription to the Client, and if the subscription did exist the
-    Server MUST NOT send the retained messages.],
-    [#box()<tab-MQTT-SN-4.13-7>\[#link(<MQTT-SN-4.13-7>)[MQTT‑SN‑4.13‑7]\]], [If
-    the Virtual Connection is not Transparent, if Retain Handling is set
-    to 2, the Server MUST NOT send the retained messages.],
-    [#box()<tab-MQTT-SN-4.13-8>\[#link(<MQTT-SN-4.13-8>)[MQTT‑SN‑4.13‑8]\]], [If
-    the Virtual Connection is not Transparent, if the value of Retain As
-    Published subscription option is set to 0, the Server MUST set the
-    RETAIN flag to 0 when forwarding an Application Message regardless
-    of how the RETAIN flag was set in the received PUBLISH packet.],
-    [#box()<tab-MQTT-SN-4.13-9>\[#link(<MQTT-SN-4.13-9>)[MQTT‑SN‑4.13‑9]\]], [If
-    the Virtual Connection is not Transparent, if the value of Retain As
-    Published subscription option is set to 1, the Server MUST set the
-    RETAIN flag equal to the RETAIN flag in the received PUBLISH
-    packet.],
+    by a Server, the Server MUST replace any existing Retained Message
+    for this topic and store the Application Message.],
+    [#box()<tab-MQTT-SN-4.13.1-2>\[#link(<MQTT-SN-4.13.1-2>)[MQTT‑SN‑4.13.1‑2]\]], [If
+    the Publish Data contains zero bytes it is processed normally by the
+    Server but any retained message with the same topic name MUST be
+    removed and any future subscribers for the topic will not receive a
+    retained message.],
+    [#box()<tab-MQTT-SN-4.13.1-3>\[#link(<MQTT-SN-4.13.1-3>)[MQTT‑SN‑4.13.1‑3]\]], [A
+    Retained Message with a Publish Data containing zero bytes MUST NOT
+    be stored as a Retained Message on the Server.],
+    [#box()<tab-MQTT-SN-4.13.1-4>\[#link(<MQTT-SN-4.13.1-4>)[MQTT‑SN‑4.13.1‑4]\]], [If
+    the RETAIN flag is 0 in a PUBLISH packet sent by a Client to a
+    Server, the Server MUST NOT store the message as a Retained Message
+    and MUST NOT remove or replace any existing Retained Message.],
+    [#box()<tab-MQTT-SN-4.13.1-5>\[#link(<MQTT-SN-4.13.1-5>)[MQTT‑SN‑4.13.1‑5]\]], [If
+    Retain Handling is set to 0 the Server MUST send the retained
+    messages matching the Topic Filter of the subscription to the
+    Client.],
+    [#box()<tab-MQTT-SN-4.13.1-6>\[#link(<MQTT-SN-4.13.1-6>)[MQTT‑SN‑4.13.1‑6]\]], [If
+    Retain Handling is set to 1 then if the subscription did not already
+    exist, the Server MUST send all retained messages matching the Topic
+    Filter of the subscription to the Client, and if the subscription
+    did exist the Server MUST NOT send the retained messages.],
+    [#box()<tab-MQTT-SN-4.13.1-7>\[#link(<MQTT-SN-4.13.1-7>)[MQTT‑SN‑4.13.1‑7]\]], [If
+    Retain Handling is set to 2, the Server MUST NOT send the retained
+    messages.],
+    [#box()<tab-MQTT-SN-4.13.1-8>\[#link(<MQTT-SN-4.13.1-8>)[MQTT‑SN‑4.13.1‑8]\]], [If
+    the value of Retain As Published subscription option is set to 0,
+    the Server MUST set the RETAIN flag to 0 when forwarding an
+    Application Message regardless of how the RETAIN flag was set in the
+    received PUBLISH packet.],
+    [#box()<tab-MQTT-SN-4.13.1-9>\[#link(<MQTT-SN-4.13.1-9>)[MQTT‑SN‑4.13.1‑9]\]], [If
+    the value of Retain As Published subscription option is set to 1,
+    the Server MUST set the RETAIN flag equal to the RETAIN flag in the
+    received PUBLISH packet.],
+    [#box()<tab-MQTT-SN-4.13.2-1>\[#link(<MQTT-SN-4.13.2-1>)[MQTT‑SN‑4.13.2‑1]\]], [The
+    Server MUST NOT change the RETAIN flag of an Application Message
+    received on the corresponding MQTT connection when sending it to the
+    Client.],
     [#box()<tab-MQTT-SN-4.14-1>\[#link(<MQTT-SN-4.14-1>)[MQTT‑SN‑4.14‑1]\]], [A
     Server MUST treat any Packet other than PUBWOS or CONNECT that it
     receives from a Client in None or Disconnected states as a protocol

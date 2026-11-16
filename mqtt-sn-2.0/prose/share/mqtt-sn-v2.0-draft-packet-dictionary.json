@@ -3814,16 +3814,16 @@
     {
       "order": 44,
       "section": {
-        "number": "C.6",
+        "number": "C.7",
         "title": "PUBLISH with QoS -1",
-        "anchor": "c.6-publish-with-qos--1",
+        "anchor": "c.7-publish-with-qos--1",
         "path": [
           {
             "number": "",
             "title": "Appendix C. Implementation Guidance (Informative)"
           },
           {
-            "number": "C.6",
+            "number": "C.7",
             "title": "PUBLISH with QoS -1"
           }
         ]

@@ -57,3 +57,5 @@ The Topic Filter is an UTF-8 Encoded String. The existence or absence of this fi
 «<mark title="Requirement MQTT-SN-3.9.6-5"><a name="MQTT-SN-3.9.6-5"></a>The Server MUST respond to an UNSUBSCRIBE request by sending an UNSUBACK packet</mark>»[MQTT‑SN‑3.9.6‑5](#tab-MQTT-SN-3.9.6-5).
 
 «<mark title="Requirement MQTT-SN-3.9.6-6"><a name="MQTT-SN-3.9.6-6"></a>The UNSUBACK packet MUST have the same Packet Identifier as the UNSUBSCRIBE packet. Even where no Topic Subscriptions are deleted, the Server MUST respond with an UNSUBACK</mark>»[MQTT‑SN‑3.9.6‑6](#tab-MQTT-SN-3.9.6-6).
+
+«<mark title="Requirement MQTT-SN-3.9.6-7"><a name="MQTT-SN-3.9.6-7"></a>If the Virtual Connection is Transparent, the Reason Code in the UNSUBACK MUST be derived from the Reason Code in the corresponding MQTT UNSUBACK</mark>»[MQTT‑SN‑3.9.6‑7](#tab-MQTT-SN-3.9.6-7). An MQTT 3.1.1 UNSUBACK has no Reason Code, so over MQTT 3.1.1 the Reason Code is 0x00 (Success) ([sec](#c.2.2-mqtt-3.1.1)).
