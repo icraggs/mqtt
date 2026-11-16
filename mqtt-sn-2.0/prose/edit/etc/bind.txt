@@ -76,11 +76,12 @@ mand-norm-stmts-00.md
 
 impl-guidance-00.md
 impl-guidance-01-eg-arch.md
-impl-guidance-02-srv-congestion.md
-impl-guidance-03-eg-timer-and-cnt-vals.md
-impl-guidance-04-exponential-back-off.md
-impl-guidance-05-client-state-dias.md
-impl-guidance-06-publish-with-qos-minus-one.md
-impl-guidance-07-gw-advert-and-discovery.md
+impl-guidance-02-reason-code-mapping.md
+impl-guidance-03-srv-congestion.md
+impl-guidance-04-eg-timer-and-cnt-vals.md
+impl-guidance-05-exponential-back-off.md
+impl-guidance-06-client-state-dias.md
+impl-guidance-07-publish-with-qos-minus-one.md
+impl-guidance-08-gw-advert-and-discovery.md
 
 rev-hist-00.md

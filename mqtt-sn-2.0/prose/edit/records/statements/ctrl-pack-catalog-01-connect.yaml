@@ -29,17 +29,29 @@ statements:
   binds:
   - server
   binds-by: subject
+- id: MQTT-SN-3.1.2.1-4
+  text: If the Virtual Connection is Transparent, the value of the Clean Start Flag MUST be used to set the Clean Start or Clean Session field of the corresponding MQTT CONNECT packet sent to the MQTT Server for this Client
+  binds:
+  - server
+  binds-by: sender of the corresponding MQTT CONNECT
 - id: MQTT-SN-3.1.2.2-1
   text: If the Will Flag is set to 1, the Will Flags, Will Topic, and Will Payload fields MUST be present in the Packet
   binds:
   - client
   binds-by: sender of CONNECT (packet format)
-- id: MQTT-SN-3.1.2.2-2
+- id: MQTT-SN-3.1.2.2.1-1
   text: If the Will Flag is set to 1 this indicates that a Will Message MUST be stored on the Server and associated with the Session
-- id: MQTT-SN-3.1.2.2-3
+- id: MQTT-SN-3.1.2.2.1-2
   text: The Will Message MUST be published after the Virtual Connection is deleted or the Session ends, unless the Will Message has been deleted by the Server on receipt of a DISCONNECT packet with Reason Code 0x00 (Normal disconnection)
-- id: MQTT-SN-3.1.2.2-4
+- id: MQTT-SN-3.1.2.2.1-3
   text: The Will Message MUST be removed from the stored Session State in the Server once it has been published or the Server has received a DISCONNECT packet with a Reason Code of 0x00 (Normal disconnection) from the Client
+- id: MQTT-SN-3.1.2.2.2-1
+  text: If the Will Flag is set to 1 the Will Flag in the corresponding MQTT CONNECT Packet MUST also be set to 1
+- id: MQTT-SN-3.1.2.2.2-2
+  text: If the Virtual Connection is Transparent, the Will QoS, Will Retain, Will Topic and Will Payload MUST be used to set the corresponding Will fields of the MQTT CONNECT packet, with any Will Topic Alias replaced by its Topic Name
+  binds:
+  - server
+  binds-by: subject
 - id: MQTT-SN-3.1.2.3-1
   text: If the Authentication Flag is set to 1, the Authentication Method and Authentication Data fields MUST be present in the Packet
   binds:
@@ -103,12 +115,12 @@ statements:
   - client
   binds-by: sender of CONNECT (packet format)
 - id: MQTT-SN-3.1.3.3-1
-  text: If the Will Flag is set to 1 and Will Retain is set to 0, the Server MUST publish the Will Message as a non-retained message
+  text: If the Virtual Connection is not Transparent, if the Will Flag is set to 1 and Will Retain is set to 0, the Server MUST publish the Will Message as a non-retained message
   binds:
   - server
   binds-by: subject
 - id: MQTT-SN-3.1.3.3-2
-  text: If the Will Flag is set to 1 and Will Retain is set to 1, the Server MUST publish the Will Message as a retained message
+  text: If the Virtual Connection is not Transparent, if the Will Flag is set to 1 and Will Retain is set to 1, the Server MUST publish the Will Message as a retained message
   binds:
   - server
   binds-by: subject
@@ -130,6 +142,16 @@ statements:
   text: If a Client does not receive a PINGRESP packet within a *[Retry Interval]* amount of time after it has sent a PINGREQ, it SHOULD retry the transmission according to [sec](#unacknowledged-packets) up to the maximum number of attempts. If a PINGRESP is still not received it MUST delete the Virtual Connection to the Server by way of a DISCONNECT, with the understanding that the Server may no longer be reachable
 - id: MQTT-SN-3.1.6-4
   text: The Keep Alive must have a value greater than 0. It is a protocol error if a Keep Alive value of 0 or below is set
+- id: MQTT-SN-3.1.6-5
+  text: If the Virtual Connection is Transparent, the Server MUST keep the corresponding MQTT connection open for as long as the Virtual Connection exists, including while the Client is Asleep
+  binds:
+  - server
+  binds-by: subject
+- id: MQTT-SN-3.1.6-6
+  text: If the Virtual Connection is Transparent and the Server deletes it because of a Keep Alive timeout, the Server MUST close the corresponding MQTT connection without sending an MQTT DISCONNECT with Reason Code 0x00
+  binds:
+  - server
+  binds-by: subject
 - id: MQTT-SN-3.1.7-1
   text: The Maximum Packet Size value MUST be 0 (unbounded), or 10 or greater
   binds:
@@ -149,6 +171,11 @@ statements:
   text: The Client and Server MUST store the Session State after the Virtual Connection is deleted if the Session Expiry Interval is greater than 0
   binds:
   - client
+  - server
+  binds-by: subject
+- id: MQTT-SN-3.1.9-2
+  text: If the Virtual Connection is Transparent and the corresponding MQTT connection uses MQTT 5.0, the Session Expiry Interval MUST be used to set the Session Expiry Interval of the corresponding MQTT CONNECT packet
+  binds:
   - server
   binds-by: subject
 - id: MQTT-SN-3.1.11-1
@@ -173,6 +200,11 @@ statements:
   binds:
   - server
   binds-by: subject
+- id: MQTT-SN-3.1.18-5
+  text: If the Virtual Connection is Transparent, the Client Identifier, or a longer Client Identifier the Server maps it to, MUST be used as the Client Identifier of the corresponding MQTT CONNECT packet
+  binds:
+  - server
+  binds-by: subject
 - id: MQTT-SN-3.1.19-1
   text: The Server MUST validate that the CONNECT packet matches the format described in [sec](#connect---connection-request) and MUST NOT create a Virtual Connection for this CONNECT if it does not match
   binds:
@@ -191,17 +223,22 @@ statements:
   - server
   binds-by: subject
 - id: MQTT-SN-3.1.19-5
-  text: The Server MUST acknowledge the CONNECT packet with a CONNACK packet containing a 0x00 (Success) Reason Code
+  text: The Server MUST acknowledge the CONNECT packet with a CONNACK packet containing a success Reason Code (0x00, 0x1B or 0x1C)
   binds:
   - server
   binds-by: subject
 - id: MQTT-SN-3.1.19-6
-  text: A Client MUST wait for a CONNACK packet with a 0x00 (Success) Reason Code before sending any packet that needs a Virtual Connection, AUTH excepted
+  text: A Client MUST wait for a CONNACK packet with a success Reason Code (0x00, 0x1B or 0x1C) before sending any packet that needs a Virtual Connection, AUTH excepted
   binds:
   - client
   binds-by: subject
 - id: MQTT-SN-3.1.19-7
   text: The Server MUST interpret any Packet received from the Client (other than AUTH) that requires a Virtual Connection, after the CONNECT packet is received and before the CONNACK response is sent, as a Protocol Error
+  binds:
+  - server
+  binds-by: subject
+- id: MQTT-SN-3.1.19-8
+  text: If the Virtual Connection is Transparent, the Server MUST NOT send a successful CONNACK until it has received a successful MQTT CONNACK on the corresponding MQTT connection
   binds:
   - server
   binds-by: subject

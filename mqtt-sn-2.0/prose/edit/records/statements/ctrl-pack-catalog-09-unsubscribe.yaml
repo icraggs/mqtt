@@ -36,13 +36,13 @@ statements:
 - id: MQTT-SN-3.9.6-1
   text: If a Topic Alias is used in an UNSUBSCRIBE request, it MUST be translated to its equivalent Topic Name before any other action takes place
 - id: MQTT-SN-3.9.6-2
-  text: The Topic Filter (whether it contains wildcards or not) supplied in an UNSUBSCRIBE packet MUST be compared character-by-character with the current set of Topic Filters held by the Server for the Client. If any filter matches exactly then its owning Subscription MUST be deleted
+  text: If the Virtual Connection is not Transparent, the Topic Filter (whether it contains wildcards or not) supplied in an UNSUBSCRIBE packet MUST be compared character-by-character with the current set of Topic Filters held by the Server for the Client. If any filter matches exactly then its owning Subscription MUST be deleted
 - id: MQTT-SN-3.9.6-3
   text: It MUST stop adding any new Application Messages which match the Topic Filters, for delivery to the Client
-  standalone: When a Server receives UNSUBSCRIBE it MUST stop adding any new Application Messages which match the Topic Filters, for delivery to the Client.
+  standalone: When a Server receives UNSUBSCRIBE on a Virtual Connection which is not Transparent, it MUST stop adding any new Application Messages which match the Topic Filters, for delivery to the Client.
 - id: MQTT-SN-3.9.6-4
   text: It MUST complete the delivery of any QoS 1 or QoS 2 Application Messages which match the Topic Filters and it has started to send to the Client
-  standalone: When a Server receives UNSUBSCRIBE it MUST complete the delivery of any QoS 1 or QoS 2 Application Messages which match the Topic Filters and it has started to send to the Client.
+  standalone: When a Server receives UNSUBSCRIBE on a Virtual Connection which is not Transparent, it MUST complete the delivery of any QoS 1 or QoS 2 Application Messages which match the Topic Filters and it has started to send to the Client.
 - id: MQTT-SN-3.9.6-5
   text: The Server MUST respond to an UNSUBSCRIBE request by sending an UNSUBACK packet
   binds:

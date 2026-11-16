@@ -33,4 +33,4 @@ What `make derive` noticed in the records and the prose without refusing to deri
 - kaitai protection-encapsulation: condition on 'Crypto Length', which is no flag of the packet
 - kaitai protection-encapsulation: "Crypto Material" (C) has no length field before it and is not last
 - kaitai publish-qos-minus-1: Topic Type value 'Topic Short Name' is not defined (tab-topic-types)
-- 155 of 312 statements bind no role yet (no `binds`), e.g. MQTT-SN-3.1.2.2-2, MQTT-SN-3.1.2.2-3, MQTT-SN-3.1.2.2-4
+- 156 of 335 statements bind no role yet (no `binds`), e.g. MQTT-SN-3.1.2.2.1-1, MQTT-SN-3.1.2.2.1-2, MQTT-SN-3.1.2.2.1-3

@@ -86,4 +86,8 @@ This field is optional - its existence or absence is inferred from the Packet le
 
 - SHOULD delete any existing Virtual Connection.
 
+«<mark title="Requirement MQTT-SN-3.13.7-5"><a name="MQTT-SN-3.13.7-5"></a>If the Virtual Connection is Transparent and the corresponding MQTT connection uses MQTT 5.0, a DISCONNECT received from the Client MUST be followed by an MQTT DISCONNECT with the same Reason Code and Session Expiry Interval on the corresponding MQTT connection</mark>»[MQTT‑SN‑3.13.7‑5](#tab-MQTT-SN-3.13.7-5).
+
+«<mark title="Requirement MQTT-SN-3.13.7-6"><a name="MQTT-SN-3.13.7-6"></a>If the Virtual Connection is Transparent and the corresponding MQTT connection is closed, the Server MUST send a DISCONNECT to the Client and delete the Virtual Connection</mark>»[MQTT‑SN‑3.13.7‑6](#tab-MQTT-SN-3.13.7-6).
+
 After receiving a DISCONNECT, a Client can make a new Virtual Connection by sending a CONNECT Packet to the Server.

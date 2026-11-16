@@ -25,7 +25,7 @@ Receives: ADVERTISE, AUTH, CONNACK, DISCONNECT, FORWARDER ENCAPSULATION, GWINFO,
 - [MQTT-SN-3.1.9-1] The Client and Server MUST store the Session State after the Virtual Connection is deleted if the Session Expiry Interval is greater than 0. (subject)
 - [MQTT-SN-3.1.11-1] The Will Topic Name MUST be a UTF-8 Encoded String as defined in [sec](#utf-8-encoded-string). (sender of CONNECT (packet format))
 - [MQTT-SN-3.1.18-1] The Client Identifier MUST be a UTF-8 Encoded String. (sender of CONNECT (packet format))
-- [MQTT-SN-3.1.19-6] A Client MUST wait for a CONNACK packet with a 0x00 (Success) Reason Code before sending any packet that needs a Virtual Connection, AUTH excepted. (subject)
+- [MQTT-SN-3.1.19-6] A Client MUST wait for a CONNACK packet with a success Reason Code (0x00, 0x1B or 0x1C) before sending any packet that needs a Virtual Connection, AUTH excepted. (subject)
 - [MQTT-SN-3.2.2-2] The Client MUST validate that the reserved flags in the CONNACK packet are set to 0. If any of the reserved flags is not 0 it is a Malformed Packet. (subject)
 - [MQTT-SN-3.2.6-1] If the Server sends a Server Keep Alive on the CONNACK packet, the Client MUST use this value instead of the Keep Alive value the Client sent on CONNECT. (subject)
 - [MQTT-SN-3.4.2-1] Bits 7-1 of the REGISTER Flags are reserved and MUST be set to 0. (sender of REGISTER (packet format))

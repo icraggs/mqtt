@@ -18,6 +18,10 @@ Virtual Connection
 :    An MQTT-SN construct corresponding to the network connection in MQTT.
 It associates a Network Identity with a Session, by means of the Client Identifier.
 
+Transparent Virtual Connection
+:    A Virtual Connection that uses an associated MQTT connection, its corresponding MQTT connection, for some of its services instead of implementing them itself.
+Can also be referred to simply as Transparent Connection.
+
 Application Message
 :    The data carried by the MQTT-SN (or MQTT) protocols across the network for the application.
 When an Application Message is transported by MQTT-SN (or MQTT) it contains payload data, a Quality of Service (QoS), and a Topic Name.
@@ -58,7 +62,7 @@ Aggregating Gateway
 :    A Gateway that communicates with an MQTT Server through one or more MQTT Connections each of which handles the data from and for multiple MQTT-SN Clients. It is up to the implementation which data should be forwarded, and if any transformations are applied before forwarding.
 
 Transparent Gateway
-:    A Gateway that communicates with an MQTT Server by opening and maintaining a separate MQTT Connection for each connected MQTT-SN Client. In this configuration the MQTT Server has some awareness of the Clients connected to the Gateway.
+:    A Gateway that uses a Transparent Connection to communicate with, and maintains a separate MQTT Connection for, each connected MQTT-SN Client. In this configuration the MQTT Server has some awareness of the MQTT-SN Clients connected to the Gateway.
 
 Forwarder
 :    A program or device that is an intermediary between MQTT-SN Clients and Servers which reside on different Underlying Networks that cannot communicate directly with each other.

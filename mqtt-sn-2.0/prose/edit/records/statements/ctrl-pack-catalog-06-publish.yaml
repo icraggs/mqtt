@@ -86,7 +86,17 @@ statements:
 - id: MQTT-SN-3.6.2.7-1
   text: The receiver of a PUBLISH packet MUST respond with the packet as determined by the QoS in the PUBLISH Packet.
 - id: MQTT-SN-3.6.2.7-2
-  text: When Clients make subscriptions with Topic Filters that include wildcards, it is possible for a Client's subscriptions to overlap so that a published Application Message might match multiple filters. In this case the Server MUST deliver the Application Message to the Client respecting the maximum QoS of all the matching subscriptions
+  text: When Clients make subscriptions with Topic Filters that include wildcards, it is possible for a Client's subscriptions to overlap so that a published Application Message might match multiple filters. In this case, if the Virtual Connection is not Transparent, the Server MUST deliver the Application Message to the Client respecting the maximum QoS of all the matching subscriptions
+  binds:
+  - server
+  binds-by: subject
+- id: MQTT-SN-3.6.2.7-3
+  text: If the Virtual Connection is Transparent, a PUBLISH received from the Client MUST be forwarded on the corresponding MQTT connection with the same QoS and RETAIN values
+  binds:
+  - server
+  binds-by: subject
+- id: MQTT-SN-3.6.2.7-4
+  text: If the Virtual Connection is Transparent, the Server MUST NOT send a PUBACK, PUBREC or PUBCOMP to the Client until it has received the corresponding MQTT PUBACK, PUBREC or PUBCOMP from the MQTT Server
   binds:
   - server
   binds-by: subject

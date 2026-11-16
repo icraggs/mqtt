@@ -102,6 +102,18 @@ entries:
   packets:
   - REGACK
   description: A Session Topic Alias was requested, but a Session or Predefined Topic Alias already exists. (MQTT-SN only)
+- decimal: '27'
+  value: '0x1B'
+  name: Success - Transparent (MQTT 5.0)
+  packets:
+  - CONNACK
+  description: The Virtual Connection is created and is Transparent, using MQTT 5.0 on its corresponding MQTT connection. (MQTT-SN only)
+- decimal: '28'
+  value: '0x1C'
+  name: Success - Transparent (MQTT 3.1.1)
+  packets:
+  - CONNACK
+  description: The Virtual Connection is created and is Transparent, using MQTT 3.1.1 on its corresponding MQTT connection. (MQTT-SN only)
 - decimal: '128'
   value: '0x80'
   name: Unspecified error
@@ -278,6 +290,9 @@ entries:
   value: '0x97'
   name: Quota exceeded
   packets:
+  - CONNACK
+  - PUBACK
+  - PUBREC
   - REGACK
   - SUBACK
   - DISCONNECT
@@ -292,6 +307,7 @@ entries:
   value: '0x99'
   name: Payload format invalid
   packets:
+  - CONNACK
   - PUBACK
   - PUBREC
   - DISCONNECT (server only)
@@ -391,11 +407,11 @@ entries:
   name: Congestion
   packets:
   - SUBACK
-  - REGACK
+  - REGACK (server only)
   - CONNACK
-  - PUBACK
-  - PUBREC
-  description: Try again later. See [C.3 Server Congestion](#c.2-server-congestion) (MQTT-SN only)
+  - PUBACK (server only)
+  - PUBREC (server only)
+  description: Try again later. See [C.3 Server Congestion](#c.3-server-congestion) (MQTT-SN only)
 - decimal: '242'
   value: '0xF2'
   name: Protection packet not supported
@@ -414,8 +430,15 @@ entries:
   packets:
   - DISCONNECT
   description: Specific to MQTT-SN
-- decimal: 245 \- 255
-  value: 0xF5 \- 0xFF
+- decimal: '245'
+  value: '0xF5'
+  name: Function not available
+  packets:
+  - CONNACK
+  - SUBACK
+  description: The function requested is not available because the corresponding MQTT connection of the Transparent Virtual Connection uses MQTT 3.1.1. (MQTT-SN only)
+- decimal: 246 \- 255
+  value: 0xF6 \- 0xFF
   name: Reserved for MQTT-SN
   packets: []
   description: Specific to MQTT-SN

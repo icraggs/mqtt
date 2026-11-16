@@ -40,3 +40,8 @@ statements:
   text: If, during the delivery of Application Messages from the Server to the Client, and applying the <mark title="Ephemeral region marking">retry logic of [sec](#unacknowledged-packets), the Server gets no response, it MUST consider the Client disconnected and delete the Virtual Connection</mark>
 - id: MQTT-SN-4.14.2-7
   text: If the Server does not have any packets buffered for the client, it MUST respond immediately with a PINGRESP packet
+- id: MQTT-SN-4.14.2-8
+  text: If the Virtual Connection is Transparent and the Client is Asleep, the Server MUST acknowledge a QoS 1 or QoS 2 Application Message received on the corresponding MQTT connection when it receives it, and buffer it for delivery to the Client
+  binds:
+  - server
+  binds-by: subject

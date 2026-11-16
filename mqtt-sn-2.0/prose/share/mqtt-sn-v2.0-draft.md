@@ -125,6 +125,8 @@ The name \"OASIS\" is a trademark of [[OASIS]](https://www.oasis-open.org/), the
 		3.1.2 [Connect Flags](#connect-flags)  
 			3.1.2.1 [Clean Start Flag](#clean-start-flag)  
 			3.1.2.2 [Will Flag](#will-flag)  
+				3.1.2.2.1 [Will Flag - Virtual Connection](#will-flag-virtual)  
+				3.1.2.2.2 [Will Flag - Transparent Connection](#will-flag-transparent)  
 			3.1.2.3 [Authentication Flag](#authentication-flag)  
 			3.1.2.4 [Session Expiry Flag](#session-expiry-flag)  
 			3.1.2.5 [Maximum Number of Awake Messages Flag](#max-awake-messages-flag)  
@@ -416,24 +418,27 @@ Appendix C. [Implementation Guidance (Informative)](#appendix-c.-implementation-
 		C.1.2 [Aggregating Gateway](#c.1.2-aggregating-gateway)  
 		C.1.3 [Forwarder](#c.1.3-forwarder)  
 		C.1.4 [MQTT-SN Broker](#c.1.4-mqtt-sn-broker)  
-	C.2 [Server Congestion](#c.2-server-congestion)  
-	C.3 [Example Timer and Counter Values](#c.3-example-timer-and-counter-values)  
-	C.4 [Exponential Backoff](#c.4-exponential-backoff)  
-	C.5 [Client State Diagrams](#c.5-client-state-diagrams)  
-	C.6 [PUBLISH with QoS -1](#c.6-publish-with-qos--1)  
-		C.6.1 [PUBLISH Header](#c.6.1-publish-header)  
-		C.6.2 [PUBLISH Flags](#c.6.2-publish-flags)  
-			C.6.2.1 [Topic Type](#c.6.2.1-topic-type)  
-			C.6.2.2 [QoS](#c.6.2.2-qos)  
-			C.6.2.3 [DUP](#c.6.2.3-dup)  
-			C.6.2.4 [Retain](#c.6.2.4-retain)  
-		C.6.3 [Topic Alias](#c.6.3-topic-alias)  
-		C.6.4 [Topic Short Name](#c.6.4-topic-short-name)  
-		C.6.5 [Topic Name Length](#c.6.5-topic-name-length)  
-		C.6.6 [Topic Name](#c.6.6-topic-name)  
-		C.6.7 [Payload](#c.6.7-payload)  
-		C.6.8 [PUBLISH with QoS -1 Actions](#c.6.8-publish-with-qos--1-actions)  
-	C.7 [Gateway Advertisement and Discovery](#c.7-gateway-advertisement-and-discovery)  
+	C.2 [Reason Code Mapping](#c.2-reason-code-mapping)  
+		C.2.1 [MQTT 5.0](#c.2.1-mqtt-5.0)  
+		C.2.2 [MQTT 3.1.1](#c.2.2-mqtt-3.1.1)  
+	C.3 [Server Congestion](#c.3-server-congestion)  
+	C.4 [Example Timer and Counter Values](#c.4-example-timer-and-counter-values)  
+	C.5 [Exponential Backoff](#c.5-exponential-backoff)  
+	C.6 [Client State Diagrams](#c.6-client-state-diagrams)  
+	C.7 [PUBLISH with QoS -1](#c.7-publish-with-qos--1)  
+		C.7.1 [PUBLISH Header](#c.7.1-publish-header)  
+		C.7.2 [PUBLISH Flags](#c.7.2-publish-flags)  
+			C.7.2.1 [Topic Type](#c.7.2.1-topic-type)  
+			C.7.2.2 [QoS](#c.7.2.2-qos)  
+			C.7.2.3 [DUP](#c.7.2.3-dup)  
+			C.7.2.4 [Retain](#c.7.2.4-retain)  
+		C.7.3 [Topic Alias](#c.7.3-topic-alias)  
+		C.7.4 [Topic Short Name](#c.7.4-topic-short-name)  
+		C.7.5 [Topic Name Length](#c.7.5-topic-name-length)  
+		C.7.6 [Topic Name](#c.7.6-topic-name)  
+		C.7.7 [Payload](#c.7.7-payload)  
+		C.7.8 [PUBLISH with QoS -1 Actions](#c.7.8-publish-with-qos--1-actions)  
+	C.8 [Gateway Advertisement and Discovery](#c.8-gateway-advertisement-and-discovery)  
 Appendix D. [Revision History (informative)](#revision-history-informative)  
 
 
@@ -511,6 +516,10 @@ Virtual Connection
 :    An MQTT-SN construct corresponding to the network connection in MQTT.
 It associates a Network Identity with a Session, by means of the Client Identifier.
 
+Transparent Virtual Connection
+:    A Virtual Connection that uses an associated MQTT connection for some of its services instead of implementing them itself. 
+Can also be referred to simply as Transparent Connection.
+
 Application Message
 :    The data carried by the MQTT-SN (or MQTT) protocols across the network for the application.
 When an Application Message is transported by MQTT-SN (or MQTT) it contains payload data, a Quality of Service (QoS), and a Topic Name.
@@ -546,6 +555,12 @@ MQTT-SN Server
 
 Gateway
 :    An MQTT-SN Server that also uses the MQTT protocol to communicate with an MQTT Server.
+
+Aggregating Gateway
+:    A Gateway that communicates with an MQTT Server through one or more MQTT Connections each of which handles the data from and for multiple MQTT-SN Clients. It is up to the implementation which data should be forwarded, and if any transformations are applied before forwarding.
+
+Transparent Gateway
+:    A Gateway that uses a Transparent Connection to communicate with, and maintains a separate MQTT Connection for, each connected MQTT-SN Client. In this configuration the MQTT Server has some awareness of the MQTT-SN Clients connected to the Gateway.
 
 Forwarder
 :    A program or device that is an intermediary between MQTT-SN Clients and Servers which reside on different Underlying Networks that cannot communicate directly with each other.
@@ -929,7 +944,7 @@ The Reason Codes share a common set of values as shown below.
 | 231 | 0xE7 | Protection scheme invalid | DISCONNECT | Specific to MQTT-SN |
 | 232 | 0xE8 | Unknown Sender Id | DISCONNECT | Specific to MQTT-SN |
 | 240 | 0xF0 | Unknown Topic Alias | PUBACK, PUBREC, SUBACK, UNSUBACK, REGACK | Specific to MQTT-SN |
-| 241 | 0xF1 | Congestion | SUBACK, REGACK, CONNACK, PUBACK, PUBREC | Try again later. See [C.3 Server Congestion](#c.2-server-congestion) (MQTT-SN only) |
+| 241 | 0xF1 | Congestion | SUBACK, REGACK, CONNACK, PUBACK, PUBREC | Try again later. See [C.3 Server Congestion](#c.3-server-congestion) (MQTT-SN only) |
 | 242 | 0xF2 | Protection packet not supported | DISCONNECT | Specific to MQTT-SN |
 | 243 | 0xF3 | Forwarder Encapsulation not supported | DISCONNECT | Specific to MQTT-SN |
 | 244 | 0xF4 | No Virtual Connection exists | DISCONNECT | Specific to MQTT-SN |
@@ -996,15 +1011,19 @@ This flag specifies whether the Virtual Connection starts a new Session or is a 
 
 «<mark title="Requirement MQTT-SN-3.1.2.1-3"><a name="MQTT-SN-3.1.2.1-3"></a>If a CONNECT packet is received with Clean Start set to 0 and there is no Session associated with the Client Identifier, the Server MUST create a new Session</mark>»[MQTT‑SN‑3.1.2.1‑3](#tab-MQTT-SN-3.1.2.1-3).
 
+«<mark title="Requirement MQTT-SN-3.1.2.1-4"><a name="MQTT-SN-3.1.2.1-4"></a>Where the Virtual Connection is Transparent, the value of the Clean Start Flag MUST be used to set the Clean Start or Clean Session field of the corresponding MQTT CONNECT packet sent to the MQTT Server for this Client</mark>»[MQTT‑SN‑3.1.2.1‑4](#tab-MQTT-SN-3.1.2.1-4).
+
 #### 3.1.2.2 Will Flag <a id='will-flag'></a>
 
 **Position:** bit 1 of the Connect Flags byte.
 
 «<mark title="Requirement MQTT-SN-3.1.2.2-1"><a name="MQTT-SN-3.1.2.2-1"></a>If the Will Flag is set to 1, the Will Flags, Will Topic, and Will Payload fields MUST be present in the Packet</mark>»[MQTT‑SN‑3.1.2.2‑1](#tab-MQTT-SN-3.1.2.2-1).
 
-«<mark title="Requirement MQTT-SN-3.1.2.2-2"><a name="MQTT-SN-3.1.2.2-2"></a>If the Will Flag is set to 1 this indicates that a Will Message MUST be stored on the Server and associated with the Session</mark>»[MQTT‑SN‑3.1.2.2‑2](#tab-MQTT-SN-3.1.2.2-2). The Will Message consists of the Will Topic, and Will Payload fields in the CONNECT Packet.
+##### 3.1.2.2.1 Will Flag - Virtual Connection <a id='will-flag-virtual'></a>
 
-«<mark title="Requirement MQTT-SN-3.1.2.2-3"><a name="MQTT-SN-3.1.2.2-3"></a>The Will Message MUST be published after the Virtual Connection is deleted or the Session ends, unless the Will Message has been deleted by the Server on receipt of a DISCONNECT packet with Reason Code 0x00 (Normal disconnection)</mark>»[MQTT‑SN‑3.1.2.2‑3](#tab-MQTT-SN-3.1.2.2-3).
+«<mark title="Requirement MQTT-SN-3.1.2.2.1-1"><a name="MQTT-SN-3.1.2.2.1-1"></a>If the Will Flag is set to 1 this indicates that a Will Message MUST be stored on the Server and associated with the Session</mark>»[MQTT‑SN‑3.1.2.2.1‑1](#tab-MQTT-SN-3.1.2.2.1-1). The Will Message consists of the Will Topic, and Will Payload fields in the CONNECT Packet.
+
+«<mark title="Requirement MQTT-SN-3.1.2.2.1-2"><a name="MQTT-SN-3.1.2.2.1-2"></a>The Will Message MUST be published after the Virtual Connection is deleted or the Session ends, unless the Will Message has been deleted by the Server on receipt of a DISCONNECT packet with Reason Code 0x00 (Normal disconnection)</mark>»[MQTT‑SN‑3.1.2.2.1‑2](#tab-MQTT-SN-3.1.2.2.1-2).
 
 Situations in which the Will Message is published include, but are not limited to:
 
@@ -1016,9 +1035,13 @@ Situations in which the Will Message is published include, but are not limited t
 
 - The Server deletes the Virtual Connection because of a Retry timeout.
 
-«<mark title="Requirement MQTT-SN-3.1.2.2-4"><a name="MQTT-SN-3.1.2.2-4"></a>The Will Message MUST be removed from the stored Session State in the Server once it has been published or the Server has received a DISCONNECT packet with a Reason Code of 0x00 (Normal disconnection) from the Client</mark>»[MQTT‑SN‑3.1.2.2‑4](#tab-MQTT-SN-3.1.2.2-4).
+«<mark title="Requirement MQTT-SN-3.1.2.2.1-3"><a name="MQTT-SN-3.1.2.2.1-3"></a>The Will Message MUST be removed from the stored Session State in the Server once it has been published or the Server has received a DISCONNECT packet with a Reason Code of 0x00 (Normal disconnection) from the Client</mark>»[MQTT‑SN‑3.1.2.2.1‑3](#tab-MQTT-SN-3.1.2.2.1-3).
 
 The Server SHOULD publish Will Messages promptly after the Virtual Connection is deleted or the Session ends, whichever occurs first. In the case of a Server shutdown or failure, the Server MAY defer publication of Will Messages until a subsequent restart. If this happens, there might be a delay between the time the Server experienced failure and when the Will Message is published.
+
+##### 3.1.2.2.2 Will Flag - Transparent Connection <a id='will-flag-transparent'></a>
+
+«<mark title="Requirement MQTT-SN-3.1.2.2.2-1"><a name="MQTT-SN-3.1.2.2.2-1"></a>If the Will Flag is set to 1 the Will Flag in the corresponding MQTT CONNECT Packet MUST also be set to 1</mark>»[MQTT‑SN‑3.1.2.2.2‑1](#tab-MQTT-SN-3.1.2.2.2-1). 
 
 #### 3.1.2.3 Authentication Flag <a id='authentication-flag'></a>
 
@@ -1418,10 +1441,12 @@ The Assigned Client Identifier is the Client Identifier assigned by the Server w
 
 «<mark title="Requirement MQTT-SN-3.2.11-3"><a name="MQTT-SN-3.2.11-3"></a>The Assigned Client Identifier MUST be a new Client Identifier not used by any other Session currently in the Server</mark>»[MQTT‑SN‑3.2.11‑3](#tab-MQTT-SN-3.2.11-3).
 
-It is suggested that the 36 character Universally Unique IDentifier (UUID) format described in RFC9562 is used for MQTT-SN Assigned Client Identifiers. In any case they should be no longer than 36 characters.
-
-(RFC9562 describes UUIDs that are 128 bits in size, 16 bytes or 32 hexadecimal digits. These UUIDs are commonly expressed in 36 characters, including 4 dashes as separators such as the following: *f81d4fae-7dec-11d0-a765-00a0c91e6bf6*.)
-
+> **Informative comment**
+>
+> It is suggested that the 36 character Universally Unique IDentifier (UUID) format described in RFC9562 is used for MQTT-SN Assigned Client Identifiers. In any case they should be no longer than 36 characters.
+>
+> (RFC9562 describes UUIDs that are 128 bits in size, 16 bytes or 32 hexadecimal digits. These UUIDs are commonly expressed in 36 characters, including 4 dashes as separators such as the following: *f81d4fae-7dec-11d0-a765-00a0c91e6bf6*.)
+>
 > **Informative comment**
 >
 > The length of Assigned Client Identifiers should take into account the maximum packet size allowed by the MQTT-SN implementation.
@@ -1429,6 +1454,10 @@ It is suggested that the 36 character Universally Unique IDentifier (UUID) forma
 > **Informative comment**
 >
 > Where a Transparent Gateway receives an Assigned Client Identifier from an MQTT Server which is deemed too long for a device, it should map shorter Gateway generated Client Identifiers with their versions returned from the MQTT Server.
+>
+> **Informative comment**
+>
+> Where an MQTT-SN Client on a Transparent Connection connects with a short Client Identifier because of device limitations, the Gateway may map it to a longer Client Identifier in the corresponding MQTT CONNECT packet.
 
 ## 3.3 AUTH - Authentication Exchange <a id='auth---authentication-exchange'></a>
 
@@ -2688,7 +2717,7 @@ The MQTT-SN packet, encoded according to the packet type.
 
 ## 3.20 Gateway Discovery Packets <a id='gateway-discovery-packets'></a>
 
-The Packets in this section are optional. A description of how this functionality works can be found in [C.7 "Gateway Advertisement and Discovery"](#c.7-gateway-advertisement-and-discovery).
+The Packets in this section are optional. A description of how this functionality works can be found in [C.8 "Gateway Advertisement and Discovery"](#c.8-gateway-advertisement-and-discovery).
 
 ### 3.20.1 ADVERTISE - Gateway Advertisement <a id='advertise---gateway-advertisement'></a>
 
@@ -2791,6 +2820,12 @@ The Session State in the Server consists of:
 
 - The existence of a Session, even if the rest of the Session State is empty.
 
+- If the Session is currently not connected, the time at which the Session will end and Session State will be discarded.
+
+- Session Topic Alias mappings.
+
+If the Session State is associated with a Virtual Connection which is not Transparent, the Session State in the Server also includes:  
+
 - The Client's subscriptions.
 
 - QoS 1 and QoS 2 PUBLISH Packets which have been sent to the Client, but have not been completely acknowledged.
@@ -2800,10 +2835,6 @@ The Session State in the Server consists of:
 - QoS 2 PUBLISH Packets which have been received from the Client, but have not been completely acknowledged.
 
 - The Will Message and associated Will data.
-
-- If the Session is currently not connected, the time at which the Session will end and Session State will be discarded.
-
-- Session Topic Alias mappings.
 
 Retained messages do not form part of the Session State in the Server, they are not deleted as a result of a Session ending.
 
@@ -3118,7 +3149,7 @@ An MQTT-SN Sender may be configured with two parameters to govern its resending 
 
 2.  Maximum Retry Count
 
-on the basis of the expected characteristics of the Underlying Network. Example values for these are suggested in [C.3 "Example Timer and Counter Values"](#c.3-example-timer-and-counter-values). See also [C.4 "Exponential Backoff"](#c.4-exponential-backoff) for guidance on varying the *Retry Interval* to reduce potential network congestion.
+on the basis of the expected characteristics of the Underlying Network. Example values for these are suggested in [C.4 "Example Timer and Counter Values"](#c.4-example-timer-and-counter-values). See also [C.5 "Exponential Backoff"](#c.5-exponential-backoff) for guidance on varying the *Retry Interval* to reduce potential network congestion.
 
 If a response to one of the above request Packets is not received in the *Retry Interval*, the Sender resends the request Packet. The request is repeated at *Retry Interval* intervals, until a response is received or the *Maximum Retry Count* is reached. After the *Maximum Retry Count* is reached and a further *Retry Interval* has passed without a response, the Virtual Connection is deleted.
 
@@ -3606,7 +3637,7 @@ Table 14: Client States
 
 Transition through these states is governed by a sequence of packets between Client and Server and mediated by [4.14.1 "Session Timers"](#session-timers) resident on the Server. A Client is in the Active state when the Server receives a CONNECT packet from that Client. This state is supervised by the Server with the [3.1.6 "Keep Alive"](#keep-alive) timer. If the Server does not receive any packet from the Client in a defined period, the Server will consider that client as Disconnected and delete the Virtual Connection. The Disconnected state is governed by the Session Expiry timer - on expiry the Server is free to remove the Client session. A Client moves into the Asleep state by issuing a SLEEPREQ packet. To be certain that the Server has also recorded the Client as being asleep, the Client needs to wait for a positive SLEEPRESP response. For more information on the Asleep state, refer to [4.14.2 "Sleeping Clients"](#sleeping-clients).
 
-See [C.5 "Client State Diagrams"](#c.5-client-state-diagrams) for informative state diagrams to help illustrate these transitions.
+See [C.6 "Client State Diagrams"](#c.6-client-state-diagrams) for informative state diagrams to help illustrate these transitions.
 
 > **Informative Comment**
 >
@@ -3626,7 +3657,7 @@ The following timers are used by Servers, on a per Client basis, to handle Clien
 <a id="tab-session-timers"></a>
 Table 15: Session Timers
 
-For example values of these timers, see [C.3 "Example Timer and Counter Values"](#c.3-example-timer-and-counter-values).
+For example values of these timers, see [C.4 "Example Timer and Counter Values"](#c.4-example-timer-and-counter-values).
 
 ### 4.14.2 Sleeping Clients <a id='sleeping-clients'></a>
 
@@ -4037,10 +4068,12 @@ Refer to [6 "Conformance"](#conformance) for a definitive list of conformance re
 | <a name="tab-MQTT-SN-3.1.2.1-1"></a>\[[MQTT‑SN‑3.1.2.1‑1](#MQTT-SN-3.1.2.1-1)] | If a CONNECT packet is received with Clean Start is set to 1, the Client and Server MUST discard any existing Session and start a new Session. |
 | <a name="tab-MQTT-SN-3.1.2.1-2"></a>\[[MQTT‑SN‑3.1.2.1‑2](#MQTT-SN-3.1.2.1-2)] | If a CONNECT packet is received with Clean Start set to 0 and there is a Session associated with the Client Identifier, the Server MUST resume communications with the Client based on state from the existing Session. |
 | <a name="tab-MQTT-SN-3.1.2.1-3"></a>\[[MQTT‑SN‑3.1.2.1‑3](#MQTT-SN-3.1.2.1-3)] | If a CONNECT packet is received with Clean Start set to 0 and there is no Session associated with the Client Identifier, the Server MUST create a new Session. |
+| <a name="tab-MQTT-SN-3.1.2.1-4"></a>\[[MQTT‑SN‑3.1.2.1‑4](#MQTT-SN-3.1.2.1-4)] | Where the Virtual Connection is Transparent, the value of the Clean Start Flag MUST be used to set the Clean Start or Clean Session field of the corresponding MQTT CONNECT packet sent to the MQTT Server for this Client. |
 | <a name="tab-MQTT-SN-3.1.2.2-1"></a>\[[MQTT‑SN‑3.1.2.2‑1](#MQTT-SN-3.1.2.2-1)] | If the Will Flag is set to 1, the Will Flags, Will Topic, and Will Payload fields MUST be present in the Packet. |
-| <a name="tab-MQTT-SN-3.1.2.2-2"></a>\[[MQTT‑SN‑3.1.2.2‑2](#MQTT-SN-3.1.2.2-2)] | If the Will Flag is set to 1 this indicates that a Will Message MUST be stored on the Server and associated with the Session. |
-| <a name="tab-MQTT-SN-3.1.2.2-3"></a>\[[MQTT‑SN‑3.1.2.2‑3](#MQTT-SN-3.1.2.2-3)] | The Will Message MUST be published after the Virtual Connection is deleted or the Session ends, unless the Will Message has been deleted by the Server on receipt of a DISCONNECT packet with Reason Code 0x00 (Normal disconnection). |
-| <a name="tab-MQTT-SN-3.1.2.2-4"></a>\[[MQTT‑SN‑3.1.2.2‑4](#MQTT-SN-3.1.2.2-4)] | The Will Message MUST be removed from the stored Session State in the Server once it has been published or the Server has received a DISCONNECT packet with a Reason Code of 0x00 (Normal disconnection) from the Client. |
+| <a name="tab-MQTT-SN-3.1.2.2.1-1"></a>\[[MQTT‑SN‑3.1.2.2.1‑1](#MQTT-SN-3.1.2.2.1-1)] | If the Will Flag is set to 1 this indicates that a Will Message MUST be stored on the Server and associated with the Session. |
+| <a name="tab-MQTT-SN-3.1.2.2.1-2"></a>\[[MQTT‑SN‑3.1.2.2.1‑2](#MQTT-SN-3.1.2.2.1-2)] | The Will Message MUST be published after the Virtual Connection is deleted or the Session ends, unless the Will Message has been deleted by the Server on receipt of a DISCONNECT packet with Reason Code 0x00 (Normal disconnection). |
+| <a name="tab-MQTT-SN-3.1.2.2.1-3"></a>\[[MQTT‑SN‑3.1.2.2.1‑3](#MQTT-SN-3.1.2.2.1-3)] | The Will Message MUST be removed from the stored Session State in the Server once it has been published or the Server has received a DISCONNECT packet with a Reason Code of 0x00 (Normal disconnection) from the Client. |
+| <a name="tab-MQTT-SN-3.1.2.2.2-1"></a>\[[MQTT‑SN‑3.1.2.2.2‑1](#MQTT-SN-3.1.2.2.2-1)] | If the Will Flag is set to 1 the Will Flag in the corresponding MQTT CONNECT Packet MUST also be set to 1. |
 | <a name="tab-MQTT-SN-3.1.2.3-1"></a>\[[MQTT‑SN‑3.1.2.3‑1](#MQTT-SN-3.1.2.3-1)] | If the Authentication Flag is set to 1, the Authentication Method and Authentication Data fields MUST be present in the Packet. |
 | <a name="tab-MQTT-SN-3.1.2.3-2"></a>\[[MQTT‑SN‑3.1.2.3‑2](#MQTT-SN-3.1.2.3-2)] | If the Authentication Flag is set to 0, the Authentication Method and Authentication Data fields MUST NOT be present in the Packet. |
 | <a name="tab-MQTT-SN-3.1.2.4-1"></a>\[[MQTT‑SN‑3.1.2.4‑1](#MQTT-SN-3.1.2.4-1)] | If the Session Expiry Flag is set to 1, the Session Expiry Interval field MUST be present in the Packet. |
@@ -4406,31 +4439,72 @@ It will allow MQTT-SN Clients to set up subscriptions, and publish messages to o
 
 An MQTT-SN Server may choose to incorporate elements of a Broker, Aggregating and Transparent Gateway together. Typically, an Aggregating Gateway will also act as an MQTT-SN Broker.
 
-## C.2 Server Congestion <a id='c.2-server-congestion'></a>
+## C.2 Reason Code Mapping <a id='c.2-reason-code-mapping'></a>
+
+A Transparent Gateway passes Reason Codes between the MQTT-SN Client and the MQTT Server in both directions. This section suggests how they can be mapped.
+
+### C.2.1 MQTT 5.0 <a id='c.2.1-mqtt-5.0'></a>
+
+MQTT-SN Reason Codes share their values with MQTT 5.0 (see [2.3 "Reason Code"](#reason-code)), so in most cases a Transparent Gateway can pass a Reason Code on unchanged. The exceptions are the MQTT Reason Codes that MQTT-SN does not allow in the same packet, and the MQTT-SN only Reason Codes, which have no MQTT equivalent. [Table 17](#tab-mqtt-5-reason-code-mapping) lists them.
+
+| Direction | Packet | Reason Code received | Reason Code sent |
+|:----------|:-------|:---------------------|:-----------------|
+| MQTT Server to Client | CONNACK | 0x97 (Quota exceeded) | 0x89 (Server busy) |
+| MQTT Server to Client | CONNACK | 0x99 (Payload format invalid) | 0x80 (Unspecified error) |
+| MQTT Server to Client | PUBACK, PUBREC | 0x97 (Quota exceeded) | 0xF1 (Congestion) |
+| Client to MQTT Server | PUBACK, PUBREC | 0xF0 (Unknown Topic Alias), 0xF1 (Congestion) | 0x80 (Unspecified error) |
+
+<a id="tab-mqtt-5-reason-code-mapping"></a>
+Table 17: MQTT 5.0 Reason Code mapping
+
+### C.2.2 MQTT 3.1.1 <a id='c.2.2-mqtt-3.1.1'></a>
+
+MQTT 3.1.1 has return codes only in CONNACK and SUBACK, and has no DISCONNECT packet from the Server. [Table 18](#tab-mqtt-3-1-1-reason-code-mapping) shows how a Transparent Gateway can map them.
+
+| Direction | Packet | Received | Sent |
+|:----------|:-------|:---------|:-----|
+| MQTT Server to Client | CONNACK | 0x00 (Connection Accepted) | 0x00 (Success) |
+| MQTT Server to Client | CONNACK | 0x01 (Unacceptable protocol version) | 0x84 (Unsupported Protocol Version) |
+| MQTT Server to Client | CONNACK | 0x02 (Identifier rejected) | 0x85 (Client identifier not valid) |
+| MQTT Server to Client | CONNACK | 0x03 (Server unavailable) | 0x88 (Server unavailable) |
+| MQTT Server to Client | CONNACK | 0x04 (Bad user name or password) | 0x86 (Bad user name or password) |
+| MQTT Server to Client | CONNACK | 0x05 (Not authorized) | 0x87 (Not authorized) |
+| MQTT Server to Client | SUBACK | 0x00, 0x01, 0x02 (Success - Maximum QoS) | 0x00, 0x01, 0x02 (Granted QoS) |
+| MQTT Server to Client | SUBACK | 0x80 (Failure) | 0x80 (Unspecified error) |
+| MQTT Server to Client | PUBACK, PUBREC, PUBREL, PUBCOMP, UNSUBACK | No return code | 0x00 (Success) |
+| MQTT Server to Client | Network Connection closed by the MQTT Server | None | DISCONNECT with 0x80 (Unspecified error) |
+| Client to MQTT Server | DISCONNECT | 0x00 (Normal disconnection) | MQTT DISCONNECT |
+| Client to MQTT Server | DISCONNECT | Any other Reason Code, including 0x04 (Disconnect with will message) | Network Connection closed without an MQTT DISCONNECT, so that the Will Message is published |
+| Client to MQTT Server | PUBACK, PUBREC, PUBREL, PUBCOMP | Any Reason Code | No return code |
+
+<a id="tab-mqtt-3-1-1-reason-code-mapping"></a>
+Table 18: MQTT 3.1.1 return code mapping
+
+## C.3 Server Congestion <a id='c.3-server-congestion'></a>
 
 For CONNECT, PUBLISH, SUBSCRIBE and REGISTER requests, the Server may return the Reason Code *Congestion*, meaning *try again later*.
 
-The requester should wait a reasonable amount of time (*[Congestion Delay)]* before sending a new request to the Server. What constitutes *a reasonable amount of time* depends on the implementation characteristics - it should be configured in the client application based on those. See [C.3 "Example Timer and Counter Values"](#c.3-example-timer-and-counter-values) for an example value.
+The requester should wait a reasonable amount of time (*[Congestion Delay)]* before sending a new request to the Server. What constitutes *a reasonable amount of time* depends on the implementation characteristics - it should be configured in the client application based on those. See [C.4 "Example Timer and Counter Values"](#c.4-example-timer-and-counter-values) for an example value.
 
-## C.3 Example Timer and Counter Values <a id='c.3-example-timer-and-counter-values'></a>
+## C.4 Example Timer and Counter Values <a id='c.4-example-timer-and-counter-values'></a>
 
-[Table 17](#tab-best-practice-values-for-timers-and-counters) gives some values for the timers and counters defined in this specification derived from implementation experience.
+[Table 19](#tab-best-practice-values-for-timers-and-counters) gives some values for the timers and counters defined in this specification derived from implementation experience.
 
 | Name                | Where Defined                                   | Example Value                                                                                                                                                  |
 |:--------------------|:------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Advertise Duration  | [C.7 "Gateway Advertisement and Discovery"](#c.7-gateway-advertisement-and-discovery) | Greater than 15 minutes                                                                                                                                        |
-| Advertise Count     | [C.7 "Gateway Advertisement and Discovery"](#c.7-gateway-advertisement-and-discovery) | 2 - 3                                                                                                                                                          |
-| SEARCHGW Delay      | [C.7 "Gateway Advertisement and Discovery"](#c.7-gateway-advertisement-and-discovery) | 5 seconds                                                                                                                                                      |
-| GWINFO Delay        | [C.7 "Gateway Advertisement and Discovery"](#c.7-gateway-advertisement-and-discovery) | 5 seconds                                                                                                                                                      |
-| Congestion Delay    | [C.2 "Server Congestion"](#c.2-server-congestion)                   | Greater than 5 minutes                                                                                                                                         |
-| Retry Interval      | [4.4.2 "Unacknowledged Packets"](#unacknowledged-packets)                  | Implement [C.4 "Exponential Backoff"](#c.4-exponential-backoff)  with a starting value of 1 second after an initial wait period of 5 seconds. So the first retry will be ~6 seconds. |
+| Advertise Duration  | [C.8 "Gateway Advertisement and Discovery"](#c.8-gateway-advertisement-and-discovery) | Greater than 15 minutes                                                                                                                                        |
+| Advertise Count     | [C.8 "Gateway Advertisement and Discovery"](#c.8-gateway-advertisement-and-discovery) | 2 - 3                                                                                                                                                          |
+| SEARCHGW Delay      | [C.8 "Gateway Advertisement and Discovery"](#c.8-gateway-advertisement-and-discovery) | 5 seconds                                                                                                                                                      |
+| GWINFO Delay        | [C.8 "Gateway Advertisement and Discovery"](#c.8-gateway-advertisement-and-discovery) | 5 seconds                                                                                                                                                      |
+| Congestion Delay    | [C.3 "Server Congestion"](#c.3-server-congestion)                   | Greater than 5 minutes                                                                                                                                         |
+| Retry Interval      | [4.4.2 "Unacknowledged Packets"](#unacknowledged-packets)                  | Implement [C.5 "Exponential Backoff"](#c.5-exponential-backoff)  with a starting value of 1 second after an initial wait period of 5 seconds. So the first retry will be ~6 seconds. |
 | Max. Retry Count    | [4.4.2 "Unacknowledged Packets"](#unacknowledged-packets)                  | 3 – 5                                                                                                                                                          |
-| Max. Retry Interval | [C.4 "Exponential Backoff"](#c.4-exponential-backoff)                 | 60 seconds                                                                                                                                                     |
+| Max. Retry Interval | [C.5 "Exponential Backoff"](#c.5-exponential-backoff)                 | 60 seconds                                                                                                                                                     |
 
 <a id="tab-best-practice-values-for-timers-and-counters"></a>
-Table 17: Best practice values for timers and counters
+Table 19: Best practice values for timers and counters
 
-## C.4 Exponential Backoff <a id='c.4-exponential-backoff'></a>
+## C.5 Exponential Backoff <a id='c.5-exponential-backoff'></a>
 
 The *Retry Interval* for unacknowledged packets can be increased on each retry, to avoid overwhelming recipient network nodes while allowing efficient Virtual Connection reestablishment. The client periodically retries a failed packet with increasing delays between attempts, constrained by a Maximum Retry Interval, interleaved with a suitable seed of randomness.
 
@@ -4458,7 +4532,7 @@ with n incremented by 1 for each iteration (or operation) and the scaling factor
 
 The random number helps to avoid cases where many clients are synchronized by some situation, and all retry at once. The value of the random number ran is recalculated after each retry. The random number should be no larger than the initial *Retry Interval*.
 
-## C.5 Client State Diagrams <a id='c.5-client-state-diagrams'></a>
+## C.6 Client State Diagrams <a id='c.6-client-state-diagrams'></a>
 
 The following diagrams are illustrative, graphical views of the states and transitions. They are not comprehensive but included for guidance.
 
@@ -4471,7 +4545,7 @@ The following diagrams are illustrative, graphical views of the states and trans
 <!-- These two figures both contained image27.jpg which was identical with ServerState.jpg -->
 <!-- TODO: Is this a doubled figure and we did not want to show the ClientState.jpg or ...? -->
 
-## C.6 PUBLISH with QoS -1 <a id='c.6-publish-with-qos--1'></a>
+## C.7 PUBLISH with QoS -1 <a id='c.7-publish-with-qos--1'></a>
 
 <a id="fig-publish-packet-for-qos-1"></a>
 ![PUBLISH Packet for QoS -1](images/publish-qos-minus-1-packet-diagram.png "PUBLISH Packet for QoS -1")
@@ -4480,19 +4554,19 @@ This packet is the MQTT-SN 1.2 equivalent of PUBWOS. It could be supported by a 
 
 This packet can be used by both Clients and Servers to publish data to a topic without establishing a Virtual Connection or Session.
 
-### C.6.1 PUBLISH Header <a id='c.6.1-publish-header'></a>
+### C.7.1 PUBLISH Header <a id='c.7.1-publish-header'></a>
 
 The first 2 or 4 bytes of the packet are encoded according to the variable length packet header format. Refer to [2.1 "Structure of an MQTT-SN Control Packet"](#structure-of-an-mqtt-sn-control-packet) for a detailed description.
 
 However, the Packet Types in MQTT-SN 1.2 are different. The 1.2 Packet Type for PUBLISH is 0x0C.
 
-### C.6.2 PUBLISH Flags <a id='c.6.2-publish-flags'></a>
+### C.7.2 PUBLISH Flags <a id='c.7.2-publish-flags'></a>
 
 The PUBLISH Flags is a 1 byte field which contains flags specifying the content of the packet and the Server behavior. Bits 3-2 of the PUBLISH Flags are reserved and are set to 0.
 
 The Client validates that the reserved flags in the PUBLISH packet are set to 0. If any of the reserved flags is not 0 it is a Malformed Packet.
 
-#### C.6.2.1 Topic Type <a id='c.6.2.1-topic-type'></a>
+#### C.7.2.1 Topic Type <a id='c.7.2.1-topic-type'></a>
 
 **Position**: bits 0 and 1 of the PUBLISH Flags.
 
@@ -4506,57 +4580,57 @@ The Topic Type in MQTT-SN 1.2 is different to that in MQTT-SN 2.0. The values ap
 
 - 0b10 - Short Topic Name. A two byte Topic Name, with the same syntax as Topic Name. However, some 1.2 implementations treated this as a binary field.
 
-#### C.6.2.2 QoS <a id='c.6.2.2-qos'></a>
+#### C.7.2.2 QoS <a id='c.7.2.2-qos'></a>
 
 **Position**: bits 5 and 6 of the PUBLISH Flags.
 
 Set this field to "0b11" for QoS -1.
 
-#### C.6.2.3 DUP <a id='c.6.2.3-dup'></a>
+#### C.7.2.3 DUP <a id='c.7.2.3-dup'></a>
 
 **Position**: bit 7 of the PUBLISH Flags.
 
 Set to 0.
 
-#### C.6.2.4 Retain <a id='c.6.2.4-retain'></a>
+#### C.7.2.4 Retain <a id='c.7.2.4-retain'></a>
 
 **Position**: bit 4 of the PUBLISH Flags.
 
 This flag signifies whether the message is published as a retained message or not. See [4.13 "Retained Messages"](#retained-messages) for more information.
 
-### C.6.3 Topic Alias <a id='c.6.3-topic-alias'></a>
+### C.7.3 Topic Alias <a id='c.7.3-topic-alias'></a>
 
 Only present if the Topic Type is Predefined Topic Alias. Contain a Topic Alias which is preconfigured to be known to both the sender and receiver.
 
-### C.6.4 Topic Short Name <a id='c.6.4-topic-short-name'></a>
+### C.7.4 Topic Short Name <a id='c.7.4-topic-short-name'></a>
 
 Only present if the Topic Type is Short Topic Name.
 
 This is a two byte Topic Name. This Topic Type does not exist in later versions of MQTT-SN. It existed because the original MQTT-SN 1.2 did not allow a Long Topic Name, so the only other option for this packet was a Predefined Topic Alias.
 
-### C.6.5 Topic Name Length <a id='c.6.5-topic-name-length'></a>
+### C.7.5 Topic Name Length <a id='c.7.5-topic-name-length'></a>
 
 Only present if the Topic Type is Topic Name.
 
 The length of the Topic Name field.
 
-### C.6.6 Topic Name <a id='c.6.6-topic-name'></a>
+### C.7.6 Topic Name <a id='c.7.6-topic-name'></a>
 
 Only present if the Topic Type is Topic Name.
 
 Topic Name is a UTF-8 encoded string of length Topic Name Length.
 
-### C.6.7 Payload <a id='c.6.7-payload'></a>
+### C.7.7 Payload <a id='c.7.7-payload'></a>
 
 The Payload contains the payload data of the Application Message that is being published. The content and format of the data is application specific. It is valid for a PUBLISH packet to contain a zero length Payload.
 
-### C.6.8 PUBLISH with QoS -1 Actions <a id='c.6.8-publish-with-qos--1-actions'></a>
+### C.7.8 PUBLISH with QoS -1 Actions <a id='c.7.8-publish-with-qos--1-actions'></a>
 
 The Client or Server uses a PUBLISH QoS -1 packet to send an Application Message to a Network Address, for possible receipt by a Server or another Client.
 
 If received by a Client or Server, the PUBLISH QoS -1 packet is treated as if its QoS were 0 as described in [3.6.2.7 "PUBLISH Actions"](#publish-actions).
 
-## C.7 Gateway Advertisement and Discovery <a id='c.7-gateway-advertisement-and-discovery'></a>
+## C.8 Gateway Advertisement and Discovery <a id='c.8-gateway-advertisement-and-discovery'></a>
 
 Clients might have foreknowledge of how to reach a Gateway, but in dynamic networks they may not. MQTT-SN supports mechanisms to allow Clients to find available MQTT-SN Gateways. This support is optional - it may not be needed. In some implementations, the underlying network technology might be used for this purpose instead.
 
@@ -4582,7 +4656,7 @@ Upon receiving a SEARCHGW packet a Gateway replies with a GWINFO packet containi
 
 To give priority to Gateways a client delays its sending of the GWINFO packet for a random time *[GWINFO Delay]*. If during this delay the Client receives a GWINFO packet it cancels the sending of its own GWINFO packet.
 
-If there is no response, the SEARCHGW packet may be retransmitted. In this case the time intervals between consecutive SEARCHGW packets should be increased by an exponential backoff algorithm such as that described in [C.4 "Exponential Backoff"](#c.4-exponential-backoff).
+If there is no response, the SEARCHGW packet may be retransmitted. In this case the time intervals between consecutive SEARCHGW packets should be increased by an exponential backoff algorithm such as that described in [C.5 "Exponential Backoff"](#c.5-exponential-backoff).
 
 # Appendix D. Revision History (informative) <a id='revision-history-informative'></a>
 

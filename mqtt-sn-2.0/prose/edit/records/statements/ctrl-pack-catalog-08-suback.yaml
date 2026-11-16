@@ -41,3 +41,8 @@ statements:
   binds-by: sender of SUBACK (packet format)
 - id: MQTT-SN-3.8.5-1
   text: The sender of the SUBACK Packet MUST use one of the Reason Codes applicable to SUBACK
+- id: MQTT-SN-3.8.5-2
+  text: Where the corresponding MQTT connection uses MQTT 3.1.1 and the SUBSCRIBE requests a subscription option that MQTT 3.1.1 cannot provide, the Server MUST send a SUBACK with Reason Code 0xF5 (Function not available)
+  binds:
+  - server
+  binds-by: subject

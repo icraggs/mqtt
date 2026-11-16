@@ -59,7 +59,7 @@ An MQTT-SN Sender may be configured with two parameters to govern its resending 
 
 2.  Maximum Retry Count
 
-on the basis of the expected characteristics of the Underlying Network. Example values for these are suggested in [sec](#c.3-example-timer-and-counter-values). See also [sec](#c.4-exponential-backoff) for guidance on varying the *Retry Interval* to reduce potential network congestion.
+on the basis of the expected characteristics of the Underlying Network. Example values for these are suggested in [sec](#c.4-example-timer-and-counter-values). See also [sec](#c.5-exponential-backoff) for guidance on varying the *Retry Interval* to reduce potential network congestion.
 
 If a response to one of the above request Packets is not received in the *Retry Interval*, the Sender resends the request Packet. The request is repeated at *Retry Interval* intervals, until a response is received or the *Maximum Retry Count* is reached. After the *Maximum Retry Count* is reached and a further *Retry Interval* has passed without a response, the Virtual Connection is deleted.
 

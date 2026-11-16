@@ -50,3 +50,5 @@ The Reason Code for the SUBACK packet is optional - its existence is inferred fr
 
 The values of Reason Codes are shown in [sec](#reason-code).
 «<mark title="Requirement MQTT-SN-3.8.5-1"><a name="MQTT-SN-3.8.5-1"></a>The sender of the SUBACK Packet MUST use one of the Reason Codes applicable to SUBACK</mark>»[MQTT‑SN‑3.8.5‑1](#tab-MQTT-SN-3.8.5-1).
+
+«<mark title="Requirement MQTT-SN-3.8.5-2"><a name="MQTT-SN-3.8.5-2"></a>Where the corresponding MQTT connection uses MQTT 3.1.1 and the SUBSCRIBE requests a subscription option that MQTT 3.1.1 cannot provide, the Server MUST send a SUBACK with Reason Code 0xF5 (Function not available)</mark>»[MQTT‑SN‑3.8.5‑2](#tab-MQTT-SN-3.8.5-2).

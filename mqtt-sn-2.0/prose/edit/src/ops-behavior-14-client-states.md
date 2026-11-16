@@ -26,7 +26,7 @@ Table: Client States{#tab-client-states}
 
 Transition through these states is governed by a sequence of packets between Client and Server and mediated by [sec](#session-timers) resident on the Server. A Client is in the Active state when the Server receives a CONNECT packet from that Client. This state is supervised by the Server with the [sec](#keep-alive) timer. If the Server does not receive any packet from the Client in a defined period, the Server will consider that client as Disconnected and delete the Virtual Connection. The Disconnected state is governed by the Session Expiry timer - on expiry the Server is free to remove the Client session. A Client moves into the Asleep state by issuing a SLEEPREQ packet. To be certain that the Server has also recorded the Client as being asleep, the Client needs to wait for a positive SLEEPRESP response. For more information on the Asleep state, refer to [sec](#sleeping-clients).
 
-See [sec](#c.5-client-state-diagrams) for informative state diagrams to help illustrate these transitions.
+See [sec](#c.6-client-state-diagrams) for informative state diagrams to help illustrate these transitions.
 
 > **Informative Comment**
 >
@@ -45,7 +45,7 @@ The following timers are used by Servers, on a per Client basis, to handle Clien
 
 Table: Session Timers{#tab-session-timers}
 
-For example values of these timers, see [sec](#c.3-example-timer-and-counter-values).
+For example values of these timers, see [sec](#c.4-example-timer-and-counter-values).
 
 ### Sleeping Clients{#sleeping-clients}
 
@@ -76,6 +76,8 @@ The Client wakes by sending a PINGREQ. If the Server has buffered packets for th
 «<mark title="Requirement MQTT-SN-4.14.2-6"><a name="MQTT-SN-4.14.2-6"></a>If, during the delivery of Application Messages from the Server to the Client, and applying the <mark title="Ephemeral region marking">retry logic of [sec](#unacknowledged-packets), the Server gets no response, it MUST consider the Client disconnected and delete the Virtual Connection</mark></mark>»[MQTT‑SN‑4.14.2‑6](#tab-MQTT-SN-4.14.2-6). It may send a DISCONNECT packet with an appropriate Reason Code.
 
 The transfer of packets to the Client is closed by the Server by means of a PINGRESP packet. That is, the Server will consider the Client as Asleep and restart the Sleep Duration timer after having sent the PINGRESP packet. «<mark title="Requirement MQTT-SN-4.14.2-7"><a name="MQTT-SN-4.14.2-7"></a>If the Server does not have any packets buffered for the client, it MUST respond immediately with a PINGRESP packet</mark>»[MQTT‑SN‑4.14.2‑7](#tab-MQTT-SN-4.14.2-7), returning the Client back to the Asleep state, and restarting the Sleep Duration timer for that Client.
+
+«<mark title="Requirement MQTT-SN-4.14.2-8"><a name="MQTT-SN-4.14.2-8"></a>If the Virtual Connection is Transparent and the Client is Asleep, the Server MUST acknowledge a QoS 1 or QoS 2 Application Message received on the corresponding MQTT connection when it receives it, and buffer it for delivery to the Client</mark>»[MQTT‑SN‑4.14.2‑8](#tab-MQTT-SN-4.14.2-8).
 
 After having sent the PINGREQ to the Server, the Client uses the retransmission procedure of [sec](#packet-delivery-retry) to supervise the arrival of packets sent by the Server. To avoid draining its battery due to excessive retransmission of the PINGREQ packet, the Client should limit the retransmission with a Maximum Retry Count, and go back to sleep when the limit is reached.
 

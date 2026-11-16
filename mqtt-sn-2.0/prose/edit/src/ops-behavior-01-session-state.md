@@ -16,6 +16,12 @@ The Session State in the Server consists of:
 
 - The existence of a Session, even if the rest of the Session State is empty.
 
+- If the Session is currently not connected, the time at which the Session will end and Session State will be discarded.
+
+- Session Topic Alias mappings.
+
+If the Session State is associated with a Virtual Connection which is not Transparent, the Session State in the Server also includes:  
+
 - The Client's subscriptions.
 
 - QoS 1 and QoS 2 PUBLISH Packets which have been sent to the Client, but have not been completely acknowledged.
@@ -26,9 +32,13 @@ The Session State in the Server consists of:
 
 - The Will Message and associated Will data.
 
-- If the Session is currently not connected, the time at which the Session will end and Session State will be discarded.
+If the Session State is associated with a Transparent Virtual Connection, the Session State in the Server also includes:
 
-- Session Topic Alias mappings.
+- Application Messages received from the MQTT Server and buffered for the Client while it is Asleep.
+
+- QoS 1 and QoS 2 PUBLISH Packets exchanged with the Client which have not been completely acknowledged.
+
+The rest of the Session State of a Transparent Virtual Connection is held by the MQTT Server (see [sec](#transparent-virtual-connections)).
 
 Retained messages do not form part of the Session State in the Server, they are not deleted as a result of a Session ending.
 
@@ -58,4 +68,4 @@ If the Server can not accept the CONNECT request the Server returns a CONNACK pa
 
 «<mark title="Requirement MQTT-SN-4.1.2-1"><a name="MQTT-SN-4.1.2-1"></a>If the Client provides no client identifier, the Server MUST respond with a CONNACK containing an Assigned Client Identifier</mark>»[MQTT‑SN‑4.1.2‑1](#tab-MQTT-SN-4.1.2-1).
 
-«<mark title="Requirement MQTT-SN-4.1.2-2"><a name="MQTT-SN-4.1.2-2"></a>An Assigned Client Identifier MUST be a new Client Identifier not used by any other Session currently in the Server</mark>»[MQTT‑SN‑4.1.2‑2](#tab-MQTT-SN-4.1.2-2).
+«<mark title="Requirement MQTT-SN-4.1.2-2"><a name="MQTT-SN-4.1.2-2"></a>If the Virtual Connection is not Transparent, an Assigned Client Identifier MUST be a new Client Identifier not used by any other Session currently in the Server</mark>»[MQTT‑SN‑4.1.2‑2](#tab-MQTT-SN-4.1.2-2).

@@ -54,7 +54,7 @@ The maximum QoS. This gives the maximum QoS level at which the Server can send A
 
 **Position**: bit 7 of the SUBSCRIBE Flags.
 
-«<mark title="Requirement MQTT-SN-3.7.2.5-1"><a name="MQTT-SN-3.7.2.5-1"></a>if the value is 1, Application Messages MUST NOT be forwarded to a Virtual Connection with a Client Identifier equal to the Client Identifier of the publishing Virtual Connection</mark>»[MQTT‑SN‑3.7.2.5‑1](#tab-MQTT-SN-3.7.2.5-1).
+«<mark title="Requirement MQTT-SN-3.7.2.5-1"><a name="MQTT-SN-3.7.2.5-1"></a>if the value is 1 and the Virtual Connection is not Transparent, Application Messages MUST NOT be forwarded to a Virtual Connection with a Client Identifier equal to the Client Identifier of the publishing Virtual Connection</mark>»[MQTT‑SN‑3.7.2.5‑1](#tab-MQTT-SN-3.7.2.5-1).
 
 > **Informative Comment**
 >
@@ -88,9 +88,9 @@ This existence or absence of this field is inferred from the Packet length.
 
 «<mark title="Requirement MQTT-SN-3.7.6-2"><a name="MQTT-SN-3.7.6-2"></a>The SUBACK packet MUST have the same Packet Identifier as the SUBSCRIBE packet that it is acknowledging</mark>»[MQTT‑SN‑3.7.6‑2](#tab-MQTT-SN-3.7.6-2).
 
-«<mark title="Requirement MQTT-SN-3.7.6-3"><a name="MQTT-SN-3.7.6-3"></a>If a Server receives a SUBSCRIBE packet containing a Topic Filter that is identical to a Subscription's Topic Filter for the current Session, then it MUST replace that existing Subscription with a new Subscription</mark>»[MQTT‑SN‑3.7.6‑3](#tab-MQTT-SN-3.7.6-3). The Topic Filter in the new Subscription will be identical to that in the previous Subscription, although its Subscription Options could be different.
+«<mark title="Requirement MQTT-SN-3.7.6-3"><a name="MQTT-SN-3.7.6-3"></a>If the Virtual Connection is not Transparent, if a Server receives a SUBSCRIBE packet containing a Topic Filter that is identical to a Subscription's Topic Filter for the current Session, then it MUST replace that existing Subscription with a new Subscription</mark>»[MQTT‑SN‑3.7.6‑3](#tab-MQTT-SN-3.7.6-3). The Topic Filter in the new Subscription will be identical to that in the previous Subscription, although its Subscription Options could be different.
 
-«<mark title="Requirement MQTT-SN-3.7.6-4"><a name="MQTT-SN-3.7.6-4"></a>If the Retain Handling option is 0, any existing retained messages matching the Topic Filter MUST be re-sent, but Application Messages MUST NOT be lost due to replacing the Subscription</mark>»[MQTT‑SN‑3.7.6‑4](#tab-MQTT-SN-3.7.6-4).
+«<mark title="Requirement MQTT-SN-3.7.6-4"><a name="MQTT-SN-3.7.6-4"></a>If the Virtual Connection is not Transparent, if the Retain Handling option is 0, any existing retained messages matching the Topic Filter MUST be re-sent, but Application Messages MUST NOT be lost due to replacing the Subscription</mark>»[MQTT‑SN‑3.7.6‑4](#tab-MQTT-SN-3.7.6-4).
 
 If a Server receives a Topic Filter that is not identical to any Topic Filter for the current Session, a new Subscription is created. If the Retain Handling option is not 2, all matching retained messages are sent to the Client.
 
@@ -98,7 +98,9 @@ If a Server receives a Topic Filter that is not identical to any Topic Filter fo
 
 «<mark title="Requirement MQTT-SN-3.7.6-6"><a name="MQTT-SN-3.7.6-6"></a>This Reason Code MUST either show the maximum QoS that was granted for that Subscription or indicate that the subscription failed</mark>»[MQTT‑SN‑3.7.6‑6](#tab-MQTT-SN-3.7.6-6). The Server might grant a lower Maximum QoS than the subscriber requested.
 
-«<mark title="Requirement MQTT-SN-3.7.6-7"><a name="MQTT-SN-3.7.6-7"></a>The QoS of Application Messages sent in response to a Subscription MUST be the minimum of the QoS of the originally published Application message and the Maximum QoS granted by the Server</mark>»[MQTT‑SN‑3.7.6‑7](#tab-MQTT-SN-3.7.6-7). The server is permitted to send duplicate copies of an Application message to a subscriber in the case where the original Application message was published with QoS 1 and the maximum QoS granted was QoS 0.
+«<mark title="Requirement MQTT-SN-3.7.6-7"><a name="MQTT-SN-3.7.6-7"></a>If the Virtual Connection is not Transparent, the QoS of Application Messages sent in response to a Subscription MUST be the minimum of the QoS of the originally published Application message and the Maximum QoS granted by the Server</mark>»[MQTT‑SN‑3.7.6‑7](#tab-MQTT-SN-3.7.6-7). The server is permitted to send duplicate copies of an Application message to a subscriber in the case where the original Application message was published with QoS 1 and the maximum QoS granted was QoS 0.
+
+«<mark title="Requirement MQTT-SN-3.7.6-8"><a name="MQTT-SN-3.7.6-8"></a>If the Virtual Connection is Transparent, the Reason Code in the SUBACK MUST be derived from the Reason Code in the corresponding MQTT SUBACK</mark>»[MQTT‑SN‑3.7.6‑8](#tab-MQTT-SN-3.7.6-8).
 
 > **Informative comment**
 >

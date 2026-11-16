@@ -8,7 +8,7 @@ An MQTT-SN Server conforms to this specification only if it satisfies all the st
 
 1.  The format of all MQTT-SN Control Packets that the Server sends matches the format described in [sec](#mqtt-sn-control-packet-format) and [sec](#mqtt-sn-control-packets).
 
-2.  It follows the Topic matching rules described in [sec](#topic-names-and-topic-filters) and the Subscription rules in [sec](#subscriptions).
+2.  It follows the Topic matching rules described in [sec](#topic-names-and-topic-filters) and the Subscription rules in [sec](#subscriptions). For Transparent Virtual Connections, these rules are followed by the MQTT Server (see [sec](#transparent-virtual-connections)).
 
 3.  It satisfies the MUST level requirements in the following chapters that are identified except for those that only apply to the Client:
 

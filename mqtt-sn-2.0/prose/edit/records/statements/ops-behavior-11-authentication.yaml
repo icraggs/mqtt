@@ -23,6 +23,16 @@ statements:
   binds:
   - client
   binds-by: subject
+- id: MQTT-SN-4.11.1-8
+  text: If the Virtual Connection is Transparent, the Server MAY authenticate the Client itself, or MAY relay the Authentication Method and Authentication Data to the MQTT Server in the corresponding MQTT CONNECT and AUTH packets
+  binds:
+  - server
+  binds-by: subject
+- id: MQTT-SN-4.11.1-9
+  text: If the Virtual Connection is Transparent and the corresponding MQTT connection uses MQTT 3.1.1, the Server MUST perform any authentication that uses an Authentication Method itself
+  binds:
+  - server
+  binds-by: subject
 - id: MQTT-SN-4.11.1.1-1
   text: If the Client supplied an Authentication Method in the CONNECT packet, it can initiate a re-authentication at any time after receiving a CONNACK. It does this by sending an AUTH packet with a Reason Code of 0x19 (Re-authentication). The Client MUST set the Authentication Method to the same value as the Authentication Method originally used to authenticate the Virtual Connection
   binds:

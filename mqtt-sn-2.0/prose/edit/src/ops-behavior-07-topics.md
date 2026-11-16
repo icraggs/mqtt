@@ -66,7 +66,7 @@ The plus sign ('+' U+002B) is a wildcard character that matches only one topic l
 
 #### Topics beginning with \${#topics-beginning-with-dollar}
 
-«<mark title="Requirement MQTT-SN-4.7.1.2-1"><a name="MQTT-SN-4.7.1.2-1"></a>The Server MUST NOT match Topic Filters starting with a wildcard character (# or +) with Topic Names beginning with a \$ character</mark>»[MQTT‑SN‑4.7.1.2‑1](#tab-MQTT-SN-4.7.1.2-1). The Server SHOULD prevent Clients from using such Topic Names to exchange messages with other Clients. Server implementations MAY use Topic Names that start with a leading \$ character for other purposes.
+«<mark title="Requirement MQTT-SN-4.7.1.2-1"><a name="MQTT-SN-4.7.1.2-1"></a>If the Virtual Connection is not Transparent, the Server MUST NOT match Topic Filters starting with a wildcard character (# or +) with Topic Names beginning with a \$ character</mark>»[MQTT‑SN‑4.7.1.2‑1](#tab-MQTT-SN-4.7.1.2-1). The Server SHOULD prevent Clients from using such Topic Names to exchange messages with other Clients. Server implementations MAY use Topic Names that start with a leading \$ character for other purposes.
 
 > **Informative comment**
 >
@@ -106,7 +106,7 @@ The following rules apply to Topic Names and Topic Filters:
 
 There is no limit to the number of levels in a Topic Name or Topic Filter, other than that imposed by the overall length of a UTF-8 Encoded String.
 
-«<mark title="Requirement MQTT-SN-4.7.1.3-4"><a name="MQTT-SN-4.7.1.3-4"></a>When it performs subscription matching the Server MUST NOT perform any normalization of Topic Names or Topic Filters, or any modification or substitution of unrecognized characters</mark>»[MQTT‑SN‑4.7.1.3‑4](#tab-MQTT-SN-4.7.1.3-4). Each non-wildcarded level in the Topic Filter has to match the corresponding level in the Topic Name character for character for the match to succeed.
+«<mark title="Requirement MQTT-SN-4.7.1.3-4"><a name="MQTT-SN-4.7.1.3-4"></a>If the Virtual Connection is not Transparent, when it performs subscription matching the Server MUST NOT perform any normalization of Topic Names or Topic Filters, or any modification or substitution of unrecognized characters</mark>»[MQTT‑SN‑4.7.1.3‑4](#tab-MQTT-SN-4.7.1.3-4). Each non-wildcarded level in the Topic Filter has to match the corresponding level in the Topic Name character for character for the match to succeed.
 
 > **Informative comment**
 >
@@ -135,6 +135,8 @@ A Subscription contains a Topic Filter, which is a Topic Name that is allowed to
 «<mark title="Requirement MQTT-SN-4.7.2-1"><a name="MQTT-SN-4.7.2-1"></a>If a Topic Alias exists for a Topic Name, a Sender (Client or Server) MUST use that Topic Alias and not the Topic Name in any PUBLISH packet</mark>»[MQTT‑SN‑4.7.2‑1](#tab-MQTT-SN-4.7.2-1).
 
 A Predefined or Session Topic Alias of 0 is not permitted. «<mark title="Requirement MQTT-SN-4.7.2-2"><a name="MQTT-SN-4.7.2-2"></a>A sender MUST NOT send any Control Packet containing a Predefined or Session Topic Alias which has the value 0</mark>»[MQTT‑SN‑4.7.2‑2](#tab-MQTT-SN-4.7.2-2).
+
+«<mark title="Requirement MQTT-SN-4.7.2-3"><a name="MQTT-SN-4.7.2-3"></a>If the Virtual Connection is Transparent, the Server MUST replace any Predefined or Session Topic Alias with its Topic Name, or with an MQTT Topic Alias for that Topic Name, before forwarding a packet on the corresponding MQTT connection</mark>»[MQTT‑SN‑4.7.2‑3](#tab-MQTT-SN-4.7.2-3).
 
 #### Predefined Topic Aliases{#predefined-topic-aliases}
 

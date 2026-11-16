@@ -19,6 +19,8 @@ The Reason Codes share a common set of values as shown below.
 | 24 | 0x18 | Continue authentication | AUTH | Continue the authentication with another step. |
 | 25 | 0x19 | Re-authenticate | AUTH (client only) | Initiate a re-authentication. |
 | 26 | 0x1A | Topic Alias Exists | REGACK | A Session Topic Alias was requested, but a Session or Predefined Topic Alias already exists. (MQTT-SN only) |
+| 27 | 0x1B | Success - Transparent (MQTT 5.0) | CONNACK | The Virtual Connection is created and is Transparent, using MQTT 5.0 on its corresponding MQTT connection. (MQTT-SN only) |
+| 28 | 0x1C | Success - Transparent (MQTT 3.1.1) | CONNACK | The Virtual Connection is created and is Transparent, using MQTT 3.1.1 on its corresponding MQTT connection. (MQTT-SN only) |
 | 128 | 0x80 | Unspecified error | CONNACK, PUBACK, PUBREC, SUBACK, UNSUBACK, DISCONNECT | The receiver does not accept the request but either does not want to reveal the reason, or it does not match one of the other values. |
 | 129 | 0x81 | Malformed packet | CONNACK, DISCONNECT | The received packet does not conform to this specification. |
 | 130 | 0x82 | Protocol error | CONNACK, DISCONNECT | An unexpected or out of order packet was received. |
@@ -42,9 +44,9 @@ The Reason Codes share a common set of values as shown below.
 | 148 | 0x94 | Topic alias invalid | DISCONNECT (server only) | The Client or Server has received a PUBLISH packet containing a Topic Alias which is greater than the Maximum Topic Alias it sent in the CONNECT or CONNACK packet.  (Transparent gateway only) |
 | 149 | 0x95 | Packet too large | CONNACK, DISCONNECT | The packet size is greater than Maximum Packet Size for this Client or Server. |
 | 150 | 0x96 | Packet rate too high | DISCONNECT | The received data rate is too high. |
-| 151 | 0x97 | Quota exceeded | REGACK, SUBACK, DISCONNECT | An implementation or administrative imposed limit has been exceeded. |
+| 151 | 0x97 | Quota exceeded | CONNACK, PUBACK, PUBREC, REGACK, SUBACK, DISCONNECT | An implementation or administrative imposed limit has been exceeded. |
 | 152 | 0x98 | Administrative action | DISCONNECT | The Virtual Connection is deleted due to an administrative action. |
-| 153 | 0x99 | Payload format invalid | PUBACK, PUBREC, DISCONNECT (server only) | The MQTT payload format does not match the one specified by the Payload Format Indicator. (Transparent gateway only) |
+| 153 | 0x99 | Payload format invalid | CONNACK, PUBACK, PUBREC, DISCONNECT (server only) | The MQTT payload format does not match the one specified by the Payload Format Indicator. (Transparent gateway only) |
 | 154 | 0x9A | Retain not supported | CONNACK, DISCONNECT (server only) | The MQTT Server does not support retained messages. (Transparent gateway only) |
 | 155 | 0x9B | QoS not supported | CONNACK, DISCONNECT (server only) | The Client specified a QoS greater than the QoS specified in a Maximum QoS in the MQTT CONNACK. (Transparent gateway only) |
 | 156 | 0x9C | Use another server | CONNACK, DISCONNECT (server only) | The Client should temporarily change its Server. |
@@ -58,11 +60,12 @@ The Reason Codes share a common set of values as shown below.
 | 231 | 0xE7 | Protection scheme invalid | DISCONNECT | Specific to MQTT-SN |
 | 232 | 0xE8 | Unknown Sender Id | DISCONNECT | Specific to MQTT-SN |
 | 240 | 0xF0 | Unknown Topic Alias | PUBACK, PUBREC, SUBACK, UNSUBACK, REGACK | Specific to MQTT-SN |
-| 241 | 0xF1 | Congestion | SUBACK, REGACK, CONNACK, PUBACK, PUBREC | Try again later. See [C.3 Server Congestion](#c.2-server-congestion) (MQTT-SN only) |
+| 241 | 0xF1 | Congestion | SUBACK, REGACK (server only), CONNACK, PUBACK (server only), PUBREC (server only) | Try again later. See [C.3 Server Congestion](#c.3-server-congestion) (MQTT-SN only) |
 | 242 | 0xF2 | Protection packet not supported | DISCONNECT | Specific to MQTT-SN |
 | 243 | 0xF3 | Forwarder Encapsulation not supported | DISCONNECT | Specific to MQTT-SN |
 | 244 | 0xF4 | No Virtual Connection exists | DISCONNECT | Specific to MQTT-SN |
-| 245 \- 255 | 0xF5 \- 0xFF | Reserved for MQTT-SN |  | Specific to MQTT-SN |
+| 245 | 0xF5 | Function not available | CONNACK, SUBACK | The function requested is not available because the corresponding MQTT connection of the Transparent Virtual Connection uses MQTT 3.1.1. (MQTT-SN only) |
+| 246 \- 255 | 0xF6 \- 0xFF | Reserved for MQTT-SN |  | Specific to MQTT-SN |
 
 Table: Reason Codes{#tab-reason-codes}
 

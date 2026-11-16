@@ -44,9 +44,9 @@ The Topic Filter is an UTF-8 Encoded String. The existence or absence of this fi
 
 «<mark title="Requirement MQTT-SN-3.9.6-1"><a name="MQTT-SN-3.9.6-1"></a>If a Topic Alias is used in an UNSUBSCRIBE request, it MUST be translated to its equivalent Topic Name before any other action takes place</mark>»[MQTT‑SN‑3.9.6‑1](#tab-MQTT-SN-3.9.6-1).
 
-«<mark title="Requirement MQTT-SN-3.9.6-2"><a name="MQTT-SN-3.9.6-2"></a>The Topic Filter (whether it contains wildcards or not) supplied in an UNSUBSCRIBE packet MUST be compared character-by-character with the current set of Topic Filters held by the Server for the Client. If any filter matches exactly then its owning Subscription MUST be deleted</mark>»[MQTT‑SN‑3.9.6‑2](#tab-MQTT-SN-3.9.6-2), otherwise no additional processing occurs.
+«<mark title="Requirement MQTT-SN-3.9.6-2"><a name="MQTT-SN-3.9.6-2"></a>If the Virtual Connection is not Transparent, the Topic Filter (whether it contains wildcards or not) supplied in an UNSUBSCRIBE packet MUST be compared character-by-character with the current set of Topic Filters held by the Server for the Client. If any filter matches exactly then its owning Subscription MUST be deleted</mark>»[MQTT‑SN‑3.9.6‑2](#tab-MQTT-SN-3.9.6-2), otherwise no additional processing occurs.
 
-<mark title="Ephemeral region marking">When a Server receives UNSUBSCRIBE</mark> :
+<mark title="Ephemeral region marking">When a Server receives UNSUBSCRIBE on a Virtual Connection which is not Transparent</mark> :
 
 - «<mark title="Requirement MQTT-SN-3.9.6-3"><a name="MQTT-SN-3.9.6-3"></a>It MUST stop adding any new Application Messages which match the Topic Filters, for delivery to the Client</mark>»[MQTT‑SN‑3.9.6‑3](#tab-MQTT-SN-3.9.6-3).
 

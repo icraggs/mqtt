@@ -84,3 +84,39 @@ Virtual Connections link a Network Identity with a Session. For those Packets ot
 > **Informative Comment**
 >
 > The Network Address was the usual method of identifying the Sender in MQTT-SN 1.2, but may not be secure, or work in environments where the Network Address of a Client device may change during the lifetime of a Virtual Connection.
+
+### Transparent Virtual Connections{#transparent-virtual-connections}
+
+A Transparent Virtual Connection is a Virtual Connection that uses a corresponding MQTT connection to an MQTT Server for some of its services, instead of implementing them itself (see [sec](#terminology)). The Gateway opens one MQTT connection, using MQTT 5.0 or MQTT 3.1.1, for each Transparent Virtual Connection. A Transparent Gateway uses only Transparent Virtual Connections; other Gateways can use them for some Clients and not for others.
+
+The MQTT Server provides these services for a Transparent Virtual Connection:
+
+- Subscriptions and the matching of Topic Names to Topic Filters ([sec](#subscriptions)). The Gateway forwards SUBSCRIBE and UNSUBSCRIBE requests to the MQTT Server and returns the results to the Client.
+
+- Retained Messages ([sec](#retained-messages)).
+
+- Will Messages. The Will fields of the CONNECT packet are copied to the MQTT CONNECT packet, and the MQTT Server stores and publishes the Will Message ([sec](#will-flag-transparent)).
+
+- The Session State listed in [sec](#session-state) for Virtual Connections which are not Transparent: the subscriptions, and the PUBLISH packets in flight or pending transmission. The Session Present flag in the CONNACK is taken from the MQTT CONNACK ([sec](#session-present)).
+
+The Gateway provides these services itself:
+
+- Keep Alive, which applies to each connection separately. The Gateway keeps the MQTT connection open for as long as the Virtual Connection exists, including while the Client is Asleep ([sec](#keep-alive)).
+
+- Topic Aliases. MQTT-SN Topic Aliases work differently from MQTT 5.0 Topic Aliases, so they are local to the Gateway, which replaces them with Topic Names before forwarding a packet to the MQTT Server ([sec](#topic-aliases)). Over MQTT 5.0, the Gateway can choose to use its own MQTT Topic Aliases on the MQTT connection instead of Topic Names.
+
+- Sleeping Clients. While the Client is Asleep, the Gateway buffers Application Messages received from the MQTT Server, acknowledging them to the MQTT Server on receipt, and delivers them when the Client wakes ([sec](#sleeping-clients)).
+
+- Authentication. The Gateway can authenticate the Client itself, or relay the Authentication Method and Authentication Data to the MQTT Server in the MQTT CONNECT and AUTH packets. MQTT 3.1.1 has no extended authentication, so over an MQTT 3.1.1 connection the Gateway performs it itself ([sec](#authentication)).
+
+The lifecycle of a Transparent Virtual Connection follows that of its MQTT connection:
+
+1.  On receipt of a CONNECT packet, the Gateway sends an MQTT CONNECT packet to the MQTT Server. Clean Start and the Session Expiry Interval are copied to it ([sec](#clean-start-flag), [sec](#session-expiry-interval)). The Client Identifier is copied, or mapped to a longer one where the device can only use a short identifier. Over MQTT 3.1.1, where the Client sends a zero-length Client Identifier, the Gateway generates one and returns it as the Assigned Client Identifier ([sec](#assigned-client-identifier)).
+
+2.  The Gateway sends a successful CONNACK to the Client only after it has received a successful MQTT CONNACK ([sec](#connect-actions)). Its Reason Code is 0x1B if the corresponding MQTT connection uses MQTT 5.0, or 0x1C if it uses MQTT 3.1.1, so the Client can tell that its Virtual Connection is Transparent ([sec](#reason-code)). Over MQTT 3.1.1, where a CONNECT or SUBSCRIBE packet requests a function that MQTT 3.1.1 cannot provide, the Gateway responds with Reason Code 0xF5 (Function not available).
+
+3.  PUBLISH packets are forwarded at the same QoS. The Gateway acknowledges a PUBLISH from the Client only after the MQTT Server has acknowledged it, so that the Gateway holds as little state as possible ([sec](#publish-actions)).
+
+4.  A DISCONNECT from the Client is forwarded to the MQTT Server with the same Reason Code and Session Expiry Interval. If the Gateway deletes the Virtual Connection for any other reason, such as a Keep Alive timeout, it closes the MQTT connection in a way that causes the MQTT Server to publish the Will Message. If the MQTT connection is closed, the Gateway sends a DISCONNECT to the Client and deletes the Virtual Connection ([sec](#disconnect-actions)).
+
+Reason Codes are passed between the Client and the MQTT Server as described in [sec](#c.2-reason-code-mapping). PUBWOS packets have no Virtual Connection, so a Transparent Gateway needs a separate MQTT connection to forward them ([sec](#c.1.1-transparent-gateway)).

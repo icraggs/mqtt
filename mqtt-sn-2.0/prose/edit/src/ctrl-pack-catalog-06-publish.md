@@ -175,7 +175,11 @@ The Client uses a PUBLISH packet to send an Application Message to the Server, f
 
 The Server uses a PUBLISH packet to send an Application Message to each Client which has a matching subscription.
 
-«<mark title="Requirement MQTT-SN-3.6.2.7-2"><a name="MQTT-SN-3.6.2.7-2"></a>When Clients make subscriptions with Topic Filters that include wildcards, it is possible for a Client's subscriptions to overlap so that a published Application Message might match multiple filters. In this case the Server MUST deliver the Application Message to the Client respecting the maximum QoS of all the matching subscriptions</mark>»[MQTT‑SN‑3.6.2.7‑2](#tab-MQTT-SN-3.6.2.7-2). In addition, the Server MAY deliver further copies of the Application Message, one for each additional matching subscription and respecting the subscription's QoS in each case.
+«<mark title="Requirement MQTT-SN-3.6.2.7-2"><a name="MQTT-SN-3.6.2.7-2"></a>When Clients make subscriptions with Topic Filters that include wildcards, it is possible for a Client's subscriptions to overlap so that a published Application Message might match multiple filters. In this case, if the Virtual Connection is not Transparent, the Server MUST deliver the Application Message to the Client respecting the maximum QoS of all the matching subscriptions</mark>»[MQTT‑SN‑3.6.2.7‑2](#tab-MQTT-SN-3.6.2.7-2). In addition, the Server MAY deliver further copies of the Application Message, one for each additional matching subscription and respecting the subscription's QoS in each case.
+
+«<mark title="Requirement MQTT-SN-3.6.2.7-3"><a name="MQTT-SN-3.6.2.7-3"></a>If the Virtual Connection is Transparent, a PUBLISH received from the Client MUST be forwarded on the corresponding MQTT connection with the same QoS and RETAIN values</mark>»[MQTT‑SN‑3.6.2.7‑3](#tab-MQTT-SN-3.6.2.7-3).
+
+«<mark title="Requirement MQTT-SN-3.6.2.7-4"><a name="MQTT-SN-3.6.2.7-4"></a>If the Virtual Connection is Transparent, the Server MUST NOT send a PUBACK, PUBREC or PUBCOMP to the Client until it has received the corresponding MQTT PUBACK, PUBREC or PUBCOMP from the MQTT Server</mark>»[MQTT‑SN‑3.6.2.7‑4](#tab-MQTT-SN-3.6.2.7-4).
 
 The action of the recipient when it receives a PUBLISH packet depends on the QoS level as described in [sec](#quality-of-service-levels-and-protocol-flows).
 

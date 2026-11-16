@@ -1,4 +1,4 @@
-## C.7 Gateway Advertisement and Discovery{#c.7-gateway-advertisement-and-discovery}
+## C.8 Gateway Advertisement and Discovery{#c.8-gateway-advertisement-and-discovery}
 
 Clients might have foreknowledge of how to reach a Gateway, but in dynamic networks they may not. MQTT-SN supports mechanisms to allow Clients to find available MQTT-SN Gateways. This support is optional - it may not be needed. In some implementations, the underlying network technology might be used for this purpose instead.
 
@@ -24,4 +24,4 @@ Upon receiving a SEARCHGW packet a Gateway replies with a GWINFO packet containi
 
 To give priority to Gateways a client delays its sending of the GWINFO packet for a random time *[GWINFO Delay]*. If during this delay the Client receives a GWINFO packet it cancels the sending of its own GWINFO packet.
 
-If there is no response, the SEARCHGW packet may be retransmitted. In this case the time intervals between consecutive SEARCHGW packets should be increased by an exponential backoff algorithm such as that described in [sec](#c.4-exponential-backoff).
+If there is no response, the SEARCHGW packet may be retransmitted. In this case the time intervals between consecutive SEARCHGW packets should be increased by an exponential backoff algorithm such as that described in [sec](#c.5-exponential-backoff).

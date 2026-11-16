@@ -22,17 +22,19 @@ The CONNACK Flags is a 1 byte field which contains flags specifying the behavior
 
 Specifies whether an existing session was present on the Server for the given client identifier. A value of 1 indicates a session was present, a value 0 indicates no session was present.
 
-«<mark title="Requirement MQTT-SN-3.2.2.1-1"><a name="MQTT-SN-3.2.2.1-1"></a>If the Server accepts a CONNECT with Clean Start set to 1, the Server MUST set Session Present to 0 in the CONNACK Packet in addition to setting a 0x00 (Success) Reason Code in the CONNACK packet</mark>»[MQTT‑SN‑3.2.2.1‑1](#tab-MQTT-SN-3.2.2.1-1).
+«<mark title="Requirement MQTT-SN-3.2.2.1-1"><a name="MQTT-SN-3.2.2.1-1"></a>If the Virtual Connection is not Transparent, if the Server accepts a CONNECT with Clean Start set to 1, the Server MUST set Session Present to 0 in the CONNACK Packet in addition to setting a success Reason Code (0x00, 0x1B or 0x1C) in the CONNACK packet</mark>»[MQTT‑SN‑3.2.2.1‑1](#tab-MQTT-SN-3.2.2.1-1).
 
-«<mark title="Requirement MQTT-SN-3.2.2.1-2"><a name="MQTT-SN-3.2.2.1-2"></a>If the Server accepts a CONNECT with Clean Start set to 0 and the Server has Session State for the client identifier it MUST set Session Present to 1 in the CONNACK packet, otherwise it MUST set Session Present to 0 in the CONNACK packet. In both cases it MUST set a 0x00 (Success) Reason Code in the CONNACK packet</mark>»[MQTT‑SN‑3.2.2.1‑2](#tab-MQTT-SN-3.2.2.1-2).
+«<mark title="Requirement MQTT-SN-3.2.2.1-2"><a name="MQTT-SN-3.2.2.1-2"></a>If the Virtual Connection is not Transparent, if the Server accepts a CONNECT with Clean Start set to 0 and the Server has Session State for the client identifier it MUST set Session Present to 1 in the CONNACK packet, otherwise it MUST set Session Present to 0 in the CONNACK packet. In both cases it MUST set a success Reason Code (0x00, 0x1B or 0x1C) in the CONNACK packet</mark>»[MQTT‑SN‑3.2.2.1‑2](#tab-MQTT-SN-3.2.2.1-2).
+
+«<mark title="Requirement MQTT-SN-3.2.2.1-3"><a name="MQTT-SN-3.2.2.1-3"></a>If the Virtual Connection is Transparent, Session Present MUST be set to the value of Session Present in the MQTT CONNACK</mark>»[MQTT‑SN‑3.2.2.1‑3](#tab-MQTT-SN-3.2.2.1-3).
 
 If the value of Session Present received by the Client from the Server is not as expected, the Client proceeds as follows:
 
-«<mark title="Requirement MQTT-SN-3.2.2.1-3"><a name="MQTT-SN-3.2.2.1-3"></a>If the Client does not have Session State and receives Session Present set to 1 it MUST delete the Virtual Connection. If it wishes to restart with a new Session the Client can reconnect using Clean Start set to 1</mark>»[MQTT‑SN‑3.2.2.1‑3](#tab-MQTT-SN-3.2.2.1-3).
+«<mark title="Requirement MQTT-SN-3.2.2.1-4"><a name="MQTT-SN-3.2.2.1-4"></a>If the Client does not have Session State and receives Session Present set to 1 it MUST delete the Virtual Connection. If it wishes to restart with a new Session the Client can reconnect using Clean Start set to 1</mark>»[MQTT‑SN‑3.2.2.1‑4](#tab-MQTT-SN-3.2.2.1-4).
 
-«<mark title="Requirement MQTT-SN-3.2.2.1-4"><a name="MQTT-SN-3.2.2.1-4"></a>If the Client does have Session State and receives Session Present set to 0 it MUST discard its Session State if it continues with the Virtual Connection</mark>»[MQTT‑SN‑3.2.2.1‑4](#tab-MQTT-SN-3.2.2.1-4).
+«<mark title="Requirement MQTT-SN-3.2.2.1-5"><a name="MQTT-SN-3.2.2.1-5"></a>If the Client does have Session State and receives Session Present set to 0 it MUST discard its Session State if it continues with the Virtual Connection</mark>»[MQTT‑SN‑3.2.2.1‑5](#tab-MQTT-SN-3.2.2.1-5).
 
-«<mark title="Requirement MQTT-SN-3.2.2.1-5"><a name="MQTT-SN-3.2.2.1-5"></a>If a Server sends a CONNACK packet containing a non-zero Reason Code it MUST set Session Present to 0</mark>»[MQTT‑SN‑3.2.2.1‑5](#tab-MQTT-SN-3.2.2.1-5).
+«<mark title="Requirement MQTT-SN-3.2.2.1-6"><a name="MQTT-SN-3.2.2.1-6"></a>If a Server sends a CONNACK packet containing a non-zero Reason Code it MUST set Session Present to 0</mark>»[MQTT‑SN‑3.2.2.1‑6](#tab-MQTT-SN-3.2.2.1-6).
 
 #### Session Expiry Interval Flag{#session-expiry-interval-flag}
 
@@ -72,6 +74,12 @@ The values for Reason Codes are shown in [sec](#reason-code).
 «<mark title="Requirement MQTT-SN-3.2.4-1"><a name="MQTT-SN-3.2.4-1"></a>The Server sending the CONNACK Packet MUST use one of the Reason Codes applicable to CONNACK</mark>»[MQTT‑SN‑3.2.4‑1](#tab-MQTT-SN-3.2.4-1).
 
 «<mark title="Requirement MQTT-SN-3.2.4-2"><a name="MQTT-SN-3.2.4-2"></a>If a Server sends a CONNACK packet containing a Reason code of 0x80 or greater it MUST then delete the Virtual Connection</mark>»[MQTT‑SN‑3.2.4‑2](#tab-MQTT-SN-3.2.4-2).
+
+«<mark title="Requirement MQTT-SN-3.2.4-3"><a name="MQTT-SN-3.2.4-3"></a>If the Virtual Connection is Transparent, a successful CONNACK MUST have Reason Code 0x1B if the corresponding MQTT connection uses MQTT 5.0, or 0x1C if it uses MQTT 3.1.1</mark>»[MQTT‑SN‑3.2.4‑3](#tab-MQTT-SN-3.2.4-3).
+
+«<mark title="Requirement MQTT-SN-3.2.4-4"><a name="MQTT-SN-3.2.4-4"></a>If the Virtual Connection is not Transparent, a successful CONNACK MUST have Reason Code 0x00</mark>»[MQTT‑SN‑3.2.4‑4](#tab-MQTT-SN-3.2.4-4).
+
+«<mark title="Requirement MQTT-SN-3.2.4-5"><a name="MQTT-SN-3.2.4-5"></a>Where the corresponding MQTT connection uses MQTT 3.1.1 and the CONNECT requests a function that MQTT 3.1.1 cannot provide, the Server MUST send a CONNACK with Reason Code 0xF5 (Function not available)</mark>»[MQTT‑SN‑3.2.4‑5](#tab-MQTT-SN-3.2.4-5).
 
 > **Informative comment**
 >
@@ -119,12 +127,16 @@ Binary Data containing authentication data. The contents of this data are define
 
 The Assigned Client Identifier is the Client Identifier assigned by the Server when the associated CONNECT packet contained no Client Identifier. «<mark title="Requirement MQTT-SN-3.2.11-2"><a name="MQTT-SN-3.2.11-2"></a>If the Client connects using a zero length Client Identifier, the Server MUST respond with a CONNACK containing an Assigned Client Identifier</mark>»[MQTT‑SN‑3.2.11‑2](#tab-MQTT-SN-3.2.11-2).
 
-«<mark title="Requirement MQTT-SN-3.2.11-3"><a name="MQTT-SN-3.2.11-3"></a>The Assigned Client Identifier MUST be a new Client Identifier not used by any other Session currently in the Server</mark>»[MQTT‑SN‑3.2.11‑3](#tab-MQTT-SN-3.2.11-3).
+«<mark title="Requirement MQTT-SN-3.2.11-3"><a name="MQTT-SN-3.2.11-3"></a>If the Virtual Connection is not Transparent, the Assigned Client Identifier MUST be a new Client Identifier not used by any other Session currently in the Server</mark>»[MQTT‑SN‑3.2.11‑3](#tab-MQTT-SN-3.2.11-3).
 
-It is suggested that the 36 character Universally Unique IDentifier (UUID) format described in RFC9562 is used for MQTT-SN Assigned Client Identifiers. In any case they should be no longer than 36 characters.
+«<mark title="Requirement MQTT-SN-3.2.11-4"><a name="MQTT-SN-3.2.11-4"></a>Where the corresponding MQTT connection uses MQTT 3.1.1 and the Client connects with a zero-length Client Identifier, the Server MUST generate a unique Client Identifier, use it in the corresponding MQTT CONNECT packet, and return it in the CONNACK as the Assigned Client Identifier</mark>»[MQTT‑SN‑3.2.11‑4](#tab-MQTT-SN-3.2.11-4).
 
-(RFC9562 describes UUIDs that are 128 bits in size, 16 bytes or 32 hexadecimal digits. These UUIDs are commonly expressed in 36 characters, including 4 dashes as separators such as the following: *f81d4fae-7dec-11d0-a765-00a0c91e6bf6*.)
-
+> **Informative comment**
+>
+> It is suggested that the 36 character Universally Unique IDentifier (UUID) format described in RFC9562 is used for MQTT-SN Assigned Client Identifiers. In any case they should be no longer than 36 characters.
+>
+> (RFC9562 describes UUIDs that are 128 bits in size, 16 bytes or 32 hexadecimal digits. These UUIDs are commonly expressed in 36 characters, including 4 dashes as separators such as the following: *f81d4fae-7dec-11d0-a765-00a0c91e6bf6*.)
+>
 > **Informative comment**
 >
 > The length of Assigned Client Identifiers should take into account the maximum packet size allowed by the MQTT-SN implementation.
@@ -132,3 +144,7 @@ It is suggested that the 36 character Universally Unique IDentifier (UUID) forma
 > **Informative comment**
 >
 > Where a Transparent Gateway receives an Assigned Client Identifier from an MQTT Server which is deemed too long for a device, it should map shorter Gateway generated Client Identifiers with their versions returned from the MQTT Server.
+>
+> **Informative comment**
+>
+> Where an MQTT-SN Client on a Transparent Connection connects with a short Client Identifier because of device limitations, the Gateway may map it to a longer Client Identifier in the corresponding MQTT CONNECT packet.

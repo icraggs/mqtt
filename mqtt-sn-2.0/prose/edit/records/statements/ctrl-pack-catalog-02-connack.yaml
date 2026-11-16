@@ -14,17 +14,22 @@ statements:
   - client
   binds-by: subject
 - id: MQTT-SN-3.2.2.1-1
-  text: If the Server accepts a CONNECT with Clean Start set to 1, the Server MUST set Session Present to 0 in the CONNACK Packet in addition to setting a 0x00 (Success) Reason Code in the CONNACK packet
+  text: If the Virtual Connection is not Transparent, if the Server accepts a CONNECT with Clean Start set to 1, the Server MUST set Session Present to 0 in the CONNACK Packet in addition to setting a success Reason Code (0x00, 0x1B or 0x1C) in the CONNACK packet
   binds:
   - server
   binds-by: subject
 - id: MQTT-SN-3.2.2.1-2
-  text: If the Server accepts a CONNECT with Clean Start set to 0 and the Server has Session State for the client identifier it MUST set Session Present to 1 in the CONNACK packet, otherwise it MUST set Session Present to 0 in the CONNACK packet. In both cases it MUST set a 0x00 (Success) Reason Code in the CONNACK packet
+  text: If the Virtual Connection is not Transparent, if the Server accepts a CONNECT with Clean Start set to 0 and the Server has Session State for the client identifier it MUST set Session Present to 1 in the CONNACK packet, otherwise it MUST set Session Present to 0 in the CONNACK packet. In both cases it MUST set a success Reason Code (0x00, 0x1B or 0x1C) in the CONNACK packet
 - id: MQTT-SN-3.2.2.1-3
-  text: If the Client does not have Session State and receives Session Present set to 1 it MUST delete the Virtual Connection. If it wishes to restart with a new Session the Client can reconnect using Clean Start set to 1
+  text: If the Virtual Connection is Transparent, Session Present MUST be set to the value of Session Present in the MQTT CONNACK
+  binds:
+  - server
+  binds-by: subject
 - id: MQTT-SN-3.2.2.1-4
-  text: If the Client does have Session State and receives Session Present set to 0 it MUST discard its Session State if it continues with the Virtual Connection
+  text: If the Client does not have Session State and receives Session Present set to 1 it MUST delete the Virtual Connection. If it wishes to restart with a new Session the Client can reconnect using Clean Start set to 1
 - id: MQTT-SN-3.2.2.1-5
+  text: If the Client does have Session State and receives Session Present set to 0 it MUST discard its Session State if it continues with the Virtual Connection
+- id: MQTT-SN-3.2.2.1-6
   text: If a Server sends a CONNACK packet containing a non-zero Reason Code it MUST set Session Present to 0
 - id: MQTT-SN-3.2.2.2-1
   text: If the Session Expiry Interval Flag is set to 0, a Session Expiry Interval MUST NOT be present in the Packet
@@ -63,6 +68,21 @@ statements:
   text: The Server sending the CONNACK Packet MUST use one of the Reason Codes applicable to CONNACK
 - id: MQTT-SN-3.2.4-2
   text: If a Server sends a CONNACK packet containing a Reason code of 0x80 or greater it MUST then delete the Virtual Connection
+- id: MQTT-SN-3.2.4-3
+  text: If the Virtual Connection is Transparent, a successful CONNACK MUST have Reason Code 0x1B if the corresponding MQTT connection uses MQTT 5.0, or 0x1C if it uses MQTT 3.1.1
+  binds:
+  - server
+  binds-by: subject
+- id: MQTT-SN-3.2.4-4
+  text: If the Virtual Connection is not Transparent, a successful CONNACK MUST have Reason Code 0x00
+  binds:
+  - server
+  binds-by: subject
+- id: MQTT-SN-3.2.4-5
+  text: Where the corresponding MQTT connection uses MQTT 3.1.1 and the CONNECT requests a function that MQTT 3.1.1 cannot provide, the Server MUST send a CONNACK with Reason Code 0xF5 (Function not available)
+  binds:
+  - server
+  binds-by: subject
 - id: MQTT-SN-3.2.6-1
   text: If the Server sends a Server Keep Alive on the CONNACK packet, the Client MUST use this value instead of the Keep Alive value the Client sent on CONNECT
   binds:
@@ -84,7 +104,12 @@ statements:
   - server
   binds-by: subject
 - id: MQTT-SN-3.2.11-3
-  text: The Assigned Client Identifier MUST be a new Client Identifier not used by any other Session currently in the Server
+  text: If the Virtual Connection is not Transparent, the Assigned Client Identifier MUST be a new Client Identifier not used by any other Session currently in the Server
   binds:
   - server
   binds-by: sender of CONNACK (packet format)
+- id: MQTT-SN-3.2.11-4
+  text: Where the corresponding MQTT connection uses MQTT 3.1.1 and the Client connects with a zero-length Client Identifier, the Server MUST generate a unique Client Identifier, use it in the corresponding MQTT CONNECT packet, and return it in the CONNACK as the Assigned Client Identifier
+  binds:
+  - server
+  binds-by: subject

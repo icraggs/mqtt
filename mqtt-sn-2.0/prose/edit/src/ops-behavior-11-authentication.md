@@ -24,7 +24,7 @@ If the Authentication Method selected by the Client specifies that the Client se
 
 «<mark title="Requirement MQTT-SN-4.11.1-3"><a name="MQTT-SN-4.11.1-3"></a>The Client responds to an AUTH packet from the Server by sending a further AUTH packet. This packet MUST contain a Reason Code of 0x18 (Continue authentication)</mark>»[MQTT‑SN‑4.11.1‑3](#tab-MQTT-SN-4.11.1-3). If the authentication method requires the Client to send authentication data for the Server, it is sent in the Authentication Data field of the AUTH packet.
 
-The Client and Server exchange AUTH packets as needed until the Server accepts the authentication by sending a CONNACK with a Reason Code of 0x00. If the acceptance of the authentication requires data to be sent to the Client, it is sent in the Authentication Data field of the CONNACK packet.
+The Client and Server exchange AUTH packets as needed until the Server accepts the authentication by sending a CONNACK with a success Reason Code (0x00, 0x1B or 0x1C). If the acceptance of the authentication requires data to be sent to the Client, it is sent in the Authentication Data field of the CONNACK packet.
 
 The Client can terminate the Virtual Connection at any point in this process by sending a DISCONNECT packet. «<mark title="Requirement MQTT-SN-4.11.1-4"><a name="MQTT-SN-4.11.1-4"></a>The Server can reject the authentication at any point in this process. It MUST send a CONNACK with a Reason Code of 0x80 or above as described in [sec](#handling-errors)</mark>»[MQTT‑SN‑4.11.1‑4](#tab-MQTT-SN-4.11.1-4).
 
@@ -35,6 +35,10 @@ The Client can terminate the Virtual Connection at any point in this process by 
 «<mark title="Requirement MQTT-SN-4.11.1-7"><a name="MQTT-SN-4.11.1-7"></a>If the Client does not include an Authentication Method in the CONNECT, the Client MUST NOT send an AUTH packet to the Server</mark>»[MQTT‑SN‑4.11.1‑7](#tab-MQTT-SN-4.11.1-7).
 
 If the Client does not include an Authentication Method in the CONNECT packet, the Server SHOULD authenticate using some or all of the information in the CONNECT packet in conjunction with the underlying transport layer or alternatively use the Protection Encapsulation.
+
+«<mark title="Requirement MQTT-SN-4.11.1-8"><a name="MQTT-SN-4.11.1-8"></a>If the Virtual Connection is Transparent, the Server MAY authenticate the Client itself, or MAY relay the Authentication Method and Authentication Data to the MQTT Server in the corresponding MQTT CONNECT and AUTH packets</mark>»[MQTT‑SN‑4.11.1‑8](#tab-MQTT-SN-4.11.1-8).
+
+«<mark title="Requirement MQTT-SN-4.11.1-9"><a name="MQTT-SN-4.11.1-9"></a>If the Virtual Connection is Transparent and the corresponding MQTT connection uses MQTT 3.1.1, the Server MUST perform any authentication that uses an Authentication Method itself</mark>»[MQTT‑SN‑4.11.1‑9](#tab-MQTT-SN-4.11.1-9).
 
 > **Informative example showing a SCRAM challenge**
 >
