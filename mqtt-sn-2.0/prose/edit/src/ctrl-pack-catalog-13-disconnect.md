@@ -46,7 +46,7 @@ The DISCONNECT Flags is a 1 byte field which contains flags specifying the conte
 
 ### Packet Identifier{#ddn---packet-identifier}
 
-This field is optional. It can be used by a Server when responding to a Client packet for which there is no current Virtual Connection. In this case, the DISCONNECT packet can be sent by the Server, setting the Reason Code to 0xF4 (No Virtual Connection Exists) and including the Packet Identifier of the erroneous packet, to help with problem diagnosis.
+This field is optional. It can be used by a Server when responding to a Client packet for which there is no current Virtual Connection. In this case, the DISCONNECT packet can be sent by the Server, setting the Reason Code to 0xF4 (No Virtual Connection exists) and including the Packet Identifier of the erroneous packet, to help with problem diagnosis.
 
 ### Reason Code{#ddn---reason-code}
 
@@ -97,5 +97,9 @@ This field is optional - its existence or absence is inferred from the Packet le
 «<mark title="Requirement MQTT-SN-3.13.7-6"><a name="MQTT-SN-3.13.7-6"></a>If the Virtual Connection is Transparent and the corresponding MQTT connection uses MQTT 5.0, the MQTT DISCONNECT MUST have the same Session Expiry Interval and the same Reason Code as the DISCONNECT received from the Client, or Reason Code 0x80 (Unspecified error) if that Reason Code is specific to MQTT-SN</mark>»[MQTT‑SN‑3.13.7‑6](#tab-MQTT-SN-3.13.7-6).
 
 «<mark title="Requirement MQTT-SN-3.13.7-7"><a name="MQTT-SN-3.13.7-7"></a>If the Virtual Connection is Transparent and the corresponding MQTT connection is closed, the Server MUST send a DISCONNECT to the Client and delete the Virtual Connection</mark>»[MQTT‑SN‑3.13.7‑7](#tab-MQTT-SN-3.13.7-7).
+
+> **Informative comment**
+>
+> If the Client is Asleep when the corresponding MQTT connection is closed, it cannot receive the DISCONNECT. It finds out when it next wakes: the Virtual Connection has been deleted, so the Server responds to its PINGREQ with a DISCONNECT with Reason Code 0xF4 (No Virtual Connection exists) ([MQTT-SN-3.11.3-3](#MQTT-SN-3.11.3-3)).
 
 After receiving a DISCONNECT, a Client can make a new Virtual Connection by sending a CONNECT Packet to the Server.

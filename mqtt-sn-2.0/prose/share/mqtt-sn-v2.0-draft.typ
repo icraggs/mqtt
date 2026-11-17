@@ -3545,9 +3545,9 @@ for the sending Client»#link(<tab-MQTT-SN-3.11.3-2>)[MQTT‑SN‑3.11.3‑2].
 
 «#box()<MQTT-SN-3.11.3-3>If the Server sends a DISCONNECT packet in
 response to a PINGREQ packet because it does not have a Virtual
-Connection for the sending Client, it MUST use Reason Code 244 - No
+Connection for the sending Client, it MUST use Reason Code 0xF4 (No
 Virtual Connection
-Exists»#link(<tab-MQTT-SN-3.11.3-3>)[MQTT‑SN‑3.11.3‑3].
+exists)»#link(<tab-MQTT-SN-3.11.3-3>)[MQTT‑SN‑3.11.3‑3].
 
 «#box()<MQTT-SN-3.11.3-4>If the state of the Client associated with the
 Virtual Connection is Asleep on receipt of the PINGREQ, the Server MUST
@@ -3706,7 +3706,7 @@ Packet»#link(<tab-MQTT-SN-3.13.2.3-2>)[MQTT‑SN‑3.13.2.3‑2].
 This field is optional. It can be used by a Server when responding to a
 Client packet for which there is no current Virtual Connection. In this
 case, the DISCONNECT packet can be sent by the Server, setting the
-Reason Code to 0xF4 (No Virtual Connection Exists) and including the
+Reason Code to 0xF4 (No Virtual Connection exists) and including the
 Packet Identifier of the erroneous packet, to help with problem
 diagnosis.
 
@@ -3815,6 +3815,16 @@ MQTT-SN»#link(<tab-MQTT-SN-3.13.7-6>)[MQTT‑SN‑3.13.7‑6].
 the corresponding MQTT connection is closed, the Server MUST send a
 DISCONNECT to the Client and delete the Virtual
 Connection»#link(<tab-MQTT-SN-3.13.7-7>)[MQTT‑SN‑3.13.7‑7].
+
+#quote(block: true)[
+#strong[Informative comment]
+
+If the Client is Asleep when the corresponding MQTT connection is
+closed, it cannot receive the DISCONNECT. It finds out when it next
+wakes: the Virtual Connection has been deleted, so the Server responds
+to its PINGREQ with a DISCONNECT with Reason Code 0xF4 (No Virtual
+Connection exists) (#link(<MQTT-SN-3.11.3-3>)[MQTT-SN-3.11.3-3]).
+]
 
 After receiving a DISCONNECT, a Client can make a new Virtual Connection
 by sending a CONNECT Packet to the Server.
@@ -6463,26 +6473,26 @@ perspective of the Server:
 
 #figure(
   align(center)[#table(
-    columns: (2.73%, 89.07%, 8.19%),
+    columns: (16.18%, 66.18%, 17.65%),
     align: (left,left,left,),
     table.header([State], [State Description], [Possible Transitions],),
     table.hline(),
     [#strong[None]], [The Client is unknown to the Server. There is no
-    Session State nor Virtual Connection.A Client may transition from
+    Session State nor Virtual Connection. A Client may transition from
     here to #strong[Active] with a CONNECT.], [#strong[Active]],
     [#strong[Disconnected]], [The Client is considered offline and not
     able to receive packets until it has re-established a session with
     the Server by way of a CONNECT. The Server has Session state for
     this Client, but there is no Virtual Connection. A Client may
     transition from here to #strong[Active] with a CONNECT, or to
-    #strong[None] on Session expiry.], [#strong[Active]#strong[None]],
+    #strong[None] on Session expiry.], [#strong[Active] #strong[None]],
     [#strong[Active]], [The Client is actively engaged in the Session. A
     Virtual Connection exists. It should be able to send and receive
     packets. Its state is supervised by the Server with the associated
     Keep Alive timer. A Client may transition from here to
     #strong[Asleep] by way of a SLEEPREQ or #strong[Disconnected] by way
     of a DISCONNECT, Keep Alive timeout or Retry
-    timeout.], [#strong[Asleep]#strong[Disconnected]],
+    timeout.], [#strong[Asleep] #strong[Disconnected]],
     [#strong[Asleep]], [The Client has Session State, and a Virtual
     Connection. The Client cannot receive Packets (except possibly the
     WAKEUP hint); it can send Packets. The Server should not expect a
@@ -6492,15 +6502,15 @@ perspective of the Server:
     timeout or Retry timeout). The Server may send a WAKEUP packet to
     the Client, as an indication that messages are waiting - it is up to
     the Client to act, if it is even able to notice
-    it.], [#strong[Awake]#strong[Active]#strong[Disconnected]],
+    it.], [#strong[Awake] #strong[Active] #strong[Disconnected]],
     [#strong[Awake]], [The Client is partially engaged in an ongoing
     session and a Virtual Connection exists. The Client transitions back
     to the #strong[Asleep] state on receipt of a PINGRESP packet or
     #strong[Disconnected] (by way of DISCONNECT, or on Retry timeout for
     the possible PINGRESP, PUBACK, PUBREL, PUBREC, PUBCOMP or REGACK
     packets to be received by the Client). The Client may also move to
-    the #strong[Active] state by way of
-    CONNECT.], [#strong[Asleep]#strong[Active]#strong[Disconnected]],
+    the #strong[Active] state by way of CONNECT.], [#strong[Asleep]
+    #strong[Active] #strong[Disconnected]],
   )]
   , caption: [Client States]
   , kind: table
@@ -7981,8 +7991,8 @@ definitive list of conformance requirements.
     [#box()<tab-MQTT-SN-3.11.3-3>\[#link(<MQTT-SN-3.11.3-3>)[MQTT‑SN‑3.11.3‑3]\]], [If
     the Server sends a DISCONNECT packet in response to a PINGREQ packet
     because it does not have a Virtual Connection for the sending
-    Client, it MUST use Reason Code 244 - No Virtual Connection
-    Exists.],
+    Client, it MUST use Reason Code 0xF4 (No Virtual Connection
+    exists).],
     [#box()<tab-MQTT-SN-3.11.3-4>\[#link(<MQTT-SN-3.11.3-4>)[MQTT‑SN‑3.11.3‑4]\]], [If
     the state of the Client associated with the Virtual Connection is
     Asleep on receipt of the PINGREQ, the Server MUST move the Client to

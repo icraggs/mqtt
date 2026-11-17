@@ -14,7 +14,7 @@ statements:
   - server
   binds-by: subject
 - id: MQTT-SN-3.11.3-3
-  text: If the Server sends a DISCONNECT packet in response to a PINGREQ packet because it does not have a Virtual Connection for the sending Client, it MUST use Reason Code 244 - No Virtual Connection Exists
+  text: If the Server sends a DISCONNECT packet in response to a PINGREQ packet because it does not have a Virtual Connection for the sending Client, it MUST use Reason Code 0xF4 (No Virtual Connection exists)
 - id: MQTT-SN-3.11.3-4
   text: If the state of the Client associated with the Virtual Connection is Asleep on receipt of the PINGREQ, the Server MUST move the Client to the Awake state, stop the Sleep Duration processing, and start the Retry Timer processing
   binds:
