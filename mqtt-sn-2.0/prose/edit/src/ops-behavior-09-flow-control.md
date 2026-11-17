@@ -16,7 +16,7 @@ The maximum number of unacknowledged MQTT-SN requests in one direction within a 
 
 - AUTH
 
-«<mark title="Requirement MQTT-SN-4.9-1"><a name="MQTT-SN-4.9-1"></a>If a Client or Server receives an MQTT-SN request (from the above list) and there is already a request outstanding from the other party within the same Virtual Connection and a different Packet Identifier, then it MUST issue a DISCONNECT with Reason Code 147 (Receive Maximum Exceeded) and delete the Virtual Connection</mark>»[MQTT‑SN‑4.9‑1](#tab-MQTT-SN-4.9-1).
+«<mark title="Requirement MQTT-SN-4.9-1"><a name="MQTT-SN-4.9-1"></a>If a Client or Server receives an MQTT-SN request (from the above list) and there is already a request outstanding from the other party within the same Virtual Connection and a different Packet Identifier, then it MUST issue a DISCONNECT with Reason Code 0x93 (Receive maximum exceeded) and delete the Virtual Connection</mark>»[MQTT‑SN‑4.9‑1](#tab-MQTT-SN-4.9-1).
 
 «<mark title="Requirement MQTT-SN-4.9-2"><a name="MQTT-SN-4.9-2"></a>A Server or Client MUST NOT send a new Packet of a type from the above list, when it has an acknowledgement outstanding for another Packet for which it has not received an acknowledgement</mark>»[MQTT‑SN‑4.9‑2](#tab-MQTT-SN-4.9-2).
 

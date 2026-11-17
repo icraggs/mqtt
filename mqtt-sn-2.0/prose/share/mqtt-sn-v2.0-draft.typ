@@ -5946,8 +5946,8 @@ are:
 «#box()<MQTT-SN-4.9-1>If a Client or Server receives an MQTT-SN request
 (from the above list) and there is already a request outstanding from
 the other party within the same Virtual Connection and a different
-Packet Identifier, then it MUST issue a DISCONNECT with Reason Code 147
-(Receive Maximum Exceeded) and delete the Virtual
+Packet Identifier, then it MUST issue a DISCONNECT with Reason Code 0x93
+(Receive maximum exceeded) and delete the Virtual
 Connection»#link(<tab-MQTT-SN-4.9-1>)[MQTT‑SN‑4.9‑1].
 
 «#box()<MQTT-SN-4.9-2>A Server or Client MUST NOT send a new Packet of a
@@ -8484,8 +8484,8 @@ definitive list of conformance requirements.
     a Client or Server receives an MQTT-SN request (from the above list)
     and there is already a request outstanding from the other party
     within the same Virtual Connection and a different Packet
-    Identifier, then it MUST issue a DISCONNECT with Reason Code 147
-    (Receive Maximum Exceeded) and delete the Virtual Connection.],
+    Identifier, then it MUST issue a DISCONNECT with Reason Code 0x93
+    (Receive maximum exceeded) and delete the Virtual Connection.],
     [#box()<tab-MQTT-SN-4.9-2>\[#link(<MQTT-SN-4.9-2>)[MQTT‑SN‑4.9‑2]\]], [A
     Server or Client MUST NOT send a new Packet of a type from the above
     list, when it has an acknowledgement outstanding for another Packet
