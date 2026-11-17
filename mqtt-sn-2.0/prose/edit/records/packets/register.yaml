@@ -32,12 +32,12 @@ layout:
         span: 9
         text-anchor: start
 - field: Packet Identifier
-  at: '3'
+  at: '4'
   bytes: 2
 - group: Topic Alias
   items:
   - field: Topic Alias
-    at: '5'
+    at: '6'
     bytes: 2
   symbol: T
   symbol-style: label
@@ -53,7 +53,7 @@ layout:
         span: 9
         text-anchor: start
 - variable: Topic Name
-  at: 5+T
+  at: 6+T
   boxes:
     '1':
       attrs:

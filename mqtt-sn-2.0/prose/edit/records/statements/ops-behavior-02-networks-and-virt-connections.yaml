@@ -8,6 +8,11 @@ statements:
 - id: MQTT-SN-4.2.1-1
   text: All incoming Packets except CONNECT, PUBWOS and Gateway search (ADVERTISE, SEARCHGW and GWINFO) MUST be associated with an existing Virtual Connection
 - id: MQTT-SN-4.2.2-1
+  text: If the Server deletes a Transparent Virtual Connection for any reason other than receiving a DISCONNECT with Reason Code 0x00 from the Client, it MUST close the corresponding MQTT connection in a way that causes the MQTT Server to publish the Will Message
+  binds:
+  - server
+  binds-by: subject
+- id: MQTT-SN-4.2.2-2
   text: When a Transparent Virtual Connection is deleted, the Server MUST close the corresponding MQTT connection. The Server MAY send an MQTT DISCONNECT packet before closing the corresponding MQTT connection
   binds:
   - server

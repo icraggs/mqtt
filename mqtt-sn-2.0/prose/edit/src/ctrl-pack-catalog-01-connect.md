@@ -185,7 +185,7 @@ The Keep Alive is a Two Byte Integer greater than 0 (1 - 65,535), which is a tim
 >
 > Unlike MQTT, the MQTT-SN Keep Alive timeout can not be turned off (by setting a value of 0). This is because there is no other indication in MQTT-SN of a connection failure, as there is in MQTT with the underlying TCP/IP connection.
 
-«<mark title="Requirement MQTT-SN-3.1.6-4"><a name="MQTT-SN-3.1.6-4"></a>The Keep Alive must have a value greater than 0. It is a protocol error if a Keep Alive value of 0 or below is set</mark>»[MQTT‑SN‑3.1.6‑4](#tab-MQTT-SN-3.1.6-4).
+«<mark title="Requirement MQTT-SN-3.1.6-4"><a name="MQTT-SN-3.1.6-4"></a>The Keep Alive MUST have a value greater than 0. It is a protocol error if a Keep Alive value of 0 is set</mark>»[MQTT‑SN‑3.1.6‑4](#tab-MQTT-SN-3.1.6-4).
 
 «<mark title="Requirement MQTT-SN-3.1.6-5"><a name="MQTT-SN-3.1.6-5"></a>If the Virtual Connection is Transparent, the Server MUST keep the corresponding MQTT connection open for as long as the Virtual Connection exists, including while the Client is Asleep</mark>»[MQTT‑SN‑3.1.6‑5](#tab-MQTT-SN-3.1.6-5).
 

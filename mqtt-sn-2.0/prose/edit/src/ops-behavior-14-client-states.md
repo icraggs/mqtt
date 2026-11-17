@@ -18,9 +18,9 @@ Table: Client States{#tab-client-states}
 
 «<mark title="Requirement MQTT-SN-4.14-1"><a name="MQTT-SN-4.14-1"></a>A Server MUST treat any Packet other than PUBWOS or CONNECT that it receives from a Client in None or Disconnected states as a protocol error</mark>»[MQTT‑SN‑4.14‑1](#tab-MQTT-SN-4.14-1).
 
-«<mark title="Requirement MQTT-SN-4.14-2"><a name="MQTT-SN-4.14-2"></a>In the Asleep state, a Client MUST only send PINGREQ, CONNECT or DISCONNECT packets to the Server</mark>»[MQTT‑SN‑4.14‑2](#tab-MQTT-SN-4.14-2).
+«<mark title="Requirement MQTT-SN-4.14-2"><a name="MQTT-SN-4.14-2"></a>In the Asleep state, a Client MUST only send PINGREQ, SLEEPREQ, CONNECT or DISCONNECT packets to the Server</mark>»[MQTT‑SN‑4.14‑2](#tab-MQTT-SN-4.14-2).
 
-«<mark title="Requirement MQTT-SN-4.14-3"><a name="MQTT-SN-4.14-3"></a>In the Awake state, a Client MUST not send ANY packets other than those involved in the receipt of PUBLISH packets (PUBACK, PUBREC, PUBCOMP, REGACK) or CONNECT or DISCONNECT</mark>»[MQTT‑SN‑4.14‑3](#tab-MQTT-SN-4.14-3).
+«<mark title="Requirement MQTT-SN-4.14-3"><a name="MQTT-SN-4.14-3"></a>In the Awake state, a Client MUST NOT send ANY packets other than those involved in the receipt of PUBLISH packets (PUBACK, PUBREC, PUBCOMP, REGACK) or CONNECT or DISCONNECT</mark>»[MQTT‑SN‑4.14‑3](#tab-MQTT-SN-4.14-3).
 
 «<mark title="Requirement MQTT-SN-4.14-4"><a name="MQTT-SN-4.14-4"></a>Whenever a CONNECT is received by a Server, any existing Virtual Connection for that Client MUST be deleted and a new one created with all CONNECT Packet processing, regardless of the state of the Client</mark>»[MQTT‑SN‑4.14‑4](#tab-MQTT-SN-4.14-4).
 

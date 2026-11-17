@@ -9,12 +9,12 @@ statements:
   - server
   binds-by: subject
 - id: MQTT-SN-4.14-2
-  text: In the Asleep state, a Client MUST only send PINGREQ, CONNECT or DISCONNECT packets to the Server
+  text: In the Asleep state, a Client MUST only send PINGREQ, SLEEPREQ, CONNECT or DISCONNECT packets to the Server
   binds:
   - client
   binds-by: subject
 - id: MQTT-SN-4.14-3
-  text: In the Awake state, a Client MUST not send ANY packets other than those involved in the receipt of PUBLISH packets (PUBACK, PUBREC, PUBCOMP, REGACK) or CONNECT or DISCONNECT
+  text: In the Awake state, a Client MUST NOT send ANY packets other than those involved in the receipt of PUBLISH packets (PUBACK, PUBREC, PUBCOMP, REGACK) or CONNECT or DISCONNECT
   binds:
   - client
   binds-by: subject

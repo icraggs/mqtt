@@ -4,7 +4,7 @@
 
 ## Committee Specification Draft 01
 
-## 16 November 2026
+## 17 November 2026
 
 #### This stage
 <https://docs.oasis-open.org/mqtt/mqtt-sn/v2.0/csd01/mqtt-sn-v2.0-csd01.md> (Authoritative) \
@@ -66,7 +66,7 @@ When referencing this document, the following citation format should be used:
 
 **\[MQTT-SN-v2.0\]**
 
-*MQTT for Sensor Networks Version 2.0*. Edited by Andrew Banks, Andy Stanford-Clark, Davide Lenzarini, Ian Craggs, Rahul Gupta, Simon Johnson, Stefan Hagen, and Tara E. Walker. 16 November 2026. OASIS Committee Specification Draft 01. <https://docs.oasis-open.org/mqtt/mqtt-sn/v2.0/csd01/mqtt-sn-v2.0-csd01.md>. Latest stage: <https://docs.oasis-open.org/mqtt/mqtt-sn/v2.0/mqtt-sn-v2.0.md>
+*MQTT for Sensor Networks Version 2.0*. Edited by Andrew Banks, Andy Stanford-Clark, Davide Lenzarini, Ian Craggs, Rahul Gupta, Simon Johnson, Stefan Hagen, and Tara E. Walker. 17 November 2026. OASIS Committee Specification Draft 01. <https://docs.oasis-open.org/mqtt/mqtt-sn/v2.0/csd01/mqtt-sn-v2.0-csd01.md>. Latest stage: <https://docs.oasis-open.org/mqtt/mqtt-sn/v2.0/mqtt-sn-v2.0.md>
 
 ## Notices
 

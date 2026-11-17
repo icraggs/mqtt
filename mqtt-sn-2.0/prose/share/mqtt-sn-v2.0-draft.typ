@@ -21,7 +21,7 @@
     align: (left + horizon, center + horizon, right + horizon),
     text(size: 8pt)[mqtt-sn-v2.0-csd01],
     text(size: 8pt)[Copyright © OASIS Open 2026. All Rights Reserved.],
-    text(size: 8pt)[16 November 2026 — Page #counter(page).display()
+    text(size: 8pt)[17 November 2026 — Page #counter(page).display()
       of #counter(page).final().first()],
   ),
 )
@@ -53,8 +53,8 @@ Networks Version 2.0]
 #heading(level: 2, outlined: false, numbering: none)[Committee
 Specification Draft 01]
 <committee-specification-draft-01>
-#heading(level: 2, outlined: false, numbering: none)[16 November 2026]
-<16-november-2026>
+#heading(level: 2, outlined: false, numbering: none)[17 November 2026]
+<17-november-2026>
 #heading(level: 4, outlined: false, numbering: none)[This stage]
 <this-stage>
 #link("https://docs.oasis-open.org/mqtt/mqtt-sn/v2.0/csd01/mqtt-sn-v2.0-csd01.md")
@@ -172,7 +172,7 @@ used:
 
 #emph[MQTT for Sensor Networks Version 2.0]. Edited by Andrew Banks,
 Andy Stanford-Clark, Davide Lenzarini, Ian Craggs, Rahul Gupta, Simon
-Johnson, Stefan Hagen, and Tara E. Walker. 16 November 2026. OASIS
+Johnson, Stefan Hagen, and Tara E. Walker. 17 November 2026. OASIS
 Committee Specification Draft 01.
 #link("https://docs.oasis-open.org/mqtt/mqtt-sn/v2.0/csd01/mqtt-sn-v2.0-csd01.md").
 Latest stage:
@@ -1358,7 +1358,7 @@ Name»#link(<tab-MQTT-SN-3.1.2.2.2-2>)[MQTT‑SN‑3.1.2.2.2‑2].
 ==== Authentication Flag
 <authentication-flag>
 #strong[Position:] bit 2 of the Connect Flags byte. Labelled #emph[Auth]
-in #link(<fig-connect-packet>)[Figure 7].
+in #link(<fig-connect-packet>)[Figure 6].
 
 «#box()<MQTT-SN-3.1.2.3-1>If the Authentication Flag is set to 1, the
 Authentication Method and Authentication Data fields MUST be present in
@@ -1371,7 +1371,7 @@ in the Packet»#link(<tab-MQTT-SN-3.1.2.3-2>)[MQTT‑SN‑3.1.2.3‑2].
 ==== Session Expiry Flag
 <session-expiry-flag>
 #strong[Position:] bit 3 of the Connect Flags byte. Labelled #emph[Sess
-Exp] in #link(<fig-connect-packet>)[Figure 7].
+Exp] in #link(<fig-connect-packet>)[Figure 6].
 
 «#box()<MQTT-SN-3.1.2.4-1>If the Session Expiry Flag is set to 1, the
 Session Expiry Interval field MUST be present in the
@@ -1384,7 +1384,7 @@ Packet»#link(<tab-MQTT-SN-3.1.2.4-2>)[MQTT‑SN‑3.1.2.4‑2].
 ==== Maximum Number of Awake Messages Flag
 <max-awake-messages-flag>
 #strong[Position:] bit 4 of the Connect Flags byte. Labelled #emph[MAM]
-in #link(<fig-connect-packet>)[Figure 7].
+in #link(<fig-connect-packet>)[Figure 6].
 
 «#box()<MQTT-SN-3.1.2.5-1>If the Maximum Number of Awake Messages Flag
 is set to 1, the Maximum Number of Awake Messages field MUST be present
@@ -1397,7 +1397,7 @@ present in the Packet»#link(<tab-MQTT-SN-3.1.2.5-2>)[MQTT‑SN‑3.1.2.5‑2].
 ==== Allow Network Address Changes Flag
 <allow-network-address-changes-flag>
 #strong[Position:] bit 5 of the Connect Flags byte. Labelled #emph[Net
-Addr] in #link(<fig-connect-packet>)[Figure 7].
+Addr] in #link(<fig-connect-packet>)[Figure 6].
 
 This flag only has an effect In implementations which use a Network
 Address to associate incoming packets with a Virtual Connection,
@@ -1421,7 +1421,7 @@ Protection Encapsulation.
 ==== Allow Server Suggested Values Flag
 <allow-server-suggested-values-flag>
 #strong[Position:] bit 6 of the Connect Flags byte. Labelled #emph[Srv
-Sugg] in #link(<fig-connect-packet>)[Figure 7].
+Sugg] in #link(<fig-connect-packet>)[Figure 6].
 
 If this flag is set to 1, the Client allows the Server to return
 modified values for all of:
@@ -1575,8 +1575,8 @@ MQTT-SN of a connection failure, as there is in MQTT with the underlying
 TCP/IP connection.
 ]
 
-«#box()<MQTT-SN-3.1.6-4>The Keep Alive must have a value greater than 0.
-It is a protocol error if a Keep Alive value of 0 or below is
+«#box()<MQTT-SN-3.1.6-4>The Keep Alive MUST have a value greater than 0.
+It is a protocol error if a Keep Alive value of 0 is
 set»#link(<tab-MQTT-SN-3.1.6-4>)[MQTT‑SN‑3.1.6‑4].
 
 «#box()<MQTT-SN-3.1.6-5>If the Virtual Connection is Transparent, the
@@ -1957,7 +1957,7 @@ Packet»#link(<tab-MQTT-SN-3.2.2-2>)[MQTT‑SN‑3.2.2‑2].
 ==== Session Present
 <session-present>
 #strong[Position]: bit 0 of the CONNACK Flags. Labelled #emph[Sess Pres]
-in #link(<fig-connack-packet>)[Figure 8].
+in #link(<fig-connack-packet>)[Figure 7].
 
 Specifies whether an existing session was present on the Server for the
 given client identifier. A value of 1 indicates a session was present, a
@@ -2016,7 +2016,7 @@ a Reason Code of 0x80 or greater it MUST set Session Present to
 ==== Session Expiry Interval Flag
 <session-expiry-interval-flag>
 #strong[Position]: bit 1 of the CONNACK Flags. Labelled #emph[Sess Exp]
-in #link(<fig-connack-packet>)[Figure 8].
+in #link(<fig-connack-packet>)[Figure 7].
 
 ​​«#box()<MQTT-SN-3.2.2.2-1>If the Session Expiry Interval Flag is set to
 0, a Session Expiry Interval MUST NOT be present in the
@@ -2029,7 +2029,7 @@ Packet»#link(<tab-MQTT-SN-3.2.2.2-2>)[MQTT‑SN‑3.2.2.2‑2].
 ==== Server Keep Alive Flag
 <server-keep-alive-flag>
 #strong[Position]: bit 2 of the CONNACK Flags. Labelled #emph[Server KA]
-in #link(<fig-connack-packet>)[Figure 8].
+in #link(<fig-connack-packet>)[Figure 7].
 
 Indicates whether the packet includes a Server Keep Alive or not.
 
@@ -2044,7 +2044,7 @@ Packet»#link(<tab-MQTT-SN-3.2.2.3-2>)[MQTT‑SN‑3.2.2.3‑2].
 ==== Authentication Flag
 <cca---authentication-flag>
 #strong[Position]: bit 3 of the CONNACK Flags. Labelled #emph[Auth] in
-#link(<fig-connack-packet>)[Figure 8].
+#link(<fig-connack-packet>)[Figure 7].
 
 Specifies whether the packet contains authentication material to be
 considered.
@@ -2707,7 +2707,7 @@ the case of QoS 2. It should ideally be populated with a random Two Byte
 Integer value.
 
 «#box()<MQTT-SN-3.6.2.3-1>If the QoS field is set to 0, the Packet
-Identifier field MUST not be present in the PUBLISH
+Identifier field MUST NOT be present in the PUBLISH
 packet.»#link(<tab-MQTT-SN-3.6.2.3-1>)[MQTT‑SN‑3.6.2.3‑1].
 
 «#box()<MQTT-SN-3.6.2.3-2>If the QoS field is set to 1 or 2, the Packet
@@ -2779,8 +2779,9 @@ the subscription's QoS in each case.
 
 «#box()<MQTT-SN-3.6.2.7-3>If the Virtual Connection is Transparent, a
 PUBLISH received from the Client MUST be forwarded on the corresponding
-MQTT connection with the same QoS and RETAIN
-values»#link(<tab-MQTT-SN-3.6.2.7-3>)[MQTT‑SN‑3.6.2.7‑3].
+MQTT connection with the same QoS and RETAIN values, unless
+MQTT-SN-3.6.2.7-4
+applies»#link(<tab-MQTT-SN-3.6.2.7-3>)[MQTT‑SN‑3.6.2.7‑3].
 
 «#box()<MQTT-SN-3.6.2.7-4>If the Virtual Connection is Transparent and a
 PUBLISH received from the Client has a QoS greater than the Maximum QoS,
@@ -2803,8 +2804,9 @@ MQTT Server»#link(<tab-MQTT-SN-3.6.2.7-5>)[MQTT‑SN‑3.6.2.7‑5].
 «#box()<MQTT-SN-3.6.2.7-6>If the Virtual Connection is Transparent and
 the Client is not Asleep, the Server MUST NOT send an MQTT PUBACK,
 PUBREC or PUBCOMP to the MQTT Server until it has received the
-corresponding PUBACK, PUBREC or PUBCOMP from the
-Client»#link(<tab-MQTT-SN-3.6.2.7-6>)[MQTT‑SN‑3.6.2.7‑6].
+corresponding PUBACK, PUBREC or PUBCOMP from the Client, or it has
+discarded the message under
+MQTT-SN-3.1.7-3»#link(<tab-MQTT-SN-3.6.2.7-6>)[MQTT‑SN‑3.6.2.7‑6].
 
 While the Client is Asleep, the Server acknowledges Application Messages
 from the MQTT Server on receipt instead
@@ -3073,7 +3075,7 @@ information about the operation of the Retain Handling field.
 ==== Retain as Published
 <retain-as-published>
 #strong[Position]: bit 4 of the SUBSCRIBE Flags. Labelled #emph[RaP] in
-#link(<fig-subscribe-packet>)[Figure 18].
+#link(<fig-subscribe-packet>)[Figure 17].
 
 If 1, Application Messages forwarded using this subscription keep the
 RETAIN flag they were published with.
@@ -3663,7 +3665,7 @@ Packet»#link(<tab-MQTT-SN-3.13.2-2>)[MQTT‑SN‑3.13.2‑2].
 ==== Packet Identifier Flag
 <packet-identifier-flag>
 #strong[Position:] bit 0 of the DISCONNECT Flags. Labelled
-#emph[PacketId] in #link(<fig-disconnect-packet>)[Figure 24].
+#emph[PacketId] in #link(<fig-disconnect-packet>)[Figure 23].
 
 ​​«#box()<MQTT-SN-3.13.2.1-1>If the Packet Identifier Flag is set to 0, a
 Packet Identifier MUST NOT be present in the
@@ -3676,7 +3678,7 @@ Packet»#link(<tab-MQTT-SN-3.13.2.1-2>)[MQTT‑SN‑3.13.2.1‑2].
 ==== Session Expiry Interval Flag
 <ddn---session-expiry-interval-flag>
 #strong[Position:] bit 1 of the DISCONNECT Flags. Labelled #emph[Sess
-Exp] in #link(<fig-disconnect-packet>)[Figure 24].
+Exp] in #link(<fig-disconnect-packet>)[Figure 23].
 
 ​​«#box()<MQTT-SN-3.13.2.2-1>If the Session Expiry Interval Flag is set to
 0, a Session Expiry Interval MUST NOT be present in the
@@ -3689,7 +3691,7 @@ Packet»#link(<tab-MQTT-SN-3.13.2.2-2>)[MQTT‑SN‑3.13.2.2‑2].
 ==== Reason Code Flag
 <reason-code-flag>
 #strong[Position:] bit 2 of the DISCONNECT Flags. Labelled #emph[Reason
-C] in #link(<fig-disconnect-packet>)[Figure 24].
+C] in #link(<fig-disconnect-packet>)[Figure 23].
 
 ​​«#box()<MQTT-SN-3.13.2.3-1>If the Reason Code Flag is set to 0, a Reason
 Code MUST NOT be present in the
@@ -3735,6 +3737,17 @@ DISCONNECT packet sent by the Client. If such a non-zero Session Expiry
 Interval is received by the Server, it does not treat it as a valid
 DISCONNECT packet. The Server uses DISCONNECT with Reason Code 0x82
 (Protocol Error) as described in
+#link(<handling-errors>)[4.12 "Handling errors"].
+
+«#box()<MQTT-SN-3.13.5-2>If the Virtual Connection is Transparent and
+the corresponding MQTT connection uses MQTT 3.1.1, it is a Protocol
+Error for the Client to send a DISCONNECT with a Session Expiry Interval
+different from the Session Expiry Interval in the CONNECT
+packet»#link(<tab-MQTT-SN-3.13.5-2>)[MQTT‑SN‑3.13.5‑2]. MQTT 3.1.1 has
+no Session Expiry Interval, so the Server could not pass the new value
+to the MQTT Server. If the Server receives such a DISCONNECT, it does
+not treat it as a valid DISCONNECT packet, and uses DISCONNECT with
+Reason Code 0x82 (Protocol Error) as described in
 #link(<handling-errors>)[4.12 "Handling errors"].
 
 === Reason String
@@ -3869,7 +3882,7 @@ Packet»#link(<tab-MQTT-SN-3.15.2-2>)[MQTT‑SN‑3.15.2‑2].
 ==== Retain Topic Aliases
 <retain-topic-aliases>
 #strong[Position:] bit 0 of the SLEEPREQ Flags. Labelled #emph[Retain T]
-in #link(<fig-sleepreq-packet>)[Figure 26].
+in #link(<fig-sleepreq-packet>)[Figure 25].
 
 Specifies whether Session Topic Aliases should be retained by the Server
 during the Asleep state. "0" indicates Topic Aliases should be removed
@@ -3990,7 +4003,7 @@ Packet»#link(<tab-MQTT-SN-3.16.2-2>)[MQTT‑SN‑3.16.2‑2].
 ==== Sleep Duration Flag
 <sleep-duration-flag>
 #strong[Position:] bit 0 of the SLEEPRESP Flags. Labelled #emph[Sleep
-Dur] in #link(<fig-sleepresp-packet>)[Figure 27].
+Dur] in #link(<fig-sleepresp-packet>)[Figure 26].
 
 ​​«#box()<MQTT-SN-3.16.2.1-1>If the Sleep Duration Flag is set to 0, Sleep
 Duration MUST NOT be present in the
@@ -4132,7 +4145,7 @@ the Protection Encapsulation.
 <monotonic-counter-length>
 #strong[Position:] bits 0 and 1 of the Protection Flags. Labelled
 #emph[Counter Length] in
-#link(<fig-format-of-an-protection-encapsulated-mqtt-sn-packet>)[Figure 28].
+#link(<fig-format-of-an-protection-encapsulated-mqtt-sn-packet>)[Figure 27].
 
 Specifies the number of bytes forming the monotonic counter in
 big-endian order. Only three of the four possible values are allowed.
@@ -4159,7 +4172,7 @@ big-endian order. Only three of the four possible values are allowed.
 <cryptographic-material-length>
 #strong[Position:] bits 2 and 3 of the Protection Flags. Labelled
 #emph[Crypto Length] in
-#link(<fig-format-of-an-protection-encapsulated-mqtt-sn-packet>)[Figure 28].
+#link(<fig-format-of-an-protection-encapsulated-mqtt-sn-packet>)[Figure 27].
 
 Specifies the number of sixteen bit groups forming the cryptographic
 material in big-endian order. The meaning of each possible value is
@@ -5017,10 +5030,10 @@ Connection:
 - The Session State listed in
   #link(<session-state>)[4.1 "Session state"] for Virtual Connections
   which are not Transparent: the subscriptions, and the PUBLISH packets
-  in flight or pending transmission. The Session Present flag in the
-  CONNACK is 1 only if it is 1 in the MQTT CONNACK and the Gateway also
-  has its part of the Session State
-  (#link(<session-present>)[3.2.2.1 "Session Present"]).
+  in flight or pending transmission on the corresponding MQTT
+  connection. The Session Present flag in the CONNACK is 1 only if it is
+  1 in the MQTT CONNACK and the Gateway also has its part of the Session
+  State (#link(<session-present>)[3.2.2.1 "Session Present"]).
 
 The Gateway provides these services itself:
 
@@ -5086,22 +5099,28 @@ MQTT connection:
 
 + Over MQTT 5.0, a DISCONNECT from the Client is forwarded to the MQTT
   Server with the same Session Expiry Interval and the same Reason Code,
-  or 0x80 (Unspecified error) for a Reason Code specific to MQTT-SN.
-  Over MQTT 3.1.1, a DISCONNECT with Reason Code 0x00 is forwarded, and
-  any other Reason Code closes the MQTT connection without one
-  (#link(<c.2.2-mqtt-3.1.1>)[C.2.2 "MQTT 3.1.1"]). If the Gateway
-  deletes the Virtual Connection for any other reason, such as a Keep
-  Alive timeout, it closes the MQTT connection in a way that causes the
-  MQTT Server to publish the Will Message. If the MQTT connection is
-  closed, the Gateway sends a DISCONNECT to the Client and deletes the
-  Virtual Connection
+  or 0x80 (Unspecified error) for a Reason Code specific to MQTT-SN. An
+  MQTT 3.1.1 DISCONNECT has no Reason Code, so over MQTT 3.1.1 the
+  Gateway sends one only if the Client's DISCONNECT has Reason Code
+  0x00. For any other Reason Code, the Gateway closes the MQTT
+  connection without sending an MQTT DISCONNECT, so that the MQTT Server
+  publishes the Will Message
+  (#link(<c.2.2-mqtt-3.1.1>)[C.2.2 "MQTT 3.1.1"]).
+  «#box()<MQTT-SN-4.2.2-1>If the Server deletes a Transparent Virtual
+  Connection for any reason other than receiving a DISCONNECT with
+  Reason Code 0x00 from the Client, it MUST close the corresponding MQTT
+  connection in a way that causes the MQTT Server to publish the Will
+  Message»#link(<tab-MQTT-SN-4.2.2-1>)[MQTT‑SN‑4.2.2‑1]. This includes a
+  Keep Alive timeout, a retry timeout and a protocol error. If the MQTT
+  connection is closed, the Gateway sends a DISCONNECT to the Client and
+  deletes the Virtual Connection
   (#link(<disconnect-actions>)[3.13.7 "DISCONNECT Actions"]).
 
-«#box()<MQTT-SN-4.2.2-1>When a Transparent Virtual Connection is
+«#box()<MQTT-SN-4.2.2-2>When a Transparent Virtual Connection is
 deleted, the Server MUST close the corresponding MQTT connection. The
 Server MAY send an MQTT DISCONNECT packet before closing the
 corresponding MQTT
-connection»#link(<tab-MQTT-SN-4.2.2-1>)[MQTT‑SN‑4.2.2‑1].
+connection»#link(<tab-MQTT-SN-4.2.2-2>)[MQTT‑SN‑4.2.2‑2].
 
 Reason Codes are passed between the Client and the MQTT Server as
 described in
@@ -6165,11 +6184,13 @@ the CONNECT packet, do the following:
 
 + MQTT Password: a Two Byte Integer length followed by binary data.
 
-The User Name string and Password binary data must have the same length
-as the values in their corresponding preceding length fields.
+«#box()<MQTT-SN-4.11.1.2-1>The User Name string and Password binary data
+MUST have the same length as the values in their corresponding preceding
+length fields»#link(<tab-MQTT-SN-4.11.1.2-1>)[MQTT‑SN‑4.11.1.2‑1].
 
-This is a one-way transfer of information - the response MUST be a
-CONNACK, not an AUTH packet.
+This is a one-way transfer of information -
+«#box()<MQTT-SN-4.11.1.2-2>the response MUST be a CONNACK, not an AUTH
+packet»#link(<tab-MQTT-SN-4.11.1.2-2>)[MQTT‑SN‑4.11.1.2‑2].
 
 #quote(block: true)[
 #strong[Informative comment]
@@ -6215,9 +6236,13 @@ following:
 In any subsequent AUTH and CONNACK packets of the authentication
 exchange:
 
-+ The MQTT User Name and MQTT Password fields MUST not be included.
++ «#box()<MQTT-SN-4.11.1.2-3>The MQTT User Name and MQTT Password fields
+  MUST NOT be
+  included»#link(<tab-MQTT-SN-4.11.1.2-3>)[MQTT‑SN‑4.11.1.2‑3].
 
-+ The Authentication Method MUST remain MQTT-ENHANCED throughout.
++ «#box()<MQTT-SN-4.11.1.2-4>The Authentication Method MUST remain
+  MQTT-ENHANCED
+  throughout»#link(<tab-MQTT-SN-4.11.1.2-4>)[MQTT‑SN‑4.11.1.2‑4].
 
 == Handling errors
 <handling-errors>
@@ -6494,10 +6519,10 @@ or CONNECT that it receives from a Client in None or Disconnected states
 as a protocol error»#link(<tab-MQTT-SN-4.14-1>)[MQTT‑SN‑4.14‑1].
 
 «#box()<MQTT-SN-4.14-2>In the Asleep state, a Client MUST only send
-PINGREQ, CONNECT or DISCONNECT packets to the
+PINGREQ, SLEEPREQ, CONNECT or DISCONNECT packets to the
 Server»#link(<tab-MQTT-SN-4.14-2>)[MQTT‑SN‑4.14‑2].
 
-«#box()<MQTT-SN-4.14-3>In the Awake state, a Client MUST not send ANY
+«#box()<MQTT-SN-4.14-3>In the Awake state, a Client MUST NOT send ANY
 packets other than those involved in the receipt of PUBLISH packets
 (PUBACK, PUBREC, PUBCOMP, REGACK) or CONNECT or
 DISCONNECT»#link(<tab-MQTT-SN-4.14-3>)[MQTT‑SN‑4.14‑3].
@@ -7488,8 +7513,8 @@ definitive list of conformance requirements.
     of a DISCONNECT, with the understanding that the Server may no
     longer be reachable.],
     [#box()<tab-MQTT-SN-3.1.6-4>\[#link(<MQTT-SN-3.1.6-4>)[MQTT‑SN‑3.1.6‑4]\]], [The
-    Keep Alive must have a value greater than 0. It is a protocol error
-    if a Keep Alive value of 0 or below is set.],
+    Keep Alive MUST have a value greater than 0. It is a protocol error
+    if a Keep Alive value of 0 is set.],
     [#box()<tab-MQTT-SN-3.1.6-5>\[#link(<MQTT-SN-3.1.6-5>)[MQTT‑SN‑3.1.6‑5]\]], [If
     the Virtual Connection is Transparent, the Server MUST keep the
     corresponding MQTT connection open for as long as the Virtual
@@ -7752,7 +7777,7 @@ definitive list of conformance requirements.
     [#box()<tab-MQTT-SN-3.6.2.2.3-1>\[#link(<MQTT-SN-3.6.2.2.3-1>)[MQTT‑SN‑3.6.2.2.3‑1]\]], [If
     the QoS field is set to 0 or 1, the DUP flag MUST be set to 0.],
     [#box()<tab-MQTT-SN-3.6.2.3-1>\[#link(<MQTT-SN-3.6.2.3-1>)[MQTT‑SN‑3.6.2.3‑1]\]], [If
-    the QoS field is set to 0, the Packet Identifier field MUST not be
+    the QoS field is set to 0, the Packet Identifier field MUST NOT be
     present in the PUBLISH packet.],
     [#box()<tab-MQTT-SN-3.6.2.3-2>\[#link(<MQTT-SN-3.6.2.3-2>)[MQTT‑SN‑3.6.2.3‑2]\]], [If
     the QoS field is set to 1 or 2, the Packet Identifier field MUST be
@@ -7777,7 +7802,7 @@ definitive list of conformance requirements.
     [#box()<tab-MQTT-SN-3.6.2.7-3>\[#link(<MQTT-SN-3.6.2.7-3>)[MQTT‑SN‑3.6.2.7‑3]\]], [If
     the Virtual Connection is Transparent, a PUBLISH received from the
     Client MUST be forwarded on the corresponding MQTT connection with
-    the same QoS and RETAIN values.],
+    the same QoS and RETAIN values, unless MQTT-SN-3.6.2.7-4 applies.],
     [#box()<tab-MQTT-SN-3.6.2.7-4>\[#link(<MQTT-SN-3.6.2.7-4>)[MQTT‑SN‑3.6.2.7‑4]\]], [If
     the Virtual Connection is Transparent and a PUBLISH received from
     the Client has a QoS greater than the Maximum QoS, or has RETAIN set
@@ -7793,7 +7818,8 @@ definitive list of conformance requirements.
     the Virtual Connection is Transparent and the Client is not Asleep,
     the Server MUST NOT send an MQTT PUBACK, PUBREC or PUBCOMP to the
     MQTT Server until it has received the corresponding PUBACK, PUBREC
-    or PUBCOMP from the Client.],
+    or PUBCOMP from the Client, or it has discarded the message under
+    MQTT-SN-3.1.7-3.],
     [#box()<tab-MQTT-SN-3.6.2.7-7>\[#link(<MQTT-SN-3.6.2.7-7>)[MQTT‑SN‑3.6.2.7‑7]\]], [If
     the Virtual Connection is Transparent and the corresponding MQTT
     connection uses MQTT 5.0, the Server SHOULD set Receive Maximum to 1
@@ -7992,6 +8018,11 @@ definitive list of conformance requirements.
     [#box()<tab-MQTT-SN-3.13.5-1>\[#link(<MQTT-SN-3.13.5-1>)[MQTT‑SN‑3.13.5‑1]\]], [The
     Session Expiry Interval MUST NOT be sent on a DISCONNECT by the
     Server.],
+    [#box()<tab-MQTT-SN-3.13.5-2>\[#link(<MQTT-SN-3.13.5-2>)[MQTT‑SN‑3.13.5‑2]\]], [If
+    the Virtual Connection is Transparent and the corresponding MQTT
+    connection uses MQTT 3.1.1, it is a Protocol Error for the Client to
+    send a DISCONNECT with a Session Expiry Interval different from the
+    Session Expiry Interval in the CONNECT packet.],
     [#box()<tab-MQTT-SN-3.13.7-1>\[#link(<MQTT-SN-3.13.7-1>)[MQTT‑SN‑3.13.7‑1]\]], [After
     sending a DISCONNECT packet the sender MUST NOT send any more
     MQTT-SN Control Packets on that Virtual Connection.],
@@ -8229,7 +8260,12 @@ definitive list of conformance requirements.
     incoming Packets except CONNECT, PUBWOS and Gateway search
     (ADVERTISE, SEARCHGW and GWINFO) MUST be associated with an existing
     Virtual Connection.],
-    [#box()<tab-MQTT-SN-4.2.2-1>\[#link(<MQTT-SN-4.2.2-1>)[MQTT‑SN‑4.2.2‑1]\]], [When
+    [#box()<tab-MQTT-SN-4.2.2-1>\[#link(<MQTT-SN-4.2.2-1>)[MQTT‑SN‑4.2.2‑1]\]], [If
+    the Server deletes a Transparent Virtual Connection for any reason
+    other than receiving a DISCONNECT with Reason Code 0x00 from the
+    Client, it MUST close the corresponding MQTT connection in a way
+    that causes the MQTT Server to publish the Will Message.],
+    [#box()<tab-MQTT-SN-4.2.2-2>\[#link(<MQTT-SN-4.2.2-2>)[MQTT‑SN‑4.2.2‑2]\]], [When
     a Transparent Virtual Connection is deleted, the Server MUST close
     the corresponding MQTT connection. The Server MAY send an MQTT
     DISCONNECT packet before closing the corresponding MQTT
@@ -8496,6 +8532,22 @@ definitive list of conformance requirements.
     DISCONNECT with an appropriate Reason Code as described in
     #link(<handling-errors>)[4.12 "Handling errors"], and MUST delete
     the Virtual Connection.],
+    [#box()<tab-MQTT-SN-4.11.1.2-1>\[#link(<MQTT-SN-4.11.1.2-1>)[MQTT‑SN‑4.11.1.2‑1]\]], [When
+    the Authentication Method is MQTT-BASIC, the MQTT User Name string
+    and MQTT Password binary data in the Authentication Data MUST have
+    the same length as the values in their corresponding preceding
+    length fields.],
+    [#box()<tab-MQTT-SN-4.11.1.2-2>\[#link(<MQTT-SN-4.11.1.2-2>)[MQTT‑SN‑4.11.1.2‑2]\]], [The
+    Server MUST respond to a CONNECT packet with Authentication Method
+    MQTT-BASIC with a CONNACK, not an AUTH packet.],
+    [#box()<tab-MQTT-SN-4.11.1.2-3>\[#link(<MQTT-SN-4.11.1.2-3>)[MQTT‑SN‑4.11.1.2‑3]\]], [In
+    any AUTH or CONNACK packet after the CONNECT packet of an
+    MQTT-ENHANCED authentication exchange, the MQTT User Name and MQTT
+    Password fields MUST NOT be included.],
+    [#box()<tab-MQTT-SN-4.11.1.2-4>\[#link(<MQTT-SN-4.11.1.2-4>)[MQTT‑SN‑4.11.1.2‑4]\]], [In
+    any AUTH or CONNACK packet after the CONNECT packet of an
+    MQTT-ENHANCED authentication exchange, the Authentication Method
+    MUST remain MQTT-ENHANCED.],
     [#box()<tab-MQTT-SN-4.12.1-1>\[#link(<MQTT-SN-4.12.1-1>)[MQTT‑SN‑4.12.1‑1]\]], [When
     a Client detects a Malformed Packet or Protocol Error associated
     with a Virtual Connection it SHOULD send a DISCONNECT packet
@@ -8558,10 +8610,10 @@ definitive list of conformance requirements.
     receives from a Client in None or Disconnected states as a protocol
     error.],
     [#box()<tab-MQTT-SN-4.14-2>\[#link(<MQTT-SN-4.14-2>)[MQTT‑SN‑4.14‑2]\]], [In
-    the Asleep state, a Client MUST only send PINGREQ, CONNECT or
-    DISCONNECT packets to the Server.],
+    the Asleep state, a Client MUST only send PINGREQ, SLEEPREQ, CONNECT
+    or DISCONNECT packets to the Server.],
     [#box()<tab-MQTT-SN-4.14-3>\[#link(<MQTT-SN-4.14-3>)[MQTT‑SN‑4.14‑3]\]], [In
-    the Awake state, a Client MUST not send ANY packets other than those
+    the Awake state, a Client MUST NOT send ANY packets other than those
     involved in the receipt of PUBLISH packets (PUBACK, PUBREC, PUBCOMP,
     REGACK) or CONNECT or DISCONNECT.],
     [#box()<tab-MQTT-SN-4.14-4>\[#link(<MQTT-SN-4.14-4>)[MQTT‑SN‑4.14‑4]\]], [Whenever

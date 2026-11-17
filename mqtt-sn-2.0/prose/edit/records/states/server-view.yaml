@@ -34,5 +34,5 @@ transitions:
   - {from: Awake, to: Disconnected, trigger: {timer: Retry}}
 
 may-send:
-  - {state: Asleep, packets: [PINGREQ, CONNECT, DISCONNECT], statement: MQTT-SN-4.14-2}
+  - {state: Asleep, packets: [PINGREQ, SLEEPREQ, CONNECT, DISCONNECT], statement: MQTT-SN-4.14-2}
   - {state: Awake, packets: [PUBACK, PUBREC, PUBCOMP, REGACK, CONNECT, DISCONNECT], statement: MQTT-SN-4.14-3}

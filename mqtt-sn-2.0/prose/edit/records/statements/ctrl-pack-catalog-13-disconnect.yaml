@@ -55,6 +55,11 @@ statements:
   text: The sender of the DISCONNECT packet MUST use one of the Reason Code values applicable to DISCONNECT
 - id: MQTT-SN-3.13.5-1
   text: The Session Expiry Interval MUST NOT be sent on a DISCONNECT by the Server
+- id: MQTT-SN-3.13.5-2
+  text: If the Virtual Connection is Transparent and the corresponding MQTT connection uses MQTT 3.1.1, it is a Protocol Error for the Client to send a DISCONNECT with a Session Expiry Interval different from the Session Expiry Interval in the CONNECT packet
+  binds:
+  - client
+  binds-by: subject
 - id: MQTT-SN-3.13.7-1
   text: MUST NOT send any more MQTT-SN Control Packets on that Virtual Connection
   standalone: After sending a DISCONNECT packet the sender MUST NOT send any more MQTT-SN Control Packets on that Virtual Connection.

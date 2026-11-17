@@ -90,9 +90,9 @@ To support the equivalent of the MQTT User Name and Password fields in the CONNE
 
 2.  MQTT Password: a Two Byte Integer length followed by binary data.
 
-The User Name string and Password binary data must have the same length as the values in their corresponding preceding length fields.
+«<mark title="Requirement MQTT-SN-4.11.1.2-1"><a name="MQTT-SN-4.11.1.2-1"></a>The User Name string and Password binary data MUST have the same length as the values in their corresponding preceding length fields</mark>»[MQTT‑SN‑4.11.1.2‑1](#tab-MQTT-SN-4.11.1.2-1).
 
-This is a one-way transfer of information - the response MUST be a CONNACK, not an AUTH packet.
+This is a one-way transfer of information - «<mark title="Requirement MQTT-SN-4.11.1.2-2"><a name="MQTT-SN-4.11.1.2-2"></a>the response MUST be a CONNACK, not an AUTH packet</mark>»[MQTT‑SN‑4.11.1.2‑2](#tab-MQTT-SN-4.11.1.2-2).
 
 > **Informative comment**
 >
@@ -116,6 +116,6 @@ To support the equivalent of the MQTT User Name and Password together with MQTT 
 
 In any subsequent AUTH and CONNACK packets of the authentication exchange:
 
-1.  The MQTT User Name and MQTT Password fields MUST not be included.
+1.  «<mark title="Requirement MQTT-SN-4.11.1.2-3"><a name="MQTT-SN-4.11.1.2-3"></a>The MQTT User Name and MQTT Password fields MUST NOT be included</mark>»[MQTT‑SN‑4.11.1.2‑3](#tab-MQTT-SN-4.11.1.2-3).
 
-2.  The Authentication Method MUST remain MQTT-ENHANCED throughout.
+2.  «<mark title="Requirement MQTT-SN-4.11.1.2-4"><a name="MQTT-SN-4.11.1.2-4"></a>The Authentication Method MUST remain MQTT-ENHANCED throughout</mark>»[MQTT‑SN‑4.11.1.2‑4](#tab-MQTT-SN-4.11.1.2-4).

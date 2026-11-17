@@ -34,7 +34,7 @@ layout:
     width: 1
   values: 0000000X
 - field: Packet Identifier
-  at: '3'
+  at: '4'
   bytes: 2
   boxes:
     '0':
@@ -46,13 +46,13 @@ layout:
 - group: Sleep Duration
   items:
   - field: Sleep Duration
-    at: '5'
+    at: '6'
     bytes: 4
   symbol: S
   present-if:
     flag: Sleep Dur
 - field: Reason Code
-  at: 5+S
+  at: 6+S
   present-if: optional
   boxes:
     '0':

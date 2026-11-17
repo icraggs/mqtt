@@ -43,3 +43,29 @@ statements:
   binds:
   - server
   binds-by: subject
+- id: MQTT-SN-4.11.1.2-1
+  text: The User Name string and Password binary data MUST have the same length as the values in their corresponding preceding length fields
+  standalone: When the Authentication Method is MQTT-BASIC, the MQTT User Name string and MQTT Password binary data in the Authentication Data MUST have the same length as the values in their corresponding preceding length fields.
+  binds:
+  - client
+  binds-by: sender of CONNECT
+- id: MQTT-SN-4.11.1.2-2
+  text: the response MUST be a CONNACK, not an AUTH packet
+  standalone: The Server MUST respond to a CONNECT packet with Authentication Method MQTT-BASIC with a CONNACK, not an AUTH packet.
+  binds:
+  - server
+  binds-by: subject
+- id: MQTT-SN-4.11.1.2-3
+  text: The MQTT User Name and MQTT Password fields MUST NOT be included
+  standalone: In any AUTH or CONNACK packet after the CONNECT packet of an MQTT-ENHANCED authentication exchange, the MQTT User Name and MQTT Password fields MUST NOT be included.
+  binds:
+  - client
+  - server
+  binds-by: sender of AUTH or CONNACK
+- id: MQTT-SN-4.11.1.2-4
+  text: The Authentication Method MUST remain MQTT-ENHANCED throughout
+  standalone: In any AUTH or CONNACK packet after the CONNECT packet of an MQTT-ENHANCED authentication exchange, the Authentication Method MUST remain MQTT-ENHANCED.
+  binds:
+  - client
+  - server
+  binds-by: sender of AUTH or CONNACK

@@ -56,7 +56,7 @@ metadata:
     processing and storage resources. It is designed so that it will work over a variety of networking technologies and
     bridge to an MQTT network.
   subject: MQTT, MQTT-SN, sensor networks, publish/subscribe, IoT, constrained devices
-  date: '2026-11-16'
+  date: '2026-11-17'
   type: Specification
   identifier: 'https://docs.oasis-open.org/mqtt/mqtt-sn/v2.0/csd01/mqtt-sn-v2.0-csd01.md'
   language: en

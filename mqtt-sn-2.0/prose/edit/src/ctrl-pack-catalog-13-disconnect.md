@@ -62,6 +62,8 @@ The Session Expiry Interval is a four-byte integer time interval measured in sec
 
 If the Session Expiry Interval in the CONNECT packet was zero, then it is a Protocol Error to set a non-zero Session Expiry Interval in the DISCONNECT packet sent by the Client. If such a non-zero Session Expiry Interval is received by the Server, it does not treat it as a valid DISCONNECT packet. The Server uses DISCONNECT with Reason Code 0x82 (Protocol Error) as described in [sec](#handling-errors).
 
+«<mark title="Requirement MQTT-SN-3.13.5-2"><a name="MQTT-SN-3.13.5-2"></a>If the Virtual Connection is Transparent and the corresponding MQTT connection uses MQTT 3.1.1, it is a Protocol Error for the Client to send a DISCONNECT with a Session Expiry Interval different from the Session Expiry Interval in the CONNECT packet</mark>»[MQTT‑SN‑3.13.5‑2](#tab-MQTT-SN-3.13.5-2). MQTT 3.1.1 has no Session Expiry Interval, so the Server could not pass the new value to the MQTT Server. If the Server receives such a DISCONNECT, it does not treat it as a valid DISCONNECT packet, and uses DISCONNECT with Reason Code 0x82 (Protocol Error) as described in [sec](#handling-errors).
+
 ### Reason String{#reason-string}
 
 Fixed Length UTF-8 Encoded String representing a clear text description of the reason for the disconnection.

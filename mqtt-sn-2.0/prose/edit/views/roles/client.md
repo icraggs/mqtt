@@ -6,7 +6,7 @@ Sends: AUTH, CONNECT, CONNECTION ENCAPSULATION, DISCONNECT, PINGREQ, PROTECTION 
 
 Receives: ADVERTISE, AUTH, CONNACK, DISCONNECT, FORWARDER ENCAPSULATION, GWINFO, PINGRESP, PROTECTION ENCAPSULATION, PUBACK, PUBCOMP, PUBLISH, PUBREC, PUBREL, PUBWOS, REGACK, SLEEPRESP, SUBACK, UNSUBACK, WAKEUP
 
-## Statements binding the Client (78)
+## Statements binding the Client (82)
 
 - [MQTT-SN-3.1.2-1] Bit 7 of the CONNECT Flags is reserved and MUST be set to 0. (sender of CONNECT (packet format))
 - [MQTT-SN-3.1.2.1-1] If a CONNECT packet is received with Clean Start is set to 1, the Client and Server MUST discard any existing Session and start a new Session. (subject)
@@ -39,7 +39,7 @@ Receives: ADVERTISE, AUTH, CONNACK, DISCONNECT, FORWARDER ENCAPSULATION, GWINFO,
 - [MQTT-SN-3.6.2.2-1] Bits 3-2 of the PUBLISH Flags are reserved and MUST be set to 0. (sender of PUBLISH (packet format))
 - [MQTT-SN-3.6.2.2-2] The receiver MUST validate that the reserved flags in the PUBLISH packet are set to 0. If any of the reserved flags is not 0 it is a Malformed Packet. (receiver of PUBLISH)
 - [MQTT-SN-3.6.2.2.3-1] If the QoS field is set to 0 or 1, the DUP flag MUST be set to 0. (sender of PUBLISH (packet format))
-- [MQTT-SN-3.6.2.3-1] If the QoS field is set to 0, the Packet Identifier field MUST not be present in the PUBLISH packet. (sender of PUBLISH (packet format))
+- [MQTT-SN-3.6.2.3-1] If the QoS field is set to 0, the Packet Identifier field MUST NOT be present in the PUBLISH packet. (sender of PUBLISH (packet format))
 - [MQTT-SN-3.6.2.3-2] If the QoS field is set to 1 or 2, the Packet Identifier field MUST be present in the PUBLISH packet. (sender of PUBLISH (packet format))
 - [MQTT-SN-3.6.2.5-1] If the Topic Type is Topic Name (0b11), the Topic Name field MUST be present in the PUBLISH packet. (sender of PUBLISH (packet format))
 - [MQTT-SN-3.6.2.5-2] If the Topic Type is Predefined Topic Alias or Session Topic Alias, then the Topic Name field MUST NOT be present in the PUBLISH packet. (sender of PUBLISH (packet format))
@@ -62,6 +62,7 @@ Receives: ADVERTISE, AUTH, CONNACK, DISCONNECT, FORWARDER ENCAPSULATION, GWINFO,
 - [MQTT-SN-3.13.2.2-2] If the Session Expiry Interval Flag is set to 1, a Session Expiry Interval MUST be present in the Packet. (sender of DISCONNECT (packet format))
 - [MQTT-SN-3.13.2.3-1] If the Reason Code Flag is set to 0, a Reason Code MUST NOT be present in the Packet. (sender of DISCONNECT (packet format))
 - [MQTT-SN-3.13.2.3-2] If the Reason Code Flag is set to 1, a Reason Code MUST be present in the Packet. (sender of DISCONNECT (packet format))
+- [MQTT-SN-3.13.5-2] If the Virtual Connection is Transparent and the corresponding MQTT connection uses MQTT 3.1.1, it is a Protocol Error for the Client to send a DISCONNECT with a Session Expiry Interval different from the Session Expiry Interval in the CONNECT packet. (subject)
 - [MQTT-SN-3.14.2-1] The Client MUST transition to the Awake state or remain in the Asleep state. (subject)
 - [MQTT-SN-3.15.2-1] Bits 7-1 of the SLEEPREQ Flags are reserved and MUST be set to 0. (sender of SLEEPREQ (packet format))
 - [MQTT-SN-3.16.2-2] The Client MUST validate that the reserved flags in the SLEEPRESP packet are set to 0. If any of the reserved flags is not 0 it is a Malformed Packet. (subject)
@@ -83,6 +84,9 @@ Receives: ADVERTISE, AUTH, CONNACK, DISCONNECT, FORWARDER ENCAPSULATION, GWINFO,
 - [MQTT-SN-4.9-2] A Server or Client MUST NOT send a new Packet of a type from the above list, when it has an acknowledgement outstanding for another Packet for which it has not received an acknowledgement. (subject)
 - [MQTT-SN-4.11.1-7] If the Client does not include an Authentication Method in the CONNECT, the Client MUST NOT send an AUTH packet to the Server. (subject)
 - [MQTT-SN-4.11.1.1-1] If the Client supplied an Authentication Method in the CONNECT packet, it can initiate a re-authentication at any time after receiving a CONNACK. It does this by sending an AUTH packet with a Reason Code of 0x19 (Re-authentication). The Client MUST set the Authentication Method to the same value as the Authentication Method originally used to authenticate the Virtual Connection. (subject)
-- [MQTT-SN-4.14-2] In the Asleep state, a Client MUST only send PINGREQ, CONNECT or DISCONNECT packets to the Server. (subject)
-- [MQTT-SN-4.14-3] In the Awake state, a Client MUST not send ANY packets other than those involved in the receipt of PUBLISH packets (PUBACK, PUBREC, PUBCOMP, REGACK) or CONNECT or DISCONNECT. (subject)
+- [MQTT-SN-4.11.1.2-1] When the Authentication Method is MQTT-BASIC, the MQTT User Name string and MQTT Password binary data in the Authentication Data MUST have the same length as the values in their corresponding preceding length fields. (sender of CONNECT)
+- [MQTT-SN-4.11.1.2-3] In any AUTH or CONNACK packet after the CONNECT packet of an MQTT-ENHANCED authentication exchange, the MQTT User Name and MQTT Password fields MUST NOT be included. (sender of AUTH or CONNACK)
+- [MQTT-SN-4.11.1.2-4] In any AUTH or CONNACK packet after the CONNECT packet of an MQTT-ENHANCED authentication exchange, the Authentication Method MUST remain MQTT-ENHANCED. (sender of AUTH or CONNACK)
+- [MQTT-SN-4.14-2] In the Asleep state, a Client MUST only send PINGREQ, SLEEPREQ, CONNECT or DISCONNECT packets to the Server. (subject)
+- [MQTT-SN-4.14-3] In the Awake state, a Client MUST NOT send ANY packets other than those involved in the receipt of PUBLISH packets (PUBACK, PUBREC, PUBCOMP, REGACK) or CONNECT or DISCONNECT. (subject)
 - [MQTT-SN-4.14-4] Whenever a CONNECT is received by a Server, any existing Virtual Connection for that Client MUST be deleted and a new one created with all CONNECT Packet processing, regardless of the state of the Client. (subject)

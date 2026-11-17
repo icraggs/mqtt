@@ -50,5 +50,5 @@ stateDiagram-v2
 
 ## What a Client may send
 
-- Asleep: PINGREQ, CONNECT, DISCONNECT (MQTT-SN-4.14-2: In the Asleep state, a Client MUST only send PINGREQ, CONNECT or DISCONNECT packets to the Server)
-- Awake: PUBACK, PUBREC, PUBCOMP, REGACK, CONNECT, DISCONNECT (MQTT-SN-4.14-3: In the Awake state, a Client MUST not send ANY packets other than those involved in the receipt of PUBLISH packets (PUBACK, PUBREC, PUBCOMP, REGACK) or CONNECT or DISCONNECT)
+- Asleep: PINGREQ, SLEEPREQ, CONNECT, DISCONNECT (MQTT-SN-4.14-2: In the Asleep state, a Client MUST only send PINGREQ, SLEEPREQ, CONNECT or DISCONNECT packets to the Server)
+- Awake: PUBACK, PUBREC, PUBCOMP, REGACK, CONNECT, DISCONNECT (MQTT-SN-4.14-3: In the Awake state, a Client MUST NOT send ANY packets other than those involved in the receipt of PUBLISH packets (PUBACK, PUBREC, PUBCOMP, REGACK) or CONNECT or DISCONNECT)

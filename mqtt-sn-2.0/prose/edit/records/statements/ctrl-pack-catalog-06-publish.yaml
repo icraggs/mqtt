@@ -60,7 +60,7 @@ statements:
   - server
   binds-by: sender of PUBLISH (packet format)
 - id: MQTT-SN-3.6.2.3-1
-  text: If the QoS field is set to 0, the Packet Identifier field MUST not be present in the PUBLISH packet.
+  text: If the QoS field is set to 0, the Packet Identifier field MUST NOT be present in the PUBLISH packet.
   binds:
   - client
   - server
@@ -91,7 +91,7 @@ statements:
   - server
   binds-by: subject
 - id: MQTT-SN-3.6.2.7-3
-  text: If the Virtual Connection is Transparent, a PUBLISH received from the Client MUST be forwarded on the corresponding MQTT connection with the same QoS and RETAIN values
+  text: If the Virtual Connection is Transparent, a PUBLISH received from the Client MUST be forwarded on the corresponding MQTT connection with the same QoS and RETAIN values, unless MQTT-SN-3.6.2.7-4 applies
   binds:
   - server
   binds-by: subject
@@ -106,7 +106,7 @@ statements:
   - server
   binds-by: subject
 - id: MQTT-SN-3.6.2.7-6
-  text: If the Virtual Connection is Transparent and the Client is not Asleep, the Server MUST NOT send an MQTT PUBACK, PUBREC or PUBCOMP to the MQTT Server until it has received the corresponding PUBACK, PUBREC or PUBCOMP from the Client
+  text: If the Virtual Connection is Transparent and the Client is not Asleep, the Server MUST NOT send an MQTT PUBACK, PUBREC or PUBCOMP to the MQTT Server until it has received the corresponding PUBACK, PUBREC or PUBCOMP from the Client, or it has discarded the message under MQTT-SN-3.1.7-3
   binds:
   - server
   binds-by: subject
